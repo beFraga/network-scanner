@@ -1,10 +1,6 @@
 package com.seguranca.rede.scanner;
 
-import com.seguranca.rede.scanner.Controller.TestController;
-import com.seguranca.rede.scanner.Services.PacketCaptureService;
-import com.seguranca.rede.scanner.Services.Scanner;
-import org.aspectj.weaver.ast.Test;
-import org.pcap4j.core.NotOpenException;
+import com.seguranca.rede.scanner.Services.TCP.PacketCaptureService;
 import org.pcap4j.core.PcapNativeException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

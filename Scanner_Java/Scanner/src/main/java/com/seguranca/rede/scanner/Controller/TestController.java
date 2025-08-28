@@ -20,11 +20,6 @@ public class TestController {
         return "pong";
     }
 
-    @PostMapping("/echo")
-    public String echo(@RequestBody String body) {
-        return "Recebi: " + body;
-    }
-
     @PostMapping("/catch_http")
     public Map<String, Object> capture(HttpServletRequest request, @RequestBody Map<String, Object> body) {
         Map<String, Object> map = new HashMap<>();
