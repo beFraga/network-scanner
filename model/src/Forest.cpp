@@ -1,5 +1,4 @@
 #include "Forest.h"
-#include <cstdlib>
 #include <random>
 #include <cmath>
 
@@ -9,8 +8,7 @@ Forest::Forest(int n_trees, int sample_size) : n_trees(n_trees), sample_size(sam
     max_depth = (int)ceil(log2(sample_size));
 }
 
-
-void Forest::fit(vector<vector<double>>& data) {
+void Forest::fit(vector<vector<string>>& data) {
     trees.clear();
     int n_samples = data.size();
 
@@ -18,7 +16,7 @@ void Forest::fit(vector<vector<double>>& data) {
     std::uniform_int_distribution<int> dist(0, n_samples - 1);
 
     for (int i = 0; i < n_trees; i++) {
-        vector<vector<double>> sample;
+        vector<vector<string>> sample;
         for (int j = 0; j < sample_size; j++) {
 
             int idx = dist(rng);
@@ -35,7 +33,7 @@ double Forest::c_factor(int n) {
     return 2.0 * (log(n - 1) + EULERMAS) - 2.0 * (n - 1) / n;
 }
 
-double Forest::anomaly_score(vector<double>& x) {
+double Forest::anomaly_score(vector<string>& x) {
     double avg_path = 0.0;
     for (auto& tree : trees) {
         avg_path += tree.path_length(x);
