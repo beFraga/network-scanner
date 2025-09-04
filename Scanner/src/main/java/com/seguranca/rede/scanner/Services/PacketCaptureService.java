@@ -43,5 +43,19 @@ public class PacketCaptureService {
         });
     }
 
+    public void startConectarPacotes() {
+        conectarPacotes.submit(() -> {
+            try {
+                while (true) {
+                    TCPinfos tcp = tcpQueue.take();
+                    HttpInfos http = httpQueue.take();
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
 }

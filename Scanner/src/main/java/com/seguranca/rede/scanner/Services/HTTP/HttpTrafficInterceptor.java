@@ -13,9 +13,7 @@ public class HttpTrafficInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         System.out.println("interceptando: " + request.getRequestURI());
 
-        HttpInfos http =  new HttpInfos();
-        http.setRemoteAddress(request.getRemoteAddr());
-        http.setLocalAddress(request.getLocalAddr());
+        HttpInfos http =  new HttpInfos(request);
         return true;
     }
 

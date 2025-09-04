@@ -1,11 +1,14 @@
 package com.seguranca.rede.scanner.Services.TCP;
 
+import com.seguranca.rede.scanner.PacketInfo.TCPinfos;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class Scanner {
@@ -24,7 +27,9 @@ public class Scanner {
 
     }
 
-    public void Scannear(int maxPackets) throws PcapNativeException, NotOpenException {
+    public List<TCPinfos> Scannear(int maxPackets) throws PcapNativeException, NotOpenException {
+
+        List<TCPinfos> listaDePacotes = new ArrayList<>();
         PcapNetworkInterface device = CapturarDispositvo();
         System.out.println("Escolha : " + device);
 
@@ -41,8 +46,8 @@ public class Scanner {
         PacketListener listener = new PacketListener() {
             @Override
             public void gotPacket(Packet packet){
-                System.out.println(handle.getTimestamp());
-                System.out.println(packet.getHeader());
+                TCPinfos tcpinfos = new TCPinfos(packet);
+                listaDePacotes.add(tcpinfos);
             }
         };
 
@@ -52,5 +57,7 @@ public class Scanner {
             e.printStackTrace();
         }
         handle.close();
+
+        return listaDePacotes;
     }
 }

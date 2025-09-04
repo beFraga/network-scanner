@@ -1,6 +1,8 @@
 package com.seguranca.rede.scanner.PacketInfo;
 
 import com.seguranca.rede.scanner.Controller.TestController;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class HttpInfos {
@@ -23,5 +24,16 @@ public class HttpInfos {
     String path;
     String protocol;
     String cookie;
+
+    public HttpInfos (HttpServletRequest req){
+        this.remoteAddress = req.getRemoteAddr();
+        this.localAddress = req.getLocalAddr();
+        this.remotePort = req.getRemotePort();
+        this.localPort = req.getLocalPort();
+        this.method = req.getMethod();
+        this.path = req.getPathInfo();
+        this.protocol = req.getProtocol();
+        this.cookie = req.getCookies().toString();
+    }
 
 }
