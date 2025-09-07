@@ -26,7 +26,6 @@ public class HttpInfos {
     String method;
     String path;
     String protocol;
-    String cookie;
 
     List<TcpInfos> tcpPackets = new ArrayList<>();
 
@@ -38,7 +37,6 @@ public class HttpInfos {
         this.method = req.getMethod();
         this.path = req.getPathInfo();
         this.protocol = req.getProtocol();
-        this.cookie = req.getCookies().toString();
     }
 
     public void addTcpPacket(TcpInfos tcpPacket){

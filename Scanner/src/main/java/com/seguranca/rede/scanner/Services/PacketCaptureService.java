@@ -4,10 +4,10 @@ import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
 import com.seguranca.rede.scanner.Services.HTTP.HttpTrafficInterceptor;
 import com.seguranca.rede.scanner.Services.TCP.TcpTrafficInterceptor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -19,27 +19,21 @@ public class PacketCaptureService {
     private ExecutorService connectPackets = Executors.newSingleThreadExecutor();
 
     private BlockingQueue<TcpInfos> tcpQueue = new LinkedBlockingQueue<>();
-    private BlockingQueue<HttpInfos> httpQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<HttpInfos> httpQueue;
+
+    public PacketCaptureService(BlockingQueue<HttpInfos> httpQueue) {
+        this.httpQueue = httpQueue;
+    }
 
     private List<TcpInfos> tcpList = new ArrayList<>();
     Map<String, HttpInfos> connections = new ConcurrentHashMap<>();
-    public void startCaptureTCP(int maxPackets) {
+    public void startCaptureTCP(int seconds) {
         TCPCapture.submit(() -> {
             try {
-                tcpList = new TcpTrafficInterceptor().Scannear(maxPackets);
+                tcpList = new TcpTrafficInterceptor().Scannear(seconds);
                 for (TcpInfos tcpInfos : tcpList) {
                     tcpQueue.put(tcpInfos);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void startCaptureHTTP() {
-        HTTPCapture.submit(() -> {
-            try {
-                new HttpTrafficInterceptor();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -55,6 +49,7 @@ public class PacketCaptureService {
                                 + tcp.getLocalPort() + "-"
                                 + tcp.getRemoteAddress() + ":"
                                 + tcp.getRemotePort();
+                    System.out.println("tcp-key" + key);
                     connections.computeIfAbsent(key, k->new HttpInfos()).addTcpPacket(tcp);
                     }
             } catch (Exception e) {
@@ -70,6 +65,7 @@ public class PacketCaptureService {
                             http.getLocalPort() + "-" +
                             http.getRemoteAddress() + ":" +
                             http.getRemotePort();
+                    System.out.println("http-key" + key);
                     connections.putIfAbsent(key, http);
                 }
             } catch (Exception e) {

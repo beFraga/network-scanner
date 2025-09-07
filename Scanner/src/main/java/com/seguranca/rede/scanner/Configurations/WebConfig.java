@@ -9,8 +9,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    private final HttpTrafficInterceptor trafficInterceptor;
+
     @Autowired
-    private HttpTrafficInterceptor trafficInterceptor;
+    public WebConfig(HttpTrafficInterceptor trafficInterceptor) {
+        this.trafficInterceptor = trafficInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

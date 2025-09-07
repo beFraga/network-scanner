@@ -1,7 +1,9 @@
 package com.seguranca.rede.scanner.Services.TCP;
 
 import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
+import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.Packet;
+import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TcpTrafficInterceptor {
@@ -27,7 +32,7 @@ public class TcpTrafficInterceptor {
 
     }
 
-    public List<TcpInfos> Scannear(int maxPackets) throws PcapNativeException, NotOpenException {
+    public List<TcpInfos> Scannear(int seconds) throws PcapNativeException, NotOpenException {
 
         List<TcpInfos> packetList = new ArrayList<>();
         PcapNetworkInterface device = CapturarDispositvo();
@@ -46,21 +51,34 @@ public class TcpTrafficInterceptor {
         PacketListener listener = new PacketListener() {
             @Override
             public void gotPacket(Packet packet){
-                TcpInfos tcpinfos = new TcpInfos(packet.toString());
-                packetList.add(tcpinfos);
-                System.out.println(tcpinfos.getLocalAddress()+ ":"+
-                        tcpinfos.getLocalPort()+ "-" +
-                        tcpinfos.getRemoteAddress()+ ":"+
-                        tcpinfos.getRemotePort());
+                if (packet.contains(TcpPacket.class)) {
+                    TcpPacket tcpPacket = packet.get(TcpPacket.class);
+                    IpPacket ipPacket = packet.get(IpPacket.class);
+                    TcpInfos tcpinfos = new TcpInfos(packet.toString());
+                    packetList.add(tcpinfos);
+                }
+
             }
         };
 
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -> {
+            try {
+                handle.breakLoop();
+            } catch (NotOpenException e) {
+                e.printStackTrace();
+            }
+        }, seconds, TimeUnit.SECONDS);
+
         try {
-            handle.loop(maxPackets, listener);
+            handle.loop(-1, listener); // -1 = captura "infinita"
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            handle.close();
+            scheduler.shutdown();
         }
-        handle.close();
+
 
         return packetList;
     }
