@@ -1,31 +1,34 @@
 package com.seguranca.rede.scanner.Services;
 
 import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
-import com.seguranca.rede.scanner.PacketInfo.TCPinfos;
+import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
 import com.seguranca.rede.scanner.Services.HTTP.HttpTrafficInterceptor;
+import com.seguranca.rede.scanner.Services.TCP.TcpTrafficInterceptor;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
 
 @Service
 public class PacketCaptureService {
-    private ExecutorService capturaTCP = Executors.newSingleThreadExecutor();
-    private ExecutorService capturaHTTP = Executors.newSingleThreadExecutor();
-    private ExecutorService conectarPacotes = Executors.newSingleThreadExecutor();
+    private ExecutorService TCPCapture = Executors.newSingleThreadExecutor();
+    private ExecutorService HTTPCapture = Executors.newSingleThreadExecutor();
+    private ExecutorService connectPackets = Executors.newSingleThreadExecutor();
 
-    private BlockingQueue<TCPinfos> tcpQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<TcpInfos> tcpQueue = new LinkedBlockingQueue<>();
     private BlockingQueue<HttpInfos> httpQueue = new LinkedBlockingQueue<>();
 
+    private List<TcpInfos> tcpList = new ArrayList<>();
+    Map<String, HttpInfos> connections = new ConcurrentHashMap<>();
     public void startCaptureTCP(int maxPackets) {
-        capturaTCP.submit(() -> {
+        TCPCapture.submit(() -> {
             try {
-                new com.seguranca.rede.scanner.Services.TCP.Scanner().Scannear(maxPackets);
-                for (int i = 0; i < maxPackets; i++) {
-                    TCPinfos tcp = new TCPinfos();
-                    tcpQueue.put(tcp);
+                tcpList = new TcpTrafficInterceptor().Scannear(maxPackets);
+                for (TcpInfos tcpInfos : tcpList) {
+                    tcpQueue.put(tcpInfos);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -34,7 +37,7 @@ public class PacketCaptureService {
     }
 
     public void startCaptureHTTP() {
-        capturaHTTP.submit(() -> {
+        HTTPCapture.submit(() -> {
             try {
                 new HttpTrafficInterceptor();
             } catch (Exception e) {
@@ -43,13 +46,31 @@ public class PacketCaptureService {
         });
     }
 
-    public void startConectarPacotes() {
-        conectarPacotes.submit(() -> {
+    public void startConnectPackets() {
+        connectPackets.submit(() -> {
             try {
                 while (true) {
-                    TCPinfos tcp = tcpQueue.take();
-                    HttpInfos http = httpQueue.take();
+                    TcpInfos tcp = tcpQueue.take();
+                    String key = tcp.getLocalAddress() + ":"
+                                + tcp.getLocalPort() + "-"
+                                + tcp.getRemoteAddress() + ":"
+                                + tcp.getRemotePort();
+                    connections.computeIfAbsent(key, k->new HttpInfos()).addTcpPacket(tcp);
+                    }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
+        connectPackets.submit(() -> {
+            try {
+                while (true) {
+                    HttpInfos http = httpQueue.take();
+                    String key = http.getLocalAddress() + ":" +
+                            http.getLocalPort() + "-" +
+                            http.getRemoteAddress() + ":" +
+                            http.getRemotePort();
+                    connections.putIfAbsent(key, http);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

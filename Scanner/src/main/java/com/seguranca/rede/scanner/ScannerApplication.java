@@ -16,6 +16,8 @@ public class ScannerApplication {
 
         SpringApplication.run(ScannerApplication.class, args);
         PacketCaptureService scanner = new PacketCaptureService();
-        scanner.startCaptureTCP(500);
+        scanner.startCaptureTCP(5);
+        scanner.startCaptureHTTP();
+        scanner.startConnectPackets();
     }
 }

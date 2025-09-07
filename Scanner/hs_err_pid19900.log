@@ -67,7 +67,7 @@ j  org.pcap4j.core.NativeMappings.pcap_loop(Lcom/sun/jna/Pointer;ILorg/pcap4j/co
 j  org.pcap4j.core.PcapHandle.doLoop(ILorg/pcap4j/core/NativeMappings$pcap_handler;)V+68
 j  org.pcap4j.core.PcapHandle.loop(ILorg/pcap4j/core/PacketListener;Ljava/util/concurrent/Executor;)V+67
 j  org.pcap4j.core.PcapHandle.loop(ILorg/pcap4j/core/PacketListener;)V+6
-j  com.seguranca.rede.scanner.Services.TCP.Scanner.Scannear(I)V+71
+j  com.seguranca.rede.scanner.Services.TCP.TcpTrafficInterceptor.Scannear(I)V+71
 j  com.seguranca.rede.scanner.Services.PacketCaptureService.lambda$startCapture$0(I)V+8
 j  com.seguranca.rede.scanner.Services.PacketCaptureService$$Lambda+0x0000024a223c8690.run()V+4
 j  java.util.concurrent.Executors$RunnableAdapter.call()Ljava/lang/Object;+4 java.base@24.0.2

@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @NoArgsConstructor
 @Getter
@@ -25,6 +28,8 @@ public class HttpInfos {
     String protocol;
     String cookie;
 
+    List<TcpInfos> tcpPackets = new ArrayList<>();
+
     public HttpInfos (HttpServletRequest req){
         this.remoteAddress = req.getRemoteAddr();
         this.localAddress = req.getLocalAddr();
@@ -34,6 +39,10 @@ public class HttpInfos {
         this.path = req.getPathInfo();
         this.protocol = req.getProtocol();
         this.cookie = req.getCookies().toString();
+    }
+
+    public void addTcpPacket(TcpInfos tcpPacket){
+        this.tcpPackets.add(tcpPacket);
     }
 
 }

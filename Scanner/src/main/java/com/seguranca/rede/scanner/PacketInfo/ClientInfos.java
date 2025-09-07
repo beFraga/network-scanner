@@ -1,21 +1,20 @@
 package com.seguranca.rede.scanner.PacketInfo;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.pcap4j.packet.Packet;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class TCPinfos {
-    Packet.Header header;
-    String localAdress;
-    String remoteAdress;
+public class ClientInfos {
+    List<HttpInfos> httpInfos;
 
-    public TCPinfos(Packet packet){
-        this.header = packet.getHeader();
-    }
+
 }

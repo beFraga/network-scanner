@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Services.TCP;
 
-import com.seguranca.rede.scanner.PacketInfo.TCPinfos;
+import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class Scanner {
+public class TcpTrafficInterceptor {
 
     static PcapNetworkInterface CapturarDispositvo() {
         // dispositivo de rede a ser analisado
@@ -27,9 +27,9 @@ public class Scanner {
 
     }
 
-    public List<TCPinfos> Scannear(int maxPackets) throws PcapNativeException, NotOpenException {
+    public List<TcpInfos> Scannear(int maxPackets) throws PcapNativeException, NotOpenException {
 
-        List<TCPinfos> listaDePacotes = new ArrayList<>();
+        List<TcpInfos> packetList = new ArrayList<>();
         PcapNetworkInterface device = CapturarDispositvo();
         System.out.println("Escolha : " + device);
 
@@ -46,8 +46,12 @@ public class Scanner {
         PacketListener listener = new PacketListener() {
             @Override
             public void gotPacket(Packet packet){
-                TCPinfos tcpinfos = new TCPinfos(packet);
-                listaDePacotes.add(tcpinfos);
+                TcpInfos tcpinfos = new TcpInfos(packet.toString());
+                packetList.add(tcpinfos);
+                System.out.println(tcpinfos.getLocalAddress()+ ":"+
+                        tcpinfos.getLocalPort()+ "-" +
+                        tcpinfos.getRemoteAddress()+ ":"+
+                        tcpinfos.getRemotePort());
             }
         };
 
@@ -58,6 +62,6 @@ public class Scanner {
         }
         handle.close();
 
-        return listaDePacotes;
+        return packetList;
     }
 }
