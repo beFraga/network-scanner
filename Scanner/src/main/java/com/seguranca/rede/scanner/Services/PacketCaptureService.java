@@ -15,8 +15,8 @@ import java.util.concurrent.*;
 @Service
 public class PacketCaptureService {
     private ExecutorService TCPCapture = Executors.newSingleThreadExecutor();
-    private ExecutorService HTTPCapture = Executors.newSingleThreadExecutor();
-    private ExecutorService connectPackets = Executors.newSingleThreadExecutor();
+    private ExecutorService connectTCP = Executors.newSingleThreadExecutor();
+    private ExecutorService connectHTTP = Executors.newSingleThreadExecutor();
 
     private BlockingQueue<TcpInfos> tcpQueue = new LinkedBlockingQueue<>();
     private final BlockingQueue<HttpInfos> httpQueue;
@@ -27,6 +27,7 @@ public class PacketCaptureService {
 
     private List<TcpInfos> tcpList = new ArrayList<>();
     Map<String, HttpInfos> connections = new ConcurrentHashMap<>();
+
     public void startCaptureTCP(int seconds) {
         TCPCapture.submit(() -> {
             try {
@@ -41,9 +42,10 @@ public class PacketCaptureService {
     }
 
     public void startConnectPackets() {
-        connectPackets.submit(() -> {
+        connectTCP.submit(() -> {
             try {
                 while (true) {
+                    System.out.println("777");
                     TcpInfos tcp = tcpQueue.take();
                     String key = tcp.getLocalAddress() + ":"
                                 + tcp.getLocalPort() + "-"
@@ -57,9 +59,10 @@ public class PacketCaptureService {
             }
         });
 
-        connectPackets.submit(() -> {
+        connectHTTP.submit(() -> {
             try {
                 while (true) {
+                    System.out.println("7779");
                     HttpInfos http = httpQueue.take();
                     String key = http.getLocalAddress() + ":" +
                             http.getLocalPort() + "-" +

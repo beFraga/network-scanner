@@ -19,7 +19,7 @@ public class ScannerApplication {
         SpringApplication.run(ScannerApplication.class, args);
         BlockingQueue<HttpInfos> httpQueue = null;
         PacketCaptureService scanner = new PacketCaptureService(httpQueue);
-        scanner.startCaptureTCP(60);
+        scanner.startCaptureTCP(5);
         scanner.startConnectPackets();
     }
 }
