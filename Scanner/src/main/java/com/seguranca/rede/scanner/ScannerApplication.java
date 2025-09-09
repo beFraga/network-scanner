@@ -3,6 +3,8 @@ package com.seguranca.rede.scanner;
 import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.Services.PacketCaptureService;
 import org.pcap4j.core.PcapNativeException;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -12,14 +14,24 @@ import java.net.UnknownHostException;
 import java.util.concurrent.BlockingQueue;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-public class ScannerApplication {
-    
+public class ScannerApplication implements ApplicationRunner {
 
-    public static void main(String[] args) throws UnknownHostException, PcapNativeException {
+    private final PacketCaptureService packetCaptureService;
+
+    // o Spring injeta automaticamente
+    public ScannerApplication(PacketCaptureService packetCaptureService) {
+        this.packetCaptureService = packetCaptureService;
+    }
+
+    public static void main(String[] args) {
         SpringApplication.run(ScannerApplication.class, args);
-        BlockingQueue<HttpInfos> httpQueue = null;
-        PacketCaptureService scanner = new PacketCaptureService(httpQueue);
-        scanner.startCaptureTCP(5);
-        scanner.startConnectPackets();
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        // roda logo após o contexto subir
+        packetCaptureService.startCaptureTCP(5);
+        packetCaptureService.startConnectPackets();
+
     }
 }
