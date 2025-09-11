@@ -29,7 +29,10 @@ public class TcpInfos {
 
     private String extract(String input, String regex) {
         java.util.regex.Matcher m = java.util.regex.Pattern.compile(regex).matcher(input);
-        return m.find() ? m.group(1) : "";
+        if (m.find()) {
+            return m.group(1).replace("/", "");
+        }
+        return "";
     }
 
 }
