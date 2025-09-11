@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -68,37 +66,28 @@ public class PacketCaptureService {
             return address; // fallback se não resolver
         }
     }
-
-
-
-    private List<TcpInfos> tcpList = new ArrayList<>();
     Map<String, HttpInfos> connections = new ConcurrentHashMap<>();
 
-    public void startCaptureTCP(int seconds) {
+    public void startConnectPackets(int seconds) {
         TCPCapture.submit(() -> {
             try {
-                tcpList = new TcpTrafficInterceptor().Scannear(seconds);
-                for (TcpInfos tcpInfos : tcpList) {
-                    tcpQueue.put(tcpInfos);
-                }
+                new TcpTrafficInterceptor(tcpQueue).Scannear(seconds);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-    }
 
-    public void startConnectPackets() {
         connectTCP.submit(() -> {
             try {
                 while (true) {
                     TcpInfos tcp = tcpQueue.take();
                     String key = tcp.getLocalAddress() + ":"
-                                + tcp.getLocalPort() + "-"
-                                + tcp.getRemoteAddress() + ":"
-                                + tcp.getRemotePort();
+                            + tcp.getLocalPort() + "-"
+                            + tcp.getRemoteAddress() + ":"
+                            + tcp.getRemotePort();
                     System.out.println("tcp-key" + key);
                     connections.computeIfAbsent(key, k->new HttpInfos()).addTcpPacket(tcp);
-                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -107,6 +96,7 @@ public class PacketCaptureService {
         connectHTTP.submit(() -> {
             try {
                 while (true) {
+                    System.out.println("Esperando requisições");
                     HttpInfos http = httpQueue.take();
                     String addLocal = normalizeAddress(http.getLocalAddress());
                     String addRemote = normalizeAddress(http.getRemoteAddress());

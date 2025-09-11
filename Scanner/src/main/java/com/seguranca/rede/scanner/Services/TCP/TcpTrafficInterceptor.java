@@ -9,14 +9,18 @@ import org.pcap4j.core.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Service
 public class TcpTrafficInterceptor {
+
+    private final BlockingQueue<TcpInfos> tcpQueue;
+
+    public TcpTrafficInterceptor(BlockingQueue<TcpInfos> tcpQueue) {
+        this.tcpQueue = tcpQueue;
+    }
 
     static PcapNetworkInterface CapturarDispositvo() {
         // dispositivo de rede a ser analisado
@@ -32,9 +36,7 @@ public class TcpTrafficInterceptor {
 
     }
 
-    public List<TcpInfos> Scannear(int seconds) throws PcapNativeException, NotOpenException {
-
-        List<TcpInfos> packetList = new ArrayList<>();
+    public void Scannear(int seconds) throws PcapNativeException, NotOpenException {
         PcapNetworkInterface device = CapturarDispositvo();
         System.out.println("Escolha : " + device);
 
@@ -53,9 +55,12 @@ public class TcpTrafficInterceptor {
             public void gotPacket(Packet packet){
                 if (packet.contains(TcpPacket.class)) {
                     TcpPacket tcpPacket = packet.get(TcpPacket.class);
-                    IpPacket ipPacket = packet.get(IpPacket.class);
                     TcpInfos tcpinfos = new TcpInfos(packet.toString());
-                    packetList.add(tcpinfos);
+                    try {
+                        tcpQueue.put(tcpinfos);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
 
             }
@@ -78,8 +83,5 @@ public class TcpTrafficInterceptor {
             handle.close();
             scheduler.shutdown();
         }
-
-
-        return packetList;
     }
 }

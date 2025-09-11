@@ -30,8 +30,7 @@ public class ScannerApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         // roda logo após o contexto subir
-        packetCaptureService.startCaptureTCP(5);
-        packetCaptureService.startConnectPackets();
+        packetCaptureService.startConnectPackets(100);
 
     }
 }
