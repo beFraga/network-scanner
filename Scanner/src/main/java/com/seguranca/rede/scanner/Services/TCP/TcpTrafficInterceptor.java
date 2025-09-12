@@ -46,9 +46,16 @@ public class TcpTrafficInterceptor {
         }
 
         int snapshotlenght = 65536;
-        int readTimeout = 50;
-        final PcapHandle handle;
-        handle = device.openLive(snapshotlenght, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
+        int readTimeout = 1;
+        //final PcapHandle handle;
+        //handle = device.openLive(snapshotlenght, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
+        PcapHandle handle = new PcapHandle.Builder(device.getName())
+                .snaplen(snapshotlenght)
+                .promiscuousMode(PcapNetworkInterface.PromiscuousMode.PROMISCUOUS)
+                .timeoutMillis(readTimeout)
+                .bufferSize(16 * 1024 * 1024) //16MB
+                .immediateMode(true)
+                .build();
 
         PacketListener listener = new PacketListener() {
             @Override
@@ -62,7 +69,6 @@ public class TcpTrafficInterceptor {
                         Thread.currentThread().interrupt();
                     }
                 }
-
             }
         };
 
@@ -78,7 +84,7 @@ public class TcpTrafficInterceptor {
         try {
             handle.loop(-1, listener); // -1 = captura "infinita"
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.getMessage();
         } finally {
             handle.close();
             scheduler.shutdown();

@@ -23,49 +23,43 @@ public class PacketCaptureService {
         this.httpQueue = httpQueue;
     }
 
-    private String normalizeAddress(String address) {
+    private String normalizeAddress(String ipv4Address) {
         try {
-            InetAddress inet = InetAddress.getByName(address);
+            // Cria um objeto InetAddress a partir do endereço IPv4.
+            InetAddress address = InetAddress.getByName(ipv4Address);
 
-            // 1. Caso seja IPv4 normal
-            if (inet instanceof java.net.Inet4Address) {
-                return inet.getHostAddress();
+            // Obtém os bytes do endereço IPv4.
+            byte[] ipv4Bytes = address.getAddress();
+
+            // Cria um array de bytes de 16 posições para o endereço IPv6.
+            byte[] ipv6Bytes = new byte[16];
+
+            // Os primeiros 10 bytes são zero para a representação "IPv4-mapped".
+            for (int i = 0; i < 10; i++) {
+                ipv6Bytes[i] = 0;
             }
 
-            // 2. Caso seja IPv6 mapeado para IPv4 (::ffff:...)
-            if (inet instanceof java.net.Inet6Address) {
-                byte[] bytes = inet.getAddress();
-                if (bytes.length == 16) {
-                    boolean isIpv4Mapped = true;
-                    for (int i = 0; i < 10; i++) {
-                        if (bytes[i] != 0) {
-                            isIpv4Mapped = false;
-                            break;
-                        }
-                    }
-                    if (bytes[10] == (byte) 0xff && bytes[11] == (byte) 0xff && isIpv4Mapped) {
-                        return String.format("%d.%d.%d.%d",
-                                bytes[12] & 0xff, bytes[13] & 0xff,
-                                bytes[14] & 0xff, bytes[15] & 0xff);
-                    }
-                }
+            // O 11º e 12º bytes são -1 (equivalente a 0xff em hexadecimal).
+            // Isso indica a representação IPv4-mapped.
+            ipv6Bytes[10] = (byte) 0xff;
+            ipv6Bytes[11] = (byte) 0xff;
 
-                // 3. Se for loopback IPv6 (::1), converte para 127.0.0.1
-                if (inet.isLoopbackAddress()) {
-                    return "127.0.0.1";
-                }
+            // Copia os 4 bytes do endereço IPv4 para o final do array IPv6.
+            System.arraycopy(ipv4Bytes, 0, ipv6Bytes, 12, 4);
 
-                // 4. Se chegou aqui, é IPv6 puro → ou mantemos, ou forçamos fallback
-                //return inet.getHostAddress(); // mantém IPv6 real
-                return "0.0.0.0"; // <-- força sempre IPv4 mesmo que inventado
-            }
+            // Converte o array de bytes IPv6 para a representação de string.
+            InetAddress ipv6Address = InetAddress.getByAddress(ipv6Bytes);
 
-            return inet.getHostAddress();
+            // Retorna a representação de string formatada.
+            // A classe InetAddress já cuida da formatação correta.
+            return ipv6Address.getHostAddress();
 
         } catch (UnknownHostException e) {
-            return address; // fallback se não resolver
+            System.err.println("Erro: Endereço IPv4 inválido.");
+            return null;
         }
     }
+
     Map<String, HttpInfos> connections = new ConcurrentHashMap<>();
 
     public void startConnectPackets(int seconds) {
