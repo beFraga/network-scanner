@@ -1,18 +1,13 @@
 package com.seguranca.rede.scanner.Services.TCP;
 
 import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
-import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class TcpTrafficInterceptor {
 
@@ -36,7 +31,7 @@ public class TcpTrafficInterceptor {
 
     }
 
-    public void Scannear(int seconds) throws PcapNativeException, NotOpenException {
+    public void Scannear() throws PcapNativeException, NotOpenException {
         PcapNetworkInterface device = CapturarDispositvo();
         System.out.println("Escolha : " + device);
 
@@ -47,8 +42,6 @@ public class TcpTrafficInterceptor {
 
         int snapshotlenght = 65536;
         int readTimeout = 1;
-        //final PcapHandle handle;
-        //handle = device.openLive(snapshotlenght, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
         PcapHandle handle = new PcapHandle.Builder(device.getName())
                 .snaplen(snapshotlenght)
                 .promiscuousMode(PcapNetworkInterface.PromiscuousMode.PROMISCUOUS)
@@ -61,8 +54,7 @@ public class TcpTrafficInterceptor {
             @Override
             public void gotPacket(Packet packet){
                 if (packet.contains(TcpPacket.class)) {
-                    TcpPacket tcpPacket = packet.get(TcpPacket.class);
-                    TcpInfos tcpinfos = new TcpInfos(packet.toString());
+                    TcpInfos tcpinfos = new TcpInfos(packet.toString(), packet);
                     try {
                         tcpQueue.put(tcpinfos);
                     } catch (InterruptedException e) {
@@ -72,22 +64,18 @@ public class TcpTrafficInterceptor {
             }
         };
 
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.schedule(() -> {
-            try {
-                handle.breakLoop();
-            } catch (NotOpenException e) {
-                e.printStackTrace();
-            }
-        }, seconds, TimeUnit.SECONDS);
-
         try {
             handle.loop(-1, listener); // -1 = captura "infinita"
         } catch (InterruptedException e) {
             e.getMessage();
         } finally {
             handle.close();
-            scheduler.shutdown();
+        }
+
+        try {
+            handle.breakLoop();
+        } catch (NotOpenException e) {
+            e.printStackTrace();
         }
     }
 }

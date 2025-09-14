@@ -1,9 +1,6 @@
 package com.seguranca.rede.scanner.PacketInfo;
 
-import com.seguranca.rede.scanner.Controller.TestController;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +23,7 @@ public class HttpInfos {
     String method;
     String path;
     String protocol;
+    String uri;
 
     List<TcpInfos> tcpPackets = new ArrayList<>();
 
@@ -36,6 +34,7 @@ public class HttpInfos {
         this.localPort = req.getLocalPort();
         this.method = req.getMethod();
         this.path = req.getPathInfo();
+        this.uri = req.getRequestURI();
         this.protocol = req.getProtocol();
     }
 
