@@ -1,6 +1,7 @@
 package com.seguranca.rede.scanner.Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +44,10 @@ public class TestController {
         map.put("body", body);
 
         return map;
+    }
+
+    @GetMapping("/catch_http")
+    public void capture(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String, Object> body) {
+        System.out.println("http get realizado de outro pc");
     }
 }
