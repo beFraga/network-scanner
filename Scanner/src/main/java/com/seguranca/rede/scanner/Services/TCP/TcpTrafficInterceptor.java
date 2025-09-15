@@ -47,14 +47,19 @@ public class TcpTrafficInterceptor {
 
         int snapshotlenght = 65536;
         int readTimeout = 50;
-        final PcapHandle handle;
-        handle = device.openLive(snapshotlenght, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
-
+        // final PcapHandle handle;
+        // handle = device.openLive(snapshotlenght, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, readTimeout);
+        PcapHandle handle = new PcapHandle.Builder(device.getName())
+                .snaplen(snapshotlenght)
+                .promiscuousMode(PcapNetworkInterface.PromiscuousMode.PROMISCUOUS)
+                .timeoutMillis(readTimeout)
+                .bufferSize(4 * 1024 * 1024)
+                .build();
         PacketListener listener = new PacketListener() {
             @Override
             public void gotPacket(Packet packet){
+
                 if (packet.contains(TcpPacket.class)) {
-                    TcpPacket tcpPacket = packet.get(TcpPacket.class);
                     TcpInfos tcpinfos = new TcpInfos(packet.toString());
                     try {
                         tcpQueue.put(tcpinfos);
@@ -76,6 +81,7 @@ public class TcpTrafficInterceptor {
         }, seconds, TimeUnit.SECONDS);
 
         try {
+            handle.setFilter("tcp", BpfProgram.BpfCompileMode.OPTIMIZE);
             handle.loop(-1, listener); // -1 = captura "infinita"
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -85,3 +91,4 @@ public class TcpTrafficInterceptor {
         }
     }
 }
+
