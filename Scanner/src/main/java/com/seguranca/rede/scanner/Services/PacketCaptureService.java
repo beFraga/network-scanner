@@ -26,7 +26,7 @@ public class PacketCaptureService{
     private Set<String> printedKeys = ConcurrentHashMap.newKeySet();
 
     // Auxiliar Function
-    PacketAuxiliarFunctions aux;
+    PacketAuxiliarFunctions aux = new PacketAuxiliarFunctions();
 
     // Packet capturing and Map generating
     public void startConnectPackets() {
@@ -55,7 +55,6 @@ public class PacketCaptureService{
         connectHTTP.submit(() -> {
             try {
                 while (true) {
-                    System.out.println("Esperando requisições");
                     HttpInfos http = httpQueue.take();
                     String key = aux.generateKey(http.getLocalAddress(), http.getLocalPort(),
                             http.getRemoteAddress(), http.getRemotePort());

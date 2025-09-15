@@ -18,11 +18,9 @@ public class TcpTrafficInterceptor {
     }
 
     static PcapNetworkInterface CapturarDispositvo() {
-        // dispositivo de rede a ser analisado
         PcapNetworkInterface device = null;
 
         try {
-            // lista os dispositivos de rede disponíveis com um prompt
             device = new NifSelector().selectNetworkInterface();
         } catch (IOException e) {
             e.printStackTrace();

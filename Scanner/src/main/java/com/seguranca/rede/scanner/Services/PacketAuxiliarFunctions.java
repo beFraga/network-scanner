@@ -24,11 +24,9 @@ public class PacketAuxiliarFunctions {
     }
 
     public void printConnections(Map<String, HttpInfos> connections, Set<String> printedKeys) {
-        System.out.println("Novas conexões:");
         connections.forEach((key, value) -> {
             if (value.getMethod() == null) return;
             if (!printedKeys.contains(key)) {
-                System.out.println("-------------------------------------------");
                 System.out.println(key + ": ");
                 System.out.println("URL: " + value.getUri());
                 System.out.println("Método: " + value.getMethod());
