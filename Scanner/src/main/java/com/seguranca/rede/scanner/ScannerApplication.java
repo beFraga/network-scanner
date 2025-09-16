@@ -25,10 +25,11 @@ public class ScannerApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         try {
+            int interval = 30;
             packetCaptureService.startConnectPackets();
-            packetCaptureService.schedulePrintTask(15);
+            packetCaptureService.schedulePrintTask(interval);
         } catch (Exception e) {
-            System.out.println("Error starting packet capture service: " + e.getMessage());
+            System.out.println("Erro no começo de captura de pacotes: " + e.getMessage());
         }
     }
 }
