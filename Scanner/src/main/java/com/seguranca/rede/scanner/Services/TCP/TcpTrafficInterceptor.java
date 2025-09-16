@@ -52,7 +52,8 @@ public class TcpTrafficInterceptor {
             @Override
             public void gotPacket(Packet packet){
                 if (packet.contains(TcpPacket.class)) {
-                    TcpInfos tcpinfos = new TcpInfos(packet.toString(), packet);
+                    TcpPacket tcpPacket = (TcpPacket) packet;
+                    TcpInfos tcpinfos = new TcpInfos(packet.toString(), tcpPacket);
                     try {
                         tcpQueue.put(tcpinfos);
                     } catch (InterruptedException e) {
