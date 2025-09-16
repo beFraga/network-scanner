@@ -1,8 +1,7 @@
 package com.seguranca.rede.scanner.Services.TCP;
 
 import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
-import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.TcpPacket;
+import org.pcap4j.packet.*;
 import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
 
@@ -17,7 +16,7 @@ public class TcpTrafficInterceptor {
         this.tcpQueue = tcpQueue;
     }
 
-    static PcapNetworkInterface CapturarDispositvo() {
+    static PcapNetworkInterface CaptureDevice() {
         PcapNetworkInterface device = null;
 
         try {
@@ -29,8 +28,8 @@ public class TcpTrafficInterceptor {
 
     }
 
-    public void Scannear() throws PcapNativeException, NotOpenException {
-        PcapNetworkInterface device = CapturarDispositvo();
+    public void Scan() throws PcapNativeException, NotOpenException {
+        PcapNetworkInterface device = CaptureDevice();
         System.out.println("Escolha : " + device);
 
         if (device == null) {
@@ -44,27 +43,39 @@ public class TcpTrafficInterceptor {
                 .snaplen(snapshotlenght)
                 .promiscuousMode(PcapNetworkInterface.PromiscuousMode.PROMISCUOUS)
                 .timeoutMillis(readTimeout)
-                .bufferSize(16 * 1024 * 1024) //16MB
+                .bufferSize(16 * 1024 * 1024)
                 .immediateMode(true)
                 .build();
 
+        handle.setFilter("tcp", BpfProgram.BpfCompileMode.OPTIMIZE);
         PacketListener listener = new PacketListener() {
             @Override
             public void gotPacket(Packet packet){
-                if (packet.contains(TcpPacket.class)) {
-                    TcpPacket tcpPacket = (TcpPacket) packet;
-                    TcpInfos tcpinfos = new TcpInfos(packet.toString(), tcpPacket);
-                    try {
-                        tcpQueue.put(tcpinfos);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+                IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
+                IpV6Packet ipV6Packet = packet.get(IpV6Packet.class);
+                IpPacket ipPacket = null;
+                if (ipV4Packet != null) {
+                    ipPacket = ipV4Packet;
+                } else if (ipV6Packet != null) {
+                    ipPacket = ipV6Packet;
+                }
+
+                if (ipPacket != null) {
+                    TcpPacket tcpPacket = packet.get(TcpPacket.class);
+                    if (tcpPacket != null) {
+                        TcpInfos tcpinfos = new TcpInfos(ipPacket, tcpPacket);
+                        try {
+                            tcpQueue.put(tcpinfos);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
                 }
             }
         };
 
         try {
-            handle.loop(-1, listener); // -1 = captura "infinita"
+            handle.loop(-1, listener);
         } catch (InterruptedException e) {
             e.getMessage();
         } finally {

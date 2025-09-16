@@ -14,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 public class HttpInfos {
+    private byte[] headerPayload;
+
     String remoteAddress;
     String localAddress;
 

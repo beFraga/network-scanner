@@ -17,46 +17,17 @@ public class TcpInfos {
     private int localPort;
     private int remotePort;
 
-    private int sequenceNumber;
+    private Long sequenceNumber;
+    private Packet payload;
 
-    public TcpInfos(String packetString, TcpPacket packet){
-        this.localAddress = getSrcAddress(packet);
-        this.remoteAddress = getDestAddress(packet);
-        this.localPort = Integer.parseInt(packet.getHeader().getSrcPort().name());
-        this.remotePort = Integer.parseInt(packet.getHeader().getDstPort().name());
-        this.sequenceNumber = packet.getHeader().getSequenceNumber();
-    }
+    public TcpInfos(IpPacket ipPacket, TcpPacket tcpPacket){
+        this.localAddress = ipPacket.getHeader().getSrcAddr().getHostAddress();
+        this.remoteAddress = ipPacket.getHeader().getDstAddr().getHostAddress();
+        this.localPort = tcpPacket.getHeader().getSrcPort().valueAsInt();
+        this.remotePort = tcpPacket.getHeader().getDstPort().valueAsInt();
+        this.sequenceNumber = Long.valueOf(tcpPacket.getHeader().getSequenceNumber());
+        this.payload = tcpPacket.getPayload();
 
-    private String getSrcAddress(Packet packet){
-        if (packet.contains(IpV4Packet.class)){
-            IpV4Packet ipv4 = packet.get(IpV4Packet.class);
-            return ipv4.getHeader().getSrcAddr().getHostAddress();
-        }
-        if (packet.contains(IpV6Packet.class)){
-            IpV6Packet ipv6 = packet.get(IpV6Packet.class);
-            return ipv6.getHeader().getSrcAddr().getHostAddress();
-        }
-        if (packet.contains(IpPacket.class)){
-            IpPacket ip = packet.get(IpPacket.class);
-            return ip.getHeader().getSrcAddr().getHostAddress();
-        }
-        return null;
-    }
-
-    private String getDestAddress(Packet packet){
-        if (packet.contains(IpV4Packet.class)){
-            IpV4Packet ipv4 = packet.get(IpV4Packet.class);
-            return ipv4.getHeader().getDstAddr().getHostAddress();
-        }
-        if (packet.contains(IpV6Packet.class)){
-            IpV6Packet ipv6 = packet.get(IpV6Packet.class);
-            return ipv6.getHeader().getDstAddr().getHostAddress();
-        }
-        if (packet.contains(IpPacket.class)){
-            IpPacket ip = packet.get(IpPacket.class);
-            return ip.getHeader().getDstAddr().getHostAddress();
-        }
-        return null;
     }
 
 }

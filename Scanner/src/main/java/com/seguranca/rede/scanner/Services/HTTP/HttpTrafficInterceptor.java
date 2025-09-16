@@ -21,7 +21,6 @@ public class HttpTrafficInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
 
         HttpInfos httpInfosRequest = new HttpInfos(request);
-        System.out.println("Interceptando HTTP: " + httpInfosRequest.getLocalAddress() + ":" + httpInfosRequest.getLocalPort());
         try {
             httpQueue.put(httpInfosRequest);
         } catch (Exception e) {
