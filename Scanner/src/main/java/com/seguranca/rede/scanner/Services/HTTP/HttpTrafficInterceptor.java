@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Services.HTTP;
 
-import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;

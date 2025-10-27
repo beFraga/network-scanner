@@ -1,8 +1,13 @@
-package com.seguranca.rede.scanner.Services;
+package com.seguranca.rede.scanner.Services.Capture;
 
-import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
-import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
+import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Repository.HttpRepository;
+import com.seguranca.rede.scanner.Repository.TcpRepository;
+import com.seguranca.rede.scanner.Repository.UserRepository;
 import com.seguranca.rede.scanner.Services.TCP.TcpTrafficInterceptor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -12,24 +17,32 @@ import java.util.TreeMap;
 import java.util.concurrent.*;
 
 @Service
+@Setter
 public class PacketCaptureService{
     // Threads
     private ExecutorService TCPCapture = Executors.newSingleThreadExecutor();
     private ExecutorService connectTCP = Executors.newSingleThreadExecutor();
     private ExecutorService connectHTTP = Executors.newSingleThreadExecutor();
     private ScheduledExecutorService printScheduler = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService BDScheduler = Executors.newSingleThreadScheduledExecutor();
 
     // Data structures
     private BlockingQueue<TcpInfos> tcpQueue = new LinkedBlockingQueue<>();
     private final BlockingQueue<HttpInfos> httpQueue;
-    public PacketCaptureService(BlockingQueue<HttpInfos> httpQueue) {
+    public PacketCaptureService(BlockingQueue<HttpInfos> httpQueue, HttpRepository httpRepository, TcpRepository tcpRepository, PacketAuxiliarFunctions aux) {
         this.httpQueue = httpQueue;
+        this.httpRepository = httpRepository;
+        this.tcpRepository = tcpRepository;
+        this.aux = aux;
     }
     Map<String, TreeMap<Long, HttpInfos>> connections_repeat = new ConcurrentHashMap<>();
-    private Set<String> printedKeys = ConcurrentHashMap.newKeySet();
+    private Set<HttpInfos> printedHttp = ConcurrentHashMap.newKeySet();
+    private Set<HttpInfos> savedHttp = ConcurrentHashMap.newKeySet();
+    private final HttpRepository httpRepository;
+    private final TcpRepository tcpRepository;
 
     // Auxiliar Function
-    PacketAuxiliarFunctions aux = new PacketAuxiliarFunctions();
+    private final PacketAuxiliarFunctions aux;
 
     // Packet capturing and Map generating
     public void startConnectPackets() {
@@ -108,10 +121,22 @@ public class PacketCaptureService{
     }
 
     // Packets display
-    public void schedulePrintTask(int seconds) {
+    public void schedulePrintTask(int seconds, User user) {
         Runnable printTask = () -> {
-            aux.printConnections(connections_repeat, printedKeys);
+            aux.printConnections(connections_repeat, printedHttp);
+        };
+        Runnable saveDataTask = () -> {
+            aux.saveData(connections_repeat, savedHttp, user);
         };
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
+        BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
+    }
+
+    // salvar no BD
+    public void scheduleSaveData(int seconds, User user) {
+        Runnable saveDataTask = () -> {
+            aux.saveData(connections_repeat, savedHttp, user);
+        };
+        BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
     }
 }

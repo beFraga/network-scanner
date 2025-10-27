@@ -16,5 +16,5 @@ public class TestController {
     }
 
     @GetMapping("/catch_http")
-    public void capture(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String, Object> body) {}
+    public void capture() {}
 }

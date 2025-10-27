@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Services.TCP;
 
-import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
 import org.pcap4j.packet.*;
 import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
@@ -16,7 +16,7 @@ public class TcpTrafficInterceptor {
         this.tcpQueue = tcpQueue;
     }
 
-    static PcapNetworkInterface CaptureDevice() {
+    public static PcapNetworkInterface CaptureDevice() {
         PcapNetworkInterface device = null;
 
         try {

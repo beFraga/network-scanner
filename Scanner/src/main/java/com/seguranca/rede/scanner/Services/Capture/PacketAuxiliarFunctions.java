@@ -1,15 +1,28 @@
-package com.seguranca.rede.scanner.Services;
+package com.seguranca.rede.scanner.Services.Capture;
 
-import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
-import com.seguranca.rede.scanner.PacketInfo.TcpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
+import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Repository.HttpRepository;
+import com.seguranca.rede.scanner.Repository.TcpRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 @Component
 public class PacketAuxiliarFunctions {
+
+    private final HttpRepository httpRepository;
+    private final TcpRepository tcpRepository;
+
+    public PacketAuxiliarFunctions(HttpRepository httpRepository, TcpRepository tcpRepository) {
+        this.httpRepository = httpRepository;
+        this.tcpRepository = tcpRepository;
+    }
 
     public String generateKey(String locaddr, int locport, String dstaddr, int dstport) {
         if (locaddr == null || dstaddr == null) {
@@ -29,42 +42,52 @@ public class PacketAuxiliarFunctions {
         }
     }
 
-    public static void clearConsole() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void printConnections(Map<String, TreeMap<Long, HttpInfos>> connections, Set<String> printedKeys) {
-        clearConsole();
+    public void printConnections(Map<String, TreeMap<Long, HttpInfos>> connections, Set<HttpInfos> printedHttp) {
         System.out.println("Printing connections:");
         connections.forEach((key, tree) -> {
-            if (!printedKeys.contains(key)) {
-                tree.forEach((seqNumber, httpInfo) -> {
+            tree.forEach((seqNumber, httpInfo) -> {
+                if (!printedHttp.contains(httpInfo)) {
                     if (httpInfo.getMethod() != null) {
                         System.out.println("-------------------------------------------");
                         System.out.println(key + ": ");
-                        System.out.println("URL: " + httpInfo.getUri());
+                        System.out.println("URI: " + httpInfo.getUri());
                         System.out.println("Método: " + httpInfo.getMethod());
                         System.out.println("Protocolo: " + httpInfo.getProtocol());
-
+                        System.out.println("Porta local HTTP: " + httpInfo.getLocalPort());
+                        System.out.println("Porta remota HTTP: " + httpInfo.getRemotePort());
+                        System.out.println("Endereço local HTTP: " + httpInfo.getLocalAddress());
+                        System.out.println("Endereço remoto HTTP " +  httpInfo.getRemoteAddress());
                         if (httpInfo.getTcpPackets() != null) {
                             httpInfo.getTcpPackets().forEach(t -> {
                                 System.out.println("Porta local: " + t.getLocalPort());
                                 System.out.println("Porta remota: " + t.getRemotePort());
                             });
                         }
+                        printedHttp.add(httpInfo);
                     }
-                });
-                //printedKeys.add(key);
-            }
+
+
+                }
+            });
+        });
+    }
+
+    @Transactional
+    public void saveData(Map<String, TreeMap<Long, HttpInfos>> connections, Set<HttpInfos> savedData, User user) {
+        System.out.println("💾 Salvando dados:");
+        connections.forEach((key, tree) -> {
+            tree.forEach((seqNumber, httpInfo) -> {
+                if (!savedData.contains(httpInfo)) {
+                    if (httpInfo.getMethod() != null) {
+                        // associa o usuário e salva HTTP + TCPs
+                        httpInfo.setUser(user);
+                        httpInfo.getTcpPackets().forEach(t -> t.setHttpInfos(httpInfo));
+                        httpRepository.save(httpInfo);
+                        savedData.add(httpInfo);
+                        System.out.println("✅ HTTP salvo: " + httpInfo.getUri());
+                    }
+                }
+            });
         });
     }
 

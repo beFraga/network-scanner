@@ -1,33 +1,41 @@
-package com.seguranca.rede.scanner.PacketInfo;
+package com.seguranca.rede.scanner.Model.PacketInfo;
 
+import com.seguranca.rede.scanner.Model.User;
+import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Entity
+@Table(name = "http_infos")
 @NoArgsConstructor
 @Getter
 @Setter
 public class HttpInfos {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private byte[] headerPayload;
+    private String remoteAddress;
+    private String localAddress;
+    private int remotePort;
+    private int localPort;
 
-    String remoteAddress;
-    String localAddress;
+    private String method;
+    private String protocol;
+    private String uri;
 
-    int remotePort;
-    int localPort;
+    @OneToMany(mappedBy = "httpInfos", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TcpInfos> tcpPackets = new ArrayList<>();
 
-    String method;
-    String path;
-    String protocol;
-    String uri;
-
-    List<TcpInfos> tcpPackets = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public HttpInfos (HttpServletRequest req){
         this.remoteAddress = req.getRemoteAddr();
@@ -35,7 +43,6 @@ public class HttpInfos {
         this.remotePort = req.getRemotePort();
         this.localPort = req.getLocalPort();
         this.method = req.getMethod();
-        this.path = req.getPathInfo();
         this.uri = req.getRequestURI();
         this.protocol = req.getProtocol();
     }

@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Configurations;
 
-import com.seguranca.rede.scanner.PacketInfo.HttpInfos;
+import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
