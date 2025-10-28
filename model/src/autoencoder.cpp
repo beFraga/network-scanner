@@ -39,7 +39,7 @@ void Autoencoder::train(const Matrix& x, int epochs, double lr) {
 
 void Autoencoder::save_network() {
 	std::vector<Matrix> matricesw = {e1.W, e2.W, bottleneck.W, d1.W, d2.W, out.W};
-	std::string fw = "weights.bin";
+	std::string fw = "state-dict/weights.bin";
 	std::ofstream outw(fw, std::ios::binary);
 	if (!outw) throw std::runtime_error("[autoencoder] error openning the file: " + fw);
 	uint64_t countw = matricesw.size();
@@ -56,7 +56,7 @@ void Autoencoder::save_network() {
 	outw.close();
 
 	std::vector<Matrix> matricesb = {e1.b, e2.b, bottleneck.b, d1.b, d2.b, out.b};
-	std::string fb = "bias.bin";
+	std::string fb = "state-dict/bias.bin";
 	std::ofstream outb(fb, std::ios::binary);
 	if (!outb) throw std::runtime_error("[autoencoder] error openning the file: " + fb);
 	uint64_t countb = matricesb.size();
@@ -76,7 +76,7 @@ void Autoencoder::save_network() {
 void Autoencoder::load_network() {
 	std::vector<Dense*> layers = {&e1, &e2, &bottleneck, &d1, &d2, &out};
 
-	std::string fw = "weights.bin";
+	std::string fw = "state-dict/weights.bin";
 	std::ifstream inw(fw, std::ios::binary);
     if (!inw) throw std::runtime_error("[autoencoder] error openning the file: " + fw);
 
@@ -103,7 +103,7 @@ void Autoencoder::load_network() {
     inw.close();
 
 
-	std::string fb = "bias.bin";
+	std::string fb = "state-dict/bias.bin";
 	std::ifstream inb(fb, std::ios::binary);
     if (!inb) throw std::runtime_error("[autoencoder] error openning the file: " + fb);
 
