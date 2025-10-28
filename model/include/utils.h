@@ -4,13 +4,13 @@
 #include <vector>
 #include <string>
 
-namespace ut {
+struct ut {
 	
-	double mean(const std::vector<double>& v);
-	double stddev(const std::vector<double>& v, double m);
-	std::vector<bool> hip_test(const std::vector<double>& v, float sigma);
+	static double mean(const std::vector<double>& v);
+	static double stddev(const std::vector<double>& v, double m);
+	static std::vector<bool> hip_test(const std::vector<double>& v, float sigma);
 
-	bool is_number(const std::string& s);
-}
+	static bool is_number(const std::string& s);
+};
 
 #endif

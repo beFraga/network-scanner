@@ -11,6 +11,9 @@ struct Autoencoder {
 	Matrix encode(const Matrix& x);
 	Matrix forward(const Matrix& x);
 	void train(const Matrix& x, int epochs, double lr);
+
+	void save_network();
+	void load_network();
 };
 
 #endif

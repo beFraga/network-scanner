@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include "utils.h"
+#include "Preprocessing.h"
 
 
 
@@ -26,9 +27,9 @@ Node* Tree::build_tree(Matrix& data, int current_depth) {
     int n_features = data.cols;
     int feature = rand() % n_features;
 
-	Matrix data_feat = take_row(data, feature);
-	Matrix data_col = transpose(data_feat);
-	NormalizationParams minmax = normalize_min_max(data_col);
+	Matrix data_feat = Matrix::take_row(data, feature);
+	Matrix data_col = Matrix::transpose(data_feat);
+	NormalizationParams minmax = Preprocessing::normalize_min_max(data_col);
 
     if (minmax.min == minmax.max) {
         node->is_leaf = true;
@@ -44,9 +45,9 @@ Node* Tree::build_tree(Matrix& data, int current_depth) {
 
     Matrix left_data(0, n_features), right_data(0, n_features);
     for (size_t i = 0; i < data.rows; i++) {
-		Matrix row_data = take_row(data, i);
-        if (data_feat(0, i) < split) left_data = expand_matrix(left_data, row_data);
-        else right_data = expand_matrix(right_data, row_data);
+		Matrix row_data = Matrix::take_row(data, i);
+        if (data_feat(0, i) < split) left_data = Matrix::expand_matrix(left_data, row_data);
+        else right_data = Matrix::expand_matrix(right_data, row_data);
     }
 
     node->left = build_tree(left_data, current_depth + 1);

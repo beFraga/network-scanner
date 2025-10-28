@@ -16,6 +16,5 @@ class Tree {
 
     private:
         Node* build_tree(Matrix& data, int current_depth);
-        Node* numerical_tree(Matrix& data, int current_depth, Node* node, int feature);
         int path_length_node(Node* node, Matrix& x, int depth);
 };

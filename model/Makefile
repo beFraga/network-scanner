@@ -12,6 +12,8 @@ TARGET = $(BUILD_DIR)/isolation_forest
 
 all: $(TARGET) run
 
+train: $(TARGET) train_helper
+
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
@@ -22,7 +24,10 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 run:
-	./$(TARGET)
+	./$(TARGET) 1
+
+train_helper:
+	./$(TARGET) 0
 
 clean:
 	rm -rf $(BUILD_DIR)

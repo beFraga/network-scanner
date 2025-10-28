@@ -20,8 +20,8 @@ void Forest::fit(Matrix& data) {
         for (int j = 0; j < sample_size; j++) {
 
             int idx = dist(rng);
-			Matrix row_data = take_row(data, idx);
-            sample = expand_matrix(sample, row_data);
+			Matrix row_data = Matrix::take_row(data, idx);
+            sample = Matrix::expand_matrix(sample, row_data);
         }
         Tree tree(max_depth);
         tree.fit(sample);
