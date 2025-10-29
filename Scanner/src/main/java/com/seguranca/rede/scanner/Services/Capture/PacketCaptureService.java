@@ -132,7 +132,7 @@ public class PacketCaptureService{
             aux.saveData(connections_repeat, savedHttp, user);
         };
         Runnable getFlags = () -> {
-            aux.getJson("../../");
+            aux.getJson("/model");
         };
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
