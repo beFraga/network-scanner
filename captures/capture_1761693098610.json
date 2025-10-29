@@ -1,0 +1,57 @@
+{
+  "timestamp" : "2025-10-28T23:11:38.605853200Z",
+  "userId" : 2,
+  "httpInfos" : [ {
+    "method" : "GET",
+    "uri" : "/test/ping",
+    "protocol" : "HTTP/1.1",
+    "tcpPackets" : [ {
+      "sequenceNumber" : -1117170984,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55929,
+      "remotePort" : 8081,
+      "payloadSize" : 413
+    }, {
+      "sequenceNumber" : 1006145723,
+      "localAddress" : "192.168.0.13",
+      "remoteAddress" : "192.168.0.50",
+      "localPort" : 8081,
+      "remotePort" : 55929,
+      "payloadSize" : 334
+    }, {
+      "sequenceNumber" : -1117170571,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55929,
+      "remotePort" : 8081,
+      "payloadSize" : 0
+    } ]
+  }, {
+    "method" : "GET",
+    "uri" : "/test/ping",
+    "protocol" : "HTTP/1.1",
+    "tcpPackets" : [ {
+      "sequenceNumber" : -1117170571,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55929,
+      "remotePort" : 8081,
+      "payloadSize" : 413
+    }, {
+      "sequenceNumber" : 1006146057,
+      "localAddress" : "192.168.0.13",
+      "remoteAddress" : "192.168.0.50",
+      "localPort" : 8081,
+      "remotePort" : 55929,
+      "payloadSize" : 334
+    }, {
+      "sequenceNumber" : -1117170158,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55929,
+      "remotePort" : 8081,
+      "payloadSize" : 0
+    } ]
+  } ]
+}

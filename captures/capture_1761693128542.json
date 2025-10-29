@@ -1,0 +1,90 @@
+{
+  "timestamp" : "2025-10-28T23:12:08.542711600Z",
+  "userId" : 2,
+  "httpInfos" : [ {
+    "method" : "GET",
+    "uri" : "/test/ping",
+    "protocol" : "HTTP/1.1",
+    "tcpPackets" : [ {
+      "sequenceNumber" : -1904953921,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55934,
+      "remotePort" : 8081,
+      "payloadSize" : 413
+    }, {
+      "sequenceNumber" : 167248735,
+      "localAddress" : "192.168.0.13",
+      "remoteAddress" : "192.168.0.50",
+      "localPort" : 8081,
+      "remotePort" : 55934,
+      "payloadSize" : 334
+    }, {
+      "sequenceNumber" : -1904953508,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55934,
+      "remotePort" : 8081,
+      "payloadSize" : 0
+    } ]
+  }, {
+    "method" : "GET",
+    "uri" : "/test/ping",
+    "protocol" : "HTTP/1.1",
+    "tcpPackets" : [ {
+      "sequenceNumber" : -1904953508,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55934,
+      "remotePort" : 8081,
+      "payloadSize" : 413
+    }, {
+      "sequenceNumber" : 167249069,
+      "localAddress" : "192.168.0.13",
+      "remoteAddress" : "192.168.0.50",
+      "localPort" : 8081,
+      "remotePort" : 55934,
+      "payloadSize" : 334
+    }, {
+      "sequenceNumber" : -1904953095,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55934,
+      "remotePort" : 8081,
+      "payloadSize" : 0
+    } ]
+  }, {
+    "method" : "GET",
+    "uri" : "/test/ping",
+    "protocol" : "HTTP/1.1",
+    "tcpPackets" : [ {
+      "sequenceNumber" : -1904954334,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55934,
+      "remotePort" : 8081,
+      "payloadSize" : 413
+    }, {
+      "sequenceNumber" : 167248401,
+      "localAddress" : "192.168.0.13",
+      "remoteAddress" : "192.168.0.50",
+      "localPort" : 8081,
+      "remotePort" : 55934,
+      "payloadSize" : 0
+    }, {
+      "sequenceNumber" : 167248401,
+      "localAddress" : "192.168.0.13",
+      "remoteAddress" : "192.168.0.50",
+      "localPort" : 8081,
+      "remotePort" : 55934,
+      "payloadSize" : 334
+    }, {
+      "sequenceNumber" : -1904953921,
+      "localAddress" : "192.168.0.50",
+      "remoteAddress" : "192.168.0.13",
+      "localPort" : 55934,
+      "remotePort" : 8081,
+      "payloadSize" : 0
+    } ]
+  } ]
+}

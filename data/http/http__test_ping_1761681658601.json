@@ -1,0 +1,62 @@
+{
+  "id" : null,
+  "headerPayload" : null,
+  "remoteAddress" : null,
+  "localAddress" : null,
+  "remotePort" : 0,
+  "localPort" : 0,
+  "method" : "GET",
+  "protocol" : "HTTP/1.1",
+  "uri" : "/test/ping",
+  "tcpPackets" : [ {
+    "id" : null,
+    "localAddress" : "192.168.0.50",
+    "remoteAddress" : "192.168.0.13",
+    "localPort" : 63912,
+    "remotePort" : 8081,
+    "sequenceNumber" : 167080673,
+    "payload" : {
+      "rawData" : "R0VUIC90ZXN0L3BpbmcgSFRUUC8xLjENCkhvc3Q6IDE5Mi4xNjguMC4xMzo4MDgxDQpVc2VyLUFnZW50OiBNb3ppbGxhLzUuMCAoaVBob25lOyBDUFUgaVBob25lIE9TIDE4XzZfMiBsaWtlIE1hYyBPUyBYKSBBcHBsZVdlYktpdC82MDUuMS4xNSAoS0hUTUwsIGxpa2UgR2Vja28pIFZlcnNpb24vMTguNiBNb2JpbGUvMTVFMTQ4IFNhZmFyaS82MDQuMQ0KVXBncmFkZS1JbnNlY3VyZS1SZXF1ZXN0czogMQ0KQWNjZXB0OiB0ZXh0L2h0bWwsYXBwbGljYXRpb24veGh0bWwreG1sLGFwcGxpY2F0aW9uL3htbDtxPTAuOSwqLyo7cT0wLjgNCkFjY2VwdC1MYW5ndWFnZTogcHQtQlIscHQ7cT0wLjkNClByaW9yaXR5OiB1PTAsIGkNCkFjY2VwdC1FbmNvZGluZzogZ3ppcCwgZGVmbGF0ZQ0KQ29ubmVjdGlvbjoga2VlcC1hbGl2ZQ0KDQo=",
+      "builder" : {
+        "payloadBuilder" : null
+      },
+      "payload" : null,
+      "header" : null
+    },
+    "httpInfos" : null
+  }, {
+    "id" : null,
+    "localAddress" : "192.168.0.13",
+    "remoteAddress" : "192.168.0.50",
+    "localPort" : 8081,
+    "remotePort" : 63912,
+    "sequenceNumber" : 1495173525,
+    "payload" : {
+      "rawData" : "SFRUUC8xLjEgMjAwIA0KWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZg0KWC1YU1MtUHJvdGVjdGlvbjogMA0KQ2FjaGUtQ29udHJvbDogbm8tY2FjaGUsIG5vLXN0b3JlLCBtYXgtYWdlPTAsIG11c3QtcmV2YWxpZGF0ZQ0KUHJhZ21hOiBuby1jYWNoZQ0KRXhwaXJlczogMA0KWC1GcmFtZS1PcHRpb25zOiBERU5ZDQpDb250ZW50LVR5cGU6IHRleHQvaHRtbDtjaGFyc2V0PVVURi04DQpDb250ZW50LUxlbmd0aDogNA0KRGF0ZTogVHVlLCAyOCBPY3QgMjAyNSAyMDowMDo1MSBHTVQNCktlZXAtQWxpdmU6IHRpbWVvdXQ9NjANCkNvbm5lY3Rpb246IGtlZXAtYWxpdmUNCg0KcG9uZw==",
+      "builder" : {
+        "payloadBuilder" : null
+      },
+      "payload" : null,
+      "header" : null
+    },
+    "httpInfos" : null
+  }, {
+    "id" : null,
+    "localAddress" : "192.168.0.50",
+    "remoteAddress" : "192.168.0.13",
+    "localPort" : 63912,
+    "remotePort" : 8081,
+    "sequenceNumber" : 167081086,
+    "payload" : null,
+    "httpInfos" : null
+  } ],
+  "user" : {
+    "id" : 2,
+    "username" : "arthurmegapower@gmail.com",
+    "email" : "arthurmegapower@gmail.com",
+    "senha" : "$2a$10$.IdHyU4gOc877fJ6UrxLGu9hh8RqvG9IziJd.selgHOYuc1Oexoge",
+    "createdAt" : 1761678135000,
+    "interavlo" : 10,
+    "cont" : 0,
+    "tempoContexto" : 20,
+    "httpInfosList"

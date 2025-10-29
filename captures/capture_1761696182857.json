@@ -1,0 +1,82 @@
+[ {
+  "remotePort" : 8081,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "sequenceNumber" : 1015057547,
+  "localPort" : 54253,
+  "remoteAddress" : "192.168.0.13",
+  "payloadSize" : 413,
+  "method" : "GET"
+}, {
+  "remotePort" : 54253,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.13",
+  "sequenceNumber" : 1296736656,
+  "localPort" : 8081,
+  "remoteAddress" : "192.168.0.50",
+  "payloadSize" : 334,
+  "method" : "GET"
+}, {
+  "remotePort" : 8081,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "sequenceNumber" : 1015057960,
+  "localPort" : 54253,
+  "remoteAddress" : "192.168.0.13",
+  "payloadSize" : 0,
+  "method" : "GET"
+}, {
+  "remotePort" : 8081,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "sequenceNumber" : 1015057960,
+  "localPort" : 54253,
+  "remoteAddress" : "192.168.0.13",
+  "payloadSize" : 413,
+  "method" : "GET"
+}, {
+  "remotePort" : 54253,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.13",
+  "sequenceNumber" : 1296736990,
+  "localPort" : 8081,
+  "remoteAddress" : "192.168.0.50",
+  "payloadSize" : 334,
+  "method" : "GET"
+}, {
+  "remotePort" : 8081,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "sequenceNumber" : 1015058373,
+  "localPort" : 54253,
+  "remoteAddress" : "192.168.0.13",
+  "payloadSize" : 0,
+  "method" : "GET"
+}, {
+  "remotePort" : 8081,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "sequenceNumber" : 1015057134,
+  "localPort" : 54253,
+  "remoteAddress" : "192.168.0.13",
+  "payloadSize" : 413,
+  "method" : "GET"
+}, {
+  "remotePort" : 54253,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.13",
+  "sequenceNumber" : 1296736322,
+  "localPort" : 8081,
+  "remoteAddress" : "192.168.0.50",
+  "payloadSize" : 334,
+  "method" : "GET"
+}, {
+  "remotePort" : 8081,
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "sequenceNumber" : 1015057547,
+  "localPort" : 54253,
+  "remoteAddress" : "192.168.0.13",
+  "payloadSize" : 0,
+  "method" : "GET"
+} ]
