@@ -38,3 +38,5 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf state-dict
 	rm -rf config
+	rm data.json
+	rm response.json
