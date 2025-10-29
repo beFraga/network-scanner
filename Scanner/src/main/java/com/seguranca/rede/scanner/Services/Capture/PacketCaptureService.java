@@ -1,5 +1,6 @@
 package com.seguranca.rede.scanner.Services.Capture;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
 import com.seguranca.rede.scanner.Model.User;
@@ -10,10 +11,9 @@ import com.seguranca.rede.scanner.Services.TCP.TcpTrafficInterceptor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.*;
 
 @Service
@@ -25,6 +25,7 @@ public class PacketCaptureService{
     private ExecutorService connectHTTP = Executors.newSingleThreadExecutor();
     private ScheduledExecutorService printScheduler = Executors.newSingleThreadScheduledExecutor();
     private ScheduledExecutorService BDScheduler = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService flagReader = Executors.newSingleThreadScheduledExecutor();
 
     // Data structures
     private BlockingQueue<TcpInfos> tcpQueue = new LinkedBlockingQueue<>();
@@ -43,6 +44,8 @@ public class PacketCaptureService{
 
     // Auxiliar Function
     private final PacketAuxiliarFunctions aux;
+
+
 
     // Packet capturing and Map generating
     public void startConnectPackets() {
@@ -128,7 +131,11 @@ public class PacketCaptureService{
         Runnable saveDataTask = () -> {
             aux.saveData(connections_repeat, savedHttp, user);
         };
+        Runnable getFlags = () -> {
+            aux.getJson("../../");
+        };
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
+        flagReader.scheduleAtFixedRate(getFlags, 7,  seconds, TimeUnit.SECONDS);
     }
 }

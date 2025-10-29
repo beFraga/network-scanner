@@ -1,5 +1,6 @@
 package com.seguranca.rede.scanner.Services.Capture;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
@@ -23,6 +24,11 @@ public class PacketAuxiliarFunctions {
 
     private final HttpRepository httpRepository;
     private final TcpRepository tcpRepository;
+
+    // para leitura do JSON
+    private final Path directory = Paths.get("captures");
+    private final Set<String> processedFiles = new HashSet<>();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public PacketAuxiliarFunctions(HttpRepository httpRepository, TcpRepository tcpRepository) {
         this.httpRepository = httpRepository;
@@ -163,6 +169,45 @@ public class PacketAuxiliarFunctions {
         } catch (Exception e) {
             System.err.println("❌ Erro ao criar JSON: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public void getJson(String basePath) {
+        try {
+            Path dir = Paths.get(basePath);
+            if (!Files.exists(dir)) {
+                System.err.println("❌ Diretório não encontrado: " + basePath);
+                return;
+            }
+
+            // Varre todos os arquivos .json
+            Files.list(dir)
+                    .filter(path -> path.toString().endsWith(".json"))
+                    .filter(path -> !processedFiles.contains(path.toString()))
+                    .forEach(path -> {
+                        try {
+                            // Faz a leitura do JSON
+                            JsonNode root = mapper.readTree(path.toFile());
+
+                            Long id = root.get(0).get("id").asLong();
+                            boolean flag = root.get(1).get("flag").asBoolean();
+
+                            System.out.println("📄 Arquivo lido: " + path.getFileName());
+                            System.out.println("🆔 ID: " + id + " | 🚩 FLAG: " + flag);
+                            tcpRepository.findById(id).ifPresent(tcp -> {
+                                tcp.setFlag(flag);
+                                tcpRepository.save(tcp);
+                            });
+                            // Marca como processado
+                            processedFiles.add(path.toString());
+
+                        } catch (Exception e) {
+                            System.err.println("❌ Erro ao ler JSON " + path + ": " + e.getMessage());
+                        }
+                    });
+
+        } catch (IOException e) {
+            System.err.println("❌ Erro ao acessar diretório: " + e.getMessage());
         }
     }
 }
