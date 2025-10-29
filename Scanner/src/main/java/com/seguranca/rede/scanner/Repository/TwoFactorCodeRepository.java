@@ -10,9 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface TwoFactorCodeRepository extends JpaRepository<TwoFactorCode, Long> {
-    List<TwoFactorCode> findByUserAndUsedFalseOrderByCreatedAtDesc(User user);
-
-    Optional<TwoFactorCode> findFirstByUserAndUsedFalseOrderByCreatedAtDesc(User user);
-
     List<TwoFactorCode> findTopByUserAndUsedFalseOrderByCreatedAtDesc(User user);
 }

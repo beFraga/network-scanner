@@ -131,12 +131,4 @@ public class PacketCaptureService{
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
     }
-
-    // salvar no BD
-    public void scheduleSaveData(int seconds, User user) {
-        Runnable saveDataTask = () -> {
-            aux.saveData(connections_repeat, savedHttp, user);
-        };
-        BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
-    }
 }

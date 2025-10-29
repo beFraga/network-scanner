@@ -20,10 +20,15 @@ public class HttpInfos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
     private byte[] headerPayload;
+    @Transient
     private String remoteAddress;
+    @Transient
     private String localAddress;
+    @Transient
     private int remotePort;
+    @Transient
     private int localPort;
 
     private String method;

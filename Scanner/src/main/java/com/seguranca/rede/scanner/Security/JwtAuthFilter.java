@@ -53,7 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
 
-        // ✅ 2. Se o token for válido e o contexto ainda não estiver autenticado
+        // Se o token for válido e o contexto ainda não estiver autenticado
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User userDetails = userRepository.findByEmail(email).orElse(null);
             if (userDetails != null && jwtUtil.isTokenValid(jwt, userDetails)) {
@@ -64,13 +64,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
-                // 3. Autentica no contexto
+                // Autentica no contexto
                 SecurityContextHolder.getContext().setAuthentication(authToken);
                 System.out.println("🔐 Usuário autenticado via JWT: " + email);
             }
         }
 
-        // 4. Continua o fluxo da requisição
+        // Continua o fluxo da requisição
         filterChain.doFilter(request, response);
     }
 }

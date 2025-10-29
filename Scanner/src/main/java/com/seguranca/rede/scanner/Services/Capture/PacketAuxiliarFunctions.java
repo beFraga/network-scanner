@@ -1,5 +1,7 @@
 package com.seguranca.rede.scanner.Services.Capture;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
 import com.seguranca.rede.scanner.Model.User;
@@ -8,10 +10,13 @@ import com.seguranca.rede.scanner.Repository.TcpRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.*;
 
 @Component
 public class PacketAuxiliarFunctions {
@@ -75,6 +80,7 @@ public class PacketAuxiliarFunctions {
     @Transactional
     public void saveData(Map<String, TreeMap<Long, HttpInfos>> connections, Set<HttpInfos> savedData, User user) {
         System.out.println("💾 Salvando dados:");
+        Set<HttpInfos> novos = new HashSet<>();
         connections.forEach((key, tree) -> {
             tree.forEach((seqNumber, httpInfo) -> {
                 if (!savedData.contains(httpInfo)) {
@@ -84,11 +90,16 @@ public class PacketAuxiliarFunctions {
                         httpInfo.getTcpPackets().forEach(t -> t.setHttpInfos(httpInfo));
                         httpRepository.save(httpInfo);
                         savedData.add(httpInfo);
+                        novos.add(httpInfo);
                         System.out.println("✅ HTTP salvo: " + httpInfo.getUri());
                     }
                 }
             });
         });
+
+        if (!novos.isEmpty()) {
+            createJson(novos, user);
+        }
     }
 
     public boolean isNewHttpRequest(TcpInfos tcp) {
@@ -112,5 +123,43 @@ public class PacketAuxiliarFunctions {
                 payloadHeader.startsWith("OPTIONS ") ||
                 payloadHeader.startsWith("TRACE ") ||
                 payloadHeader.startsWith("CONNECT ");
+    }
+
+    @Transactional
+    public void createJson(Set<HttpInfos> httpInfos, User user) {
+        try {
+            // "Achatando" a estrutura: cada TCP vira um item da lista
+            List<Map<String, Object>> flatPackets = httpInfos.stream()
+                    .flatMap(http -> http.getTcpPackets().stream()
+                            .map(tcp -> Map.<String, Object>of(
+                                    "method", http.getMethod(),
+                                    "protocol", http.getProtocol(),
+                                    "sequenceNumber", tcp.getSequenceNumber(),
+                                    "localAddress", tcp.getLocalAddress(),
+                                    "remoteAddress", tcp.getRemoteAddress(),
+                                    "localPort", tcp.getLocalPort(),
+                                    "remotePort", tcp.getRemotePort(),
+                                    "payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0
+                            ))
+                    )
+                    .toList();
+
+            // Configura o ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+            // Cria diretório e arquivo
+            Path outputDir = Paths.get("captures");
+            Files.createDirectories(outputDir);
+            String filename = "captures/capture_" + System.currentTimeMillis() + ".json";
+
+            // Escreve o JSON diretamente como lista
+            mapper.writeValue(Paths.get(filename).toFile(), flatPackets);
+
+            System.out.println("📄 JSON achatado salvo em: " + filename);
+        } catch (Exception e) {
+            System.err.println("❌ Erro ao criar JSON: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

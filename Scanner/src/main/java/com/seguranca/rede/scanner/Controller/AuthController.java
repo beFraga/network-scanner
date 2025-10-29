@@ -28,17 +28,27 @@ public class AuthController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createAccount(@RequestBody LoginRequest req) {
-        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("email existente");
-        }
-        String hashPassword = passwordEncoder.encode(req.getPassword());
+        Optional<User> opt = userRepository.findByEmail(req.getEmail());
         User user = new User();
-        user.setEmail(req.getEmail());
-        user.setSenha(hashPassword);
-        user.setCreatedAt(Timestamp.from(Instant.now()));
-        user.setInteravlo(600);
-        userRepository.save(user);
-        twoFactorService.generateAndSendCode(user);
+        String hashPassword = passwordEncoder.encode(req.getPassword());
+        if (opt.isPresent() && opt.get().isExists()) {
+            return ResponseEntity.badRequest().body("email já registrado");
+        } else if (opt.isPresent() && !opt.get().isExists()) {
+            opt.get().setSenha(hashPassword);
+            opt.get().setCreatedAt(Timestamp.from(Instant.now()));
+            userRepository.save(opt.get());
+            twoFactorService.generateAndSendCode(opt.get());
+        } else {
+            user.setExists(false);
+            user.setUsername(req.getEmail());
+            user.setEmail(req.getEmail());
+            user.setSenha(hashPassword);
+            user.setCreatedAt(Timestamp.from(Instant.now()));
+            user.setInteravlo(600);
+            userRepository.save(user);
+            twoFactorService.generateAndSendCode(user);
+        }
+
 
         return ResponseEntity.ok("Código de verificação será enviado!");
     }
@@ -47,15 +57,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
-        if (opt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Usuário não encontrado.");
+        if (opt.isEmpty() || !opt.get().isExists()) {
+            return ResponseEntity.badRequest().body("Usuário não encontrado ou com falha de registro.");
         }
-
         User user = opt.get();
         if (!passwordEncoder.matches(req.getPassword(), user.getSenha())) {
             return ResponseEntity.status(401).body("Senha incorreta.");
         }
-
         // Gera e envia código 2FA
         twoFactorService.generateAndSendCode(user);
         return ResponseEntity.ok("Código de autenticação enviado para seu e-mail.");
@@ -64,26 +72,25 @@ public class AuthController {
     // validação dos 2FA
     @PostMapping("/verify-code")
     public ResponseEntity<?> verifyCode(@RequestBody LoginRequest req) {
-        User user = new User();
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
-        if (opt.isEmpty()) { // novo usuario
-            user.setEmail(req.getEmail());
-            user.setSenha(req.getPassword());
-            String hashcode = passwordEncoder.encode(req.getCode());
-            boolean valid = twoFactorService.validateCode(user, hashcode);
+        if(opt.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        User user = opt.get();
+        if (!user.isExists()) { // novo usuario
+            boolean valid = twoFactorService.validateCode(user, req.getCode());
             if (!valid) {
                 return ResponseEntity.status(401).body("Senha incorreta.");
             }
-            user.setEmailVerified(true);
+            user.setExists(true);
             userRepository.save(user);
         } else { // usuário já existente
-            user = opt.get();
             boolean valid = twoFactorService.validateCode(user, req.getCode());
             if (!valid) {
                 return ResponseEntity.status(401).body("Código inválido ou expirado.");
             }
-            user.setEmailVerified(true);
         }
+
         // Código válido → gera JWT
         String token = jwtUtil.generateToken(user.getEmail());
         return ResponseEntity.ok(new AuthResponse(token));

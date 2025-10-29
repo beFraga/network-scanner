@@ -30,10 +30,6 @@ public class User implements UserDetails {
     private String email;
 
     private String senha;
-    private boolean enabled = true;
-
-    @Column(name = "ISEMAILVER")
-    private boolean isEmailVerified = false;
 
     @Column(name = "CREATED")
     private Timestamp createdAt;
@@ -47,9 +43,14 @@ public class User implements UserDetails {
     @Column(name = "TEMPCONT")
     private int tempoContexto;
 
+    @Column(name = "USEREXISTS")
+    private boolean exists;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<HttpInfos> httpInfosList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<TwoFactorCode> twoFactorCodes;
 
     public void addHttpInfo(HttpInfos httpInfo) {
         httpInfo.setUser(this);
