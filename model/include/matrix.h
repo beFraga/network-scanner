@@ -8,6 +8,10 @@
 #include <string>
 #include <map>
 #include <set>
+#include <unordered_map>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 struct Matrix {
 	size_t rows, cols;
@@ -29,13 +33,15 @@ struct Matrix {
 	static Matrix sigmoid_d(const Matrix& A);
 	static Matrix mse_loss_grad(const Matrix& y, const Matrix& y_hat);
 	static double mse_loss(const Matrix& y, const Matrix& y_hat);
+	static Matrix error(const Matrix& a, const Matrix& b);
 };
 
 struct NormalizationParams {
 	double min, max;
 };
 
-struct HashParams {
-	size_t num_bins;
+struct OneHotParams {
+	std::vector<std::unordered_map<std::string, size_t>> cat_to_index; // por feature
 };
+
 #endif

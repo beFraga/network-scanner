@@ -1,2 +1,4 @@
 build/
 state-dict/
+config/
+data.json

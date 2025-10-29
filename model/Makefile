@@ -22,6 +22,9 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
+	mkdir -p state-dict
+	mkdir -p config
+	touch config/preprocessing.json
 
 run:
 	./$(TARGET) 1
@@ -31,3 +34,5 @@ train_helper:
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -rf state-dict
+	rm -rf config

@@ -102,3 +102,13 @@ double Matrix::mse_loss(const Matrix& y, const Matrix& y_hat) {
 		sum += pow(y.data[i] - y_hat.data[i], 2);
 	return sum / y.data.size();
 }
+
+
+Matrix Matrix::error(const Matrix& a, const Matrix& b) {
+	if (a.rows != b.rows || a.cols != b.cols) throw std::runtime_error("[Matrix] dimensions mismatch");
+	Matrix r(a.rows, a.cols);
+	for (size_t i = 0; i < a.rows; i++)
+		for (size_t j = 0; j < a.cols; j++)
+			r(i,j) = pow(a(i,j) - b(i,j), 2);
+	return r;
+}

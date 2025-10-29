@@ -23,6 +23,7 @@ Matrix Autoencoder::forward(const Matrix& x) {
 void Autoencoder::train(const Matrix& x, int epochs, double lr) {
 	for (int ep = 0; ep < epochs; ep++) {
 		Matrix y_hat = forward(x);
+	
 		double loss = Matrix::mse_loss(x, y_hat);
 		Matrix grad = Matrix::mse_loss_grad(x, y_hat);
 
