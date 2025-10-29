@@ -87,7 +87,10 @@ public class PacketAuxiliarFunctions {
                     if (httpInfo.getMethod() != null) {
                         // associa o usuário e salva HTTP + TCPs
                         httpInfo.setUser(user);
-                        httpInfo.getTcpPackets().forEach(t -> t.setHttpInfos(httpInfo));
+                        httpInfo.getTcpPackets().forEach(t -> {
+                            t.setFlag(false);
+                            t.setHttpInfos(httpInfo);
+                        });
                         httpRepository.save(httpInfo);
                         savedData.add(httpInfo);
                         novos.add(httpInfo);
@@ -128,16 +131,16 @@ public class PacketAuxiliarFunctions {
     @Transactional
     public void createJson(Set<HttpInfos> httpInfos, User user) {
         try {
-            // "Achatando" a estrutura: cada TCP vira um item da lista
+            // cada TCP vira um item da lista
             List<Map<String, Object>> flatPackets = httpInfos.stream()
                     .flatMap(http -> http.getTcpPackets().stream()
                             .map(tcp -> Map.<String, Object>of(
                                     "method", http.getMethod(),
                                     "protocol", http.getProtocol(),
+                                    "id", tcp.getId(),
                                     "sequenceNumber", tcp.getSequenceNumber(),
                                     "localAddress", tcp.getLocalAddress(),
                                     "remoteAddress", tcp.getRemoteAddress(),
-                                    "localPort", tcp.getLocalPort(),
                                     "remotePort", tcp.getRemotePort(),
                                     "payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0
                             ))

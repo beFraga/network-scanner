@@ -38,6 +38,9 @@ public class TcpInfos {
     @JoinColumn(name = "http_infos_id")
     private HttpInfos httpInfos;
 
+    @Column(name = "FLAG")
+    private boolean flag;
+
     public TcpInfos(IpPacket ipPacket, TcpPacket tcpPacket){
         this.localAddress = ipPacket.getHeader().getSrcAddr().getHostAddress();
         this.remoteAddress = ipPacket.getHeader().getDstAddr().getHostAddress();
@@ -45,7 +48,7 @@ public class TcpInfos {
         this.remotePort = tcpPacket.getHeader().getDstPort().valueAsInt();
         this.sequenceNumber = Long.valueOf(tcpPacket.getHeader().getSequenceNumber());
         this.payload = tcpPacket.getPayload();
-
+        this.flag = false;
     }
 
 }

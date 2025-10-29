@@ -1,0 +1,31 @@
+[ {
+  "method" : "GET",
+  "remotePort" : 8081,
+  "remoteAddress" : "192.168.0.13",
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "localPort" : 59219,
+  "sequenceNumber" : -1726728119,
+  "id" : 121,
+  "payloadSize" : 413
+}, {
+  "method" : "GET",
+  "remotePort" : 59219,
+  "remoteAddress" : "192.168.0.50",
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.13",
+  "localPort" : 8081,
+  "sequenceNumber" : -173349832,
+  "id" : 122,
+  "payloadSize" : 334
+}, {
+  "method" : "GET",
+  "remotePort" : 8081,
+  "remoteAddress" : "192.168.0.13",
+  "protocol" : "HTTP/1.1",
+  "localAddress" : "192.168.0.50",
+  "localPort" : 59219,
+  "sequenceNumber" : -1726727706,
+  "id" : 123,
+  "payloadSize" : 0
+} ]
