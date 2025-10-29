@@ -25,6 +25,8 @@ $(BUILD_DIR):
 	mkdir -p state-dict
 	mkdir -p config
 	touch config/preprocessing.json
+	touch data.json
+	touch response.json
 
 run:
 	./$(TARGET) 1
