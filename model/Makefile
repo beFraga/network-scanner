@@ -25,7 +25,6 @@ $(BUILD_DIR):
 	mkdir -p state-dict
 	mkdir -p config
 	touch config/preprocessing.json
-	touch data.json
 	touch response.json
 
 run:
@@ -38,5 +37,4 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf state-dict
 	rm -rf config
-	rm data.json
 	rm response.json
