@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Repository;
 
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

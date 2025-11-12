@@ -5,18 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.HttpRepository;
 import com.seguranca.rede.scanner.Repository.TcpRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.*;
 
 @Component
@@ -174,6 +172,7 @@ public class PacketAuxiliarFunctions {
 
     public void getJson(String basePath) {
         try {
+            System.out.println("💾 VENDO JSON");
             Path dir = Paths.get(basePath);
             if (!Files.exists(dir)) {
                 System.err.println("❌ Diretório não encontrado: " + basePath);

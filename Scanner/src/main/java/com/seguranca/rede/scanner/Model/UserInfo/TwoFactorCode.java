@@ -1,4 +1,4 @@
-package com.seguranca.rede.scanner.Model;
+package com.seguranca.rede.scanner.Model.UserInfo;
 
 import jakarta.persistence.*;
 import lombok.Getter;

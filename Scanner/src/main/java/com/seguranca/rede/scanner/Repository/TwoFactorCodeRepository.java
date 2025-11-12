@@ -1,12 +1,11 @@
 package com.seguranca.rede.scanner.Repository;
 
-import com.seguranca.rede.scanner.Model.TwoFactorCode;
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.TwoFactorCode;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TwoFactorCodeRepository extends JpaRepository<TwoFactorCode, Long> {

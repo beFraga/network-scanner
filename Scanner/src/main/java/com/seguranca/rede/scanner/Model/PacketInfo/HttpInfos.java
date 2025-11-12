@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Model.PacketInfo;
 
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import jakarta.persistence.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;

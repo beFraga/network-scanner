@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Security;
 
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -9,10 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -47,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     email = email.trim();
                 }
             } catch (ExpiredJwtException e) {
-                System.out.println("⚠️ JWT expirado: " + e.getMessage());
+                System.out.println("⚠️ JWT expirado!! : " + e.getMessage());
             } catch (JwtException e) {
                 System.out.println("❌ JWT inválido: " + e.getMessage());
             }

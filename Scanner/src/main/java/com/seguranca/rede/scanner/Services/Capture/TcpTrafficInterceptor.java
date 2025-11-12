@@ -1,4 +1,4 @@
-package com.seguranca.rede.scanner.Services.TCP;
+package com.seguranca.rede.scanner.Services.Capture;
 
 import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
 import org.pcap4j.packet.*;

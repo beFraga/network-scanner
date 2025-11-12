@@ -1,6 +1,6 @@
 package com.seguranca.rede.scanner.Configurations;
 
-import com.seguranca.rede.scanner.Services.HTTP.HttpTrafficInterceptor;
+import com.seguranca.rede.scanner.Services.Capture.HttpTrafficInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

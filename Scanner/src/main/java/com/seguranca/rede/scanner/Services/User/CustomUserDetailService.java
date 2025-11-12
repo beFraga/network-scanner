@@ -1,4 +1,4 @@
-package com.seguranca.rede.scanner.Services;
+package com.seguranca.rede.scanner.Services.User;
 
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,8 @@
 package com.seguranca.rede.scanner.Security;
 
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;

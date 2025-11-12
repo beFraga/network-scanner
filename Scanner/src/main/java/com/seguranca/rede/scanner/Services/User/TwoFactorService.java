@@ -1,7 +1,7 @@
-package com.seguranca.rede.scanner.Services;
+package com.seguranca.rede.scanner.Services.User;
 
-import com.seguranca.rede.scanner.Model.TwoFactorCode;
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.TwoFactorCode;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.TwoFactorCodeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,11 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 

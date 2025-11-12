@@ -1,4 +1,4 @@
-package com.seguranca.rede.scanner.Model;
+package com.seguranca.rede.scanner.Model.UserInfo;
 
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import jakarta.persistence.*;

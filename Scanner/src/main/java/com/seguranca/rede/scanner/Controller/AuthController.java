@@ -2,10 +2,10 @@ package com.seguranca.rede.scanner.Controller;
 
 import com.seguranca.rede.scanner.DTO.LoginRequest;
 import com.seguranca.rede.scanner.DTO.AuthResponse;
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import com.seguranca.rede.scanner.Security.JwtUtil;
-import com.seguranca.rede.scanner.Services.TwoFactorService;
+import com.seguranca.rede.scanner.Services.User.TwoFactorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

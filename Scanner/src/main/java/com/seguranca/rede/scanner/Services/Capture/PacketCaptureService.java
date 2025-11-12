@@ -1,18 +1,13 @@
 package com.seguranca.rede.scanner.Services.Capture;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.HttpRepository;
 import com.seguranca.rede.scanner.Repository.TcpRepository;
-import com.seguranca.rede.scanner.Repository.UserRepository;
-import com.seguranca.rede.scanner.Services.TCP.TcpTrafficInterceptor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -131,11 +126,18 @@ public class PacketCaptureService{
         Runnable saveDataTask = () -> {
             aux.saveData(connections_repeat, savedHttp, user);
         };
-        Runnable getFlags = () -> {
-            aux.getJson("/model");
-        };
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
-        flagReader.scheduleAtFixedRate(getFlags, 7,  seconds, TimeUnit.SECONDS);
+    }
+
+    public void readJson(int seconds){
+            try {
+                // Se 'model' for o caminho correto (como discutimos, caminho relativo)
+                aux.getJson("model");
+            } catch (Exception e) {
+                // **Crucial:** Imprima a exceção para ver o que está falhando
+                System.err.println("Erro ao rodar getJson: " + e.getMessage());
+                e.printStackTrace();
+            }
     }
 }

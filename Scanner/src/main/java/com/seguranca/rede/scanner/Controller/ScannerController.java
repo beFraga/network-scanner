@@ -1,24 +1,20 @@
 package com.seguranca.rede.scanner.Controller;
 
-import com.seguranca.rede.scanner.Configurations.QueueConfig;
 import com.seguranca.rede.scanner.DTO.ConfigOptions;
-import com.seguranca.rede.scanner.Model.User;
+import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.HttpRepository;
 import com.seguranca.rede.scanner.Repository.TcpRepository;
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import com.seguranca.rede.scanner.Services.Capture.PacketCaptureService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 // Só pode ser chamado se o JWT for válido
 

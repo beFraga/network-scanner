@@ -1,4 +1,4 @@
-package com.seguranca.rede.scanner.Services.HTTP;
+package com.seguranca.rede.scanner.Services.Capture;
 
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import jakarta.servlet.http.HttpServletRequest;
