@@ -84,7 +84,7 @@ class Main {
 
 		static tuple<vector<vector<string>>, vector<size_t>> read_data() {
 			json j;
-			std::ifstream f("../captures/excap.json");
+			std::ifstream f("data.json");
 			if (!f.is_open()) throw std::runtime_error("Cannot open data file");
 			f >> j;
 			f.close();
@@ -171,7 +171,7 @@ class Main {
 			}
 			cout << counter << endl;
 			
-			ofstream f("../responses/capture_1761705995328_response.json");
+			ofstream f("response.json");
 			f << j.dump(4);
 			f.close();
 		}

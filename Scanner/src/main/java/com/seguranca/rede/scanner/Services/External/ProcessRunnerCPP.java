@@ -3,20 +3,11 @@ package com.seguranca.rede.scanner.Services.External;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ProcessRunnerCPP {
-
-    /**
-     * Executa o makefile e deixa o processo rodando em paralelo.
-     *
-     * @param makeDirectory Caminho da pasta onde está o Makefile
-     */
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final String projectPath;     // Caminho do projeto C++ (onde está o Makefile)
     private final boolean useWSL;         // true = rodar via WSL, false = Linux nativo

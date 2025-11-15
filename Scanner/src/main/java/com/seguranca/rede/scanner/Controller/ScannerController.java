@@ -1,13 +1,16 @@
 package com.seguranca.rede.scanner.Controller;
 
 import com.seguranca.rede.scanner.DTO.ConfigOptions;
+import com.seguranca.rede.scanner.DTO.PlotRequest;
 import com.seguranca.rede.scanner.Model.UserInfo.User;
 import com.seguranca.rede.scanner.Repository.HttpRepository;
 import com.seguranca.rede.scanner.Repository.TcpRepository;
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import com.seguranca.rede.scanner.Services.Capture.PacketCaptureService;
+import com.seguranca.rede.scanner.Services.External.PythonPlotter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +47,40 @@ public class ScannerController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/manual")
     public ResponseEntity<byte[]> getPdf() throws IOException {
         Path path = Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\Scanner\\exem.pdf");
         byte[] bytes = Files.readAllBytes(path);
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .header("Content-Disposition", "inline; filename=\"exem.pdf\"")
-                .body(bytes);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/plot", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<byte[]> getVulnerabilityPlotById(@RequestBody PlotRequest request) {
+
+        int graphId = request.getGraphId();
+
+        try {
+            byte[] imageBytes = PythonPlotter.generatePlot(graphId);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG);
+            headers.setContentLength(imageBytes.length);
+
+            // 3. Retorna a imagem
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Erro ao gerar o grafico (ID: " + graphId + "): " + e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PreAuthorize("isAuthenticated()")

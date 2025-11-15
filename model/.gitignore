@@ -1,5 +1,5 @@
 build/
 state-dict/
 config/
-data.json
+../data/data.json
 response.json
