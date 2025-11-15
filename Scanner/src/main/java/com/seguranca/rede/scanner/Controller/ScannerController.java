@@ -7,6 +7,7 @@ import com.seguranca.rede.scanner.Repository.HttpRepository;
 import com.seguranca.rede.scanner.Repository.TcpRepository;
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import com.seguranca.rede.scanner.Services.Capture.PacketCaptureService;
+import com.seguranca.rede.scanner.Services.External.ProcessRunnerCPP;
 import com.seguranca.rede.scanner.Services.External.PythonPlotter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -40,11 +42,25 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
-            // packetCaptureService.readJson(user.getInteravlo());
+            ProcessRunnerCPP processRunnerCPP = new ProcessRunnerCPP("/mnt/c/Users/famam/IdeaProjects/network-scanner-javaml/model", true, user.getInteravlo(), packetCaptureService);
+            processRunnerCPP.runCppMakefile();
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao iniciar captura: " + e.getMessage());
         }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/cpp")
+    public void runCpp() throws IOException, InterruptedException {
+        ProcessRunnerCPP processRunnerCPP = new ProcessRunnerCPP("/mnt/c/Users/famam/IdeaProjects/network-scanner-javaml/model", true, 5, packetCaptureService);
+        processRunnerCPP.runCppMakefile();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/json")
+    public void getJson() {
+        packetCaptureService.readJson();
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -81,12 +97,6 @@ public class ScannerController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/json")
-    public void readJson(){
-        packetCaptureService.readJson(5);
     }
 
     @PreAuthorize("isAuthenticated()")

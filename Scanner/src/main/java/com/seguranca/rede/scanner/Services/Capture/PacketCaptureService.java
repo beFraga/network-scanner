@@ -130,10 +130,10 @@ public class PacketCaptureService{
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
     }
 
-    public void readJson(int seconds){
+    public void readJson(){
             try {
                 // Se 'model' for o caminho correto (como discutimos, caminho relativo)
-                aux.getJson("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\data");
+                aux.getJson("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\model\\response.json");
             } catch (Exception e) {
                 // **Crucial:** Imprima a exceção para ver o que está falhando
                 System.err.println("Erro ao rodar getJson: " + e.getMessage());

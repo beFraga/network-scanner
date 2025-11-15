@@ -45,9 +45,7 @@ public class PythonPlotter {
             }
 
             // Lê os bytes da imagem
-            byte[] imageBytes = Files.readAllBytes(tempPlotFile);
-
-            return imageBytes;
+            return Files.readAllBytes(tempPlotFile);
 
         } finally {
             // Limpa o arquivo temporário

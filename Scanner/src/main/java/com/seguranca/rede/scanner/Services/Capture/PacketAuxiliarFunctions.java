@@ -163,6 +163,9 @@ public class PacketAuxiliarFunctions {
             // Escreve o JSON diretamente como lista
             mapper.writeValue(Paths.get(filename).toFile(), flatPackets);
 
+            // Escrever em data.json do ML os novos dados capturados no intervalo
+            mapper.writeValue(Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\model\\data.json").toFile(), flatPackets);
+
             System.out.println("📄 JSON achatado salvo em: " + filename);
         } catch (Exception e) {
             System.err.println("❌ Erro ao criar JSON: " + e.getMessage());
@@ -171,53 +174,43 @@ public class PacketAuxiliarFunctions {
     }
 
     public void getJson(String basePath) {
+        System.out.println("💾 VENDO JSON");
+        Path path = Paths.get(basePath);
+        if (!Files.exists(path)) {
+            System.err.println("❌ Diretório não encontrado: " + basePath);
+            return;
+        }
+
         try {
-            System.out.println("💾 VENDO JSON");
-            Path dir = Paths.get(basePath);
-            if (!Files.exists(dir)) {
-                System.err.println("❌ Diretório não encontrado: " + basePath);
-                return;
+            // Faz a leitura do JSON
+            JsonNode root = mapper.readTree(path.toFile());
+
+            List<Long> ids = new ArrayList<>();
+            List<Boolean> flags = new ArrayList<>();
+
+            for (JsonNode node : root) {
+                Long id = node.get("id").asLong();
+                Boolean flag = node.get("flag").asBoolean();
+
+                ids.add(id);
+                flags.add(flag);
             }
 
-            // Varre todos os arquivos .json
-            Files.list(dir)
-                    .filter(path -> path.toString().endsWith(".json"))
-                    .filter(path -> !processedFiles.contains(path.toString()))
-                    .forEach(path -> {
-                        try {
-                            // Faz a leitura do JSON
-                            JsonNode root = mapper.readTree(path.toFile());
+            System.out.println("📄 Arquivo lido: " + path.getFileName());
+            for (int i = 0; i < ids.size(); i++) {
+                System.out.println("🆔 ID: " + ids.get(i) + " | 🚩 FLAG: " + flags.get(i));
+                int finalI = i;
+                tcpRepository.findById(ids.get(i)).ifPresent(tcp -> {
+                    tcp.setFlag(flags.get(finalI));
+                    tcpRepository.save(tcp);
+                });
+            }
+            // Marca como processado
+            processedFiles.add(path.toString());
 
-                            List<Long> ids = new ArrayList<>();
-                            List<Boolean> flags = new ArrayList<>();
-
-                            for (JsonNode node : root) {
-                                Long id = node.get("id").asLong();
-                                Boolean flag = node.get("flag").asBoolean();
-
-                                ids.add(id);
-                                flags.add(flag);
-                            }
-
-                            System.out.println("📄 Arquivo lido: " + path.getFileName());
-                            for (int i = 0; i < ids.size(); i++) {
-                                System.out.println("🆔 ID: " + ids.get(i) + " | 🚩 FLAG: " + flags.get(i));
-                                int finalI = i;
-                                tcpRepository.findById(ids.get(i)).ifPresent(tcp -> {
-                                    tcp.setFlag(flags.get(finalI));
-                                    tcpRepository.save(tcp);
-                                });
-                            }
-                            // Marca como processado
-                            processedFiles.add(path.toString());
-
-                        } catch (Exception e) {
-                            System.err.println("❌ Erro ao ler JSON " + path + ": " + e.getMessage());
-                        }
-                    });
-
-        } catch (IOException e) {
-            System.err.println("❌ Erro ao acessar diretório: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("❌ Erro ao ler JSON " + path + ": " + e.getMessage());
         }
+
     }
 }
