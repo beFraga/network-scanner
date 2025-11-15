@@ -6,8 +6,10 @@ import com.seguranca.rede.scanner.Repository.HttpRepository;
 import com.seguranca.rede.scanner.Repository.TcpRepository;
 import com.seguranca.rede.scanner.Repository.UserRepository;
 import com.seguranca.rede.scanner.Services.Capture.PacketCaptureService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +17,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 // Só pode ser chamado se o JWT for válido
 
@@ -23,8 +29,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ScannerController {
     private final PacketCaptureService packetCaptureService;
-    private final HttpRepository httpRepository;
-    private final TcpRepository tcpRepository;
     private final UserRepository userRepository;
 
     @PreAuthorize("isAuthenticated()")
@@ -33,10 +37,28 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
+            // packetCaptureService.readJson(user.getInteravlo());
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao iniciar captura: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/manual")
+    public ResponseEntity<byte[]> getPdf() throws IOException {
+        Path path = Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\Scanner\\exem.pdf");
+        byte[] bytes = Files.readAllBytes(path);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header("Content-Disposition", "inline; filename=\"exem.pdf\"")
+                .body(bytes);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/json")
+    public void readJson(){
+        packetCaptureService.readJson(5);
     }
 
     @PreAuthorize("isAuthenticated()")

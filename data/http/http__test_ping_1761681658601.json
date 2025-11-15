@@ -59,4 +59,6 @@
     "interavlo" : 10,
     "cont" : 0,
     "tempoContexto" : 20,
-    "httpInfosList"
+    "httpInfosList" : 0
+  }
+}

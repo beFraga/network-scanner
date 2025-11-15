@@ -156,9 +156,9 @@ public class PacketAuxiliarFunctions {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
             // Cria diretório e arquivo
-            Path outputDir = Paths.get("captures");
+            Path outputDir = Paths.get("../captures");
             Files.createDirectories(outputDir);
-            String filename = "captures/capture_" + System.currentTimeMillis() + ".json";
+            String filename = "../captures/capture_" + System.currentTimeMillis() + ".json";
 
             // Escreve o JSON diretamente como lista
             mapper.writeValue(Paths.get(filename).toFile(), flatPackets);
@@ -188,15 +188,26 @@ public class PacketAuxiliarFunctions {
                             // Faz a leitura do JSON
                             JsonNode root = mapper.readTree(path.toFile());
 
-                            Long id = root.get(0).get("id").asLong();
-                            boolean flag = root.get(1).get("flag").asBoolean();
+                            List<Long> ids = new ArrayList<>();
+                            List<Boolean> flags = new ArrayList<>();
+
+                            for (JsonNode node : root) {
+                                Long id = node.get("id").asLong();
+                                Boolean flag = node.get("flag").asBoolean();
+
+                                ids.add(id);
+                                flags.add(flag);
+                            }
 
                             System.out.println("📄 Arquivo lido: " + path.getFileName());
-                            System.out.println("🆔 ID: " + id + " | 🚩 FLAG: " + flag);
-                            tcpRepository.findById(id).ifPresent(tcp -> {
-                                tcp.setFlag(flag);
-                                tcpRepository.save(tcp);
-                            });
+                            for (int i = 0; i < ids.size(); i++) {
+                                System.out.println("🆔 ID: " + ids.get(i) + " | 🚩 FLAG: " + flags.get(i));
+                                int finalI = i;
+                                tcpRepository.findById(ids.get(i)).ifPresent(tcp -> {
+                                    tcp.setFlag(flags.get(finalI));
+                                    tcpRepository.save(tcp);
+                                });
+                            }
                             // Marca como processado
                             processedFiles.add(path.toString());
 

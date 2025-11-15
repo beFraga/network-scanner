@@ -133,7 +133,7 @@ public class PacketCaptureService{
     public void readJson(int seconds){
             try {
                 // Se 'model' for o caminho correto (como discutimos, caminho relativo)
-                aux.getJson("model");
+                aux.getJson("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\data");
             } catch (Exception e) {
                 // **Crucial:** Imprima a exceção para ver o que está falhando
                 System.err.println("Erro ao rodar getJson: " + e.getMessage());

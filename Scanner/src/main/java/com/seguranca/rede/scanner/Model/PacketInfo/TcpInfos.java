@@ -38,8 +38,8 @@ public class TcpInfos {
     @JoinColumn(name = "http_infos_id")
     private HttpInfos httpInfos;
 
-    @Column(name = "FLAG")
-    private boolean flag;
+    @Column(name = "FLAG", nullable = false)
+    private Boolean flag;
 
     public TcpInfos(IpPacket ipPacket, TcpPacket tcpPacket){
         this.localAddress = ipPacket.getHeader().getSrcAddr().getHostAddress();
