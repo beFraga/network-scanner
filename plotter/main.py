@@ -1,6 +1,6 @@
 import sys
 import json
-import matplotlib as plt
+import matplotlib.pyplot as plt
 from collections import Counter
 
 class Plotter():
@@ -41,7 +41,7 @@ class Plotter():
 
         plt.show()
 
-    def plot_pie(self):
+    def plot_pie_complete(self):
         values = [item["flag"] for item in self.data]
         counts = Counter(values)
         label_map = {
@@ -59,15 +59,16 @@ class Plotter():
 
 
     def __call__(self, headers):
+        print(headers)
         self.read_data()
 
         for h in headers:
             d = [item[h] for item in self.data if item["flag"]]
-            self.switch["h"](d, h)
+            self.switch[h](d, h)
 
-        self.plot_pie()
+        self.plot_pie_complete()
 
 
 if __name__ == "__main__":
     plotter = Plotter()
-    plotter(sys.argv)
+    plotter(sys.argv[1:])
