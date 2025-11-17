@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 // Só pode ser chamado se o JWT for válido
 
@@ -42,8 +43,8 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
-            ProcessRunnerCPP processRunnerCPP = new ProcessRunnerCPP("/mnt/c/Users/famam/IdeaProjects/network-scanner-javaml/model", true, user.getInteravlo(), packetCaptureService);
-            processRunnerCPP.runCppMakefile();
+            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP("/mnt/c/Users/famam/IdeaProjects/network-scanner-javaml/model", true, user.getInteravlo(), packetCaptureService);
+            pRCPP.runCppMakefile();
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao iniciar captura: " + e.getMessage());
@@ -51,22 +52,9 @@ public class ScannerController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/cpp")
-    public void runCpp() throws IOException, InterruptedException {
-        ProcessRunnerCPP processRunnerCPP = new ProcessRunnerCPP("/mnt/c/Users/famam/IdeaProjects/network-scanner-javaml/model", true, 5, packetCaptureService);
-        processRunnerCPP.runCppMakefile();
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/json")
-    public void getJson() {
-        packetCaptureService.readJson();
-    }
-
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/manual")
-    public ResponseEntity<byte[]> getPdf() throws IOException {
-        Path path = Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\Scanner\\exem.pdf");
+    public ResponseEntity<byte[]> getManual() throws IOException {
+        Path path = Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\Scanner\\user_manual.pdf");
         byte[] bytes = Files.readAllBytes(path);
 
         HttpHeaders headers = new HttpHeaders();
@@ -77,25 +65,19 @@ public class ScannerController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/plot", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<byte[]> getVulnerabilityPlotById(@RequestBody PlotRequest request) {
-
-        int graphId = request.getGraphId();
+    @PostMapping("/plot")
+    public ResponseEntity<?> generatePythonPlots(@RequestBody PlotRequest dto) {
 
         try {
-            byte[] imageBytes = PythonPlotter.generatePlot(graphId);
+            List<String> headers = dto.getHeaders();
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            headers.setContentLength(imageBytes.length);
+            // chama o plotter Python
+            PythonPlotter.generatePlot(headers);
 
-            // 3. Retorna a imagem
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Erro ao gerar o grafico (ID: " + graphId + "): " + e.getMessage());
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.ok("Plot(s) gerado(s) com sucesso!");
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao gerar plot: " + e.getMessage());
         }
     }
 

@@ -1,8 +1,10 @@
 package com.seguranca.rede.scanner.Services.Capture;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.seguranca.rede.scanner.Model.PacketInfo.HttpInfos;
 import com.seguranca.rede.scanner.Model.PacketInfo.TcpInfos;
 import com.seguranca.rede.scanner.Model.UserInfo.User;
@@ -105,7 +107,7 @@ public class PacketAuxiliarFunctions {
         });
 
         if (!novos.isEmpty()) {
-            createJson(novos, user);
+            createJson(novos);
         }
     }
 
@@ -133,7 +135,7 @@ public class PacketAuxiliarFunctions {
     }
 
     @Transactional
-    public void createJson(Set<HttpInfos> httpInfos, User user) {
+    public void createJson(Set<HttpInfos> httpInfos) {
         try {
             // cada TCP vira um item da lista
             List<Map<String, Object>> flatPackets = httpInfos.stream()
@@ -167,13 +169,14 @@ public class PacketAuxiliarFunctions {
             mapper.writeValue(Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\model\\data.json").toFile(), flatPackets);
 
             System.out.println("📄 JSON achatado salvo em: " + filename);
+
         } catch (Exception e) {
             System.err.println("❌ Erro ao criar JSON: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void getJson(String basePath) {
+    public void updateJson(String basePath) {
         System.out.println("💾 VENDO JSON");
         Path path = Paths.get(basePath);
         if (!Files.exists(path)) {
@@ -197,16 +200,50 @@ public class PacketAuxiliarFunctions {
             }
 
             System.out.println("📄 Arquivo lido: " + path.getFileName());
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+            // Lista que irá armazenar TODOS os JSONs atualizados
+            List<Map<String, Object>> mergedList = new ArrayList<>();
+
+            // Atualiza no banco de dados
             for (int i = 0; i < ids.size(); i++) {
                 System.out.println("🆔 ID: " + ids.get(i) + " | 🚩 FLAG: " + flags.get(i));
                 int finalI = i;
                 tcpRepository.findById(ids.get(i)).ifPresent(tcp -> {
                     tcp.setFlag(flags.get(finalI));
                     tcpRepository.save(tcp);
+
+                    // Para atualização do data.json do plotter
+                    Map<String, Object> merged = new LinkedHashMap<>();
+                    merged.put("id", tcp.getId());
+                    merged.put("method", tcp.getHttpInfos().getMethod());
+                    merged.put("protocol", tcp.getHttpInfos().getProtocol());
+                    merged.put("localAddress", tcp.getLocalAddress());
+                    merged.put("remoteAddress", tcp.getRemoteAddress());
+                    merged.put("remotePort", tcp.getRemotePort());
+                    merged.put("payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0);
+                    merged.put("flag", tcp.getFlag());
+                    merged.put("sequenceNumber", tcp.getSequenceNumber());
+
+                    // 3. Adiciona à lista final
+                    mergedList.add(merged);
                 });
             }
+
             // Marca como processado
             processedFiles.add(path.toString());
+
+            // 4. Salva TODOS no mesmo data.json
+            Path updatedJsonPath = Paths.get("C:/Users/famam/IdeaProjects/network-scanner-javaml/plotter/data.json");
+
+            try {
+                mapper.writeValue(updatedJsonPath.toFile(), mergedList);
+                System.out.println("📄 JSON completo salvo com " + mergedList.size() + " registros.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } catch (Exception e) {
             System.err.println("❌ Erro ao ler JSON " + path + ": " + e.getMessage());

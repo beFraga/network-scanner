@@ -52,7 +52,7 @@ public class ProcessRunnerCPP {
                 System.err.println("❌ Erro ao executar modelo C++: " + e.getMessage());
                 e.printStackTrace();
             }
-        }, 10, intervalSeconds, TimeUnit.SECONDS);
+        }, 15, intervalSeconds, TimeUnit.SECONDS);
     }
 
     private void runCppModel() throws IOException, InterruptedException {
@@ -71,12 +71,12 @@ public class ProcessRunnerCPP {
 
         currentProcess = pbExec.start();
         printProcessOutput(currentProcess);
-        packetCaptureService.readJson();
         int exit2 = currentProcess.waitFor();
         if (exit2 != 0) {
             System.err.println("❌ Erro no make (exit " + exit2 + ")");
         } else {
             System.out.println("🏁 Execução do modelo C++ concluída.");
+            packetCaptureService.readJson();
         }
     }
 

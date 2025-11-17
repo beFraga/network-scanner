@@ -1,61 +1,40 @@
 package com.seguranca.rede.scanner.Services.External;
 
 import org.springframework.stereotype.Service;
-// ... (outros imports)
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
+import java.util.List;
 
 @Service
 public class PythonPlotter {
+    public static void generatePlot(List<String> headers) throws IOException, InterruptedException {
 
-    private static final String scriptPath = "C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\test.py";
-    private static final String pythonCommand = "python";
+        ProcessBuilder pb = new ProcessBuilder(
+                "C:/Users/famam/AppData/Local/Programs/Python/Python312/python.exe",
+                "C:/Users/famam/IdeaProjects/network-scanner-javaml/plotter/main.py"
+        );
 
-    public static byte[] generatePlot(int graphId) throws IOException, InterruptedException {
+        pb.directory(new File("C:/Users/famam/IdeaProjects/network-scanner-javaml/plotter"));
 
-        Path tempPlotFile = null;
-        String graphIdString = String.valueOf(graphId); // Converte o int para String para passar para o SO
+        // adiciona cada header como argumento do Python
+        pb.command().addAll(headers);
 
-        try {
-            tempPlotFile = Files.createTempFile("plot_", ".png");
+        pb.redirectErrorStream(true);
 
-            // 1. O ProcessBuilder agora recebe 3 argumentos:
-            // "python", "[caminho_script.py]", "[caminho_saida.png]", "[ID_GRAFICO]"
-            ProcessBuilder pb = new ProcessBuilder(
-                    pythonCommand,
-                    scriptPath,
-                    tempPlotFile.toAbsolutePath().toString(),
-                    graphIdString // argumento para o Python (seleção de gráficos)
-            );
+        Process process = pb.start();
 
-            // ... (Restante do ProcessBuilder e lógica de execução permanece o mesmo) ...
-            pb.redirectErrorStream(true);
-
-            System.out.println("Executando script Python: " + String.join(" ", pb.command()));
-            Process process = pb.start();
-
-            // Lógica de leitura de logs (removida para brevidade, mas deve ser mantida)
-            // ...
-
-            int exitCode = process.waitFor();
-            if (exitCode != 0) {
-                // Se o script falhou, mostra os logs de erro
-                throw new IOException("Script Python falhou. Codigo: " + exitCode + ". Verifique o log PY_SCRIPT_LOG.");
-            }
-
-            // Lê os bytes da imagem
-            return Files.readAllBytes(tempPlotFile);
-
-        } finally {
-            // Limpa o arquivo temporário
-            if (tempPlotFile != null) {
-                try {
-                    Files.delete(tempPlotFile);
-                } catch (IOException e) {
-                    System.err.println("Aviso: Falha ao deletar arquivo temporario: " + tempPlotFile);
-                }
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println("[PYTHON] " + line);
             }
         }
+
+        int exit = process.waitFor();
+        if (exit != 0)
+            throw new IOException("Python returned error code " + exit);
     }
 }
