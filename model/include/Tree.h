@@ -1,6 +1,6 @@
 #pragma once
 #include "Node.h"
-#include <vector>
+#include "matrix.h"
 
 using namespace std;
 
@@ -11,10 +11,10 @@ class Tree {
 
         Tree(int max_depth);
 
-        void fit(vector<vector<double>>& data);
-        int path_length(vector<double>& x);
+        void fit(Matrix& data);
+        int path_length(Matrix& x);
 
     private:
-        Node* build_tree(vector<vector<double>>& data, int current_depth);
-        int path_length_node(Node* node, vector<double>& x, int depth);
+        Node* build_tree(Matrix& data, int current_depth);
+        int path_length_node(Node* node, Matrix& x, int depth);
 };

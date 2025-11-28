@@ -13,8 +13,8 @@ class Forest {
 
         Forest(int n_trees=100, int sample_size=256);
 
-        void fit(vector<vector<double>>& data);
-        double anomaly_score(vector<double>& x);
+        void fit(Matrix& data);
+        double anomaly_score(Matrix& x);
 
     private:
         double c_factor(int n);
