@@ -166,7 +166,7 @@ public class PacketAuxiliarFunctions {
             mapper.writeValue(Paths.get(filename).toFile(), flatPackets);
 
             // Escrever em data.json do ML os novos dados capturados no intervalo
-            mapper.writeValue(Paths.get("C:\\Users\\famam\\IdeaProjects\\network-scanner-javaml\\model\\data.json").toFile(), flatPackets);
+            mapper.writeValue(Paths.get("/network-scanner-javaml/model/data.json").toFile(), flatPackets);
 
             System.out.println("📄 JSON achatado salvo em: " + filename);
 
@@ -236,7 +236,7 @@ public class PacketAuxiliarFunctions {
             processedFiles.add(path.toString());
 
             // 4. Salva TODOS no mesmo data.json
-            Path updatedJsonPath = Paths.get("C:/Users/famam/IdeaProjects/network-scanner-javaml/plotter/data.json");
+            Path updatedJsonPath = Paths.get("/network-scanner-javaml/plotter/data.json");
 
             try {
                 mapper.writeValue(updatedJsonPath.toFile(), mergedList);
