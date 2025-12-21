@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package packet.analysis;
+
+option java_package = "com.seguranca.rede.grpc";
+option java_outer_classname = "PacketAnalysisProto";
+
+// Service
+service PacketAnalysisService {
+  rpc StreamWindow (stream PacketWindow) returns (AnalysisAck);
+}
+
+// Messages
+message PacketWindow {
+  int64 window_start = 1;
+  int64 window_end = 2;
+
+  int64 user_id = 3;
+
+  repeated HttpSession http_sessions = 4;
+}
+
+message HttpSession{
+  string method = 1;
+  string protocol = 2;
+  string uri = 3;
+
+  repeated TcpMeta tcp_packets  = 4;
+}
+
+message TcpMeta{
+  string local_address = 1;
+  string remote_address = 2;
+  int32 local_port = 3;
+  int32 remote_port = 4;
+  uint64 sequence_number = 5;
+  bool flag = 6;
+}
+
+// Responses
+message AnalysisAck{
+  bool accepted = 1;
+  string message = 2;
+}
