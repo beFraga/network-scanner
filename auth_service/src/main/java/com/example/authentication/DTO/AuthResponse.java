@@ -1,4 +1,4 @@
-package example.authentication.DTO;
+package com.example.authentication.DTO;
 
 import lombok.*;
 

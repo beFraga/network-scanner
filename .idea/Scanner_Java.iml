@@ -6,6 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/Scanner/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Scanner/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/Scanner/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/auth_service/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/capture_service/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

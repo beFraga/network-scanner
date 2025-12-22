@@ -1,4 +1,4 @@
-package com.example.capture.Capture.DTO;
+package com.example.capture.DTO;
 
 import lombok.Data;
 import lombok.Getter;

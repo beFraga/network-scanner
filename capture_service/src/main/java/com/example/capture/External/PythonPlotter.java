@@ -1,4 +1,4 @@
-package com.example.capture.Capture.External;
+package com.example.capture.External;
 
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;

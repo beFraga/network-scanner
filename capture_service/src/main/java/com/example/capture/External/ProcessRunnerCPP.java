@@ -1,4 +1,6 @@
-package com.example.capture.Capture.External;
+package com.example.capture.External;
+
+import com.example.capture.Capture.PacketCaptureService;
 
 import java.io.BufferedReader;
 import java.io.IOException;

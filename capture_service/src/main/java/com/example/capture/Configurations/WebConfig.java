@@ -1,6 +1,6 @@
-package com.example.capture.Capture.Configurations;
+package com.example.capture.Configurations;
 
-import com.example.capture.Capture.Capture.HttpTrafficInterceptor;
+import com.example.capture.Capture.HttpTrafficInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

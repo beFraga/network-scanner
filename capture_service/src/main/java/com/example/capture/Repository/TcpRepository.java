@@ -1,4 +1,4 @@
-package com.example.capture.Capture.Repository;
+package com.example.capture.Repository;
 
 import com.example.common.PacketInfo.TcpInfos;
 import org.springframework.data.jpa.repository.JpaRepository;

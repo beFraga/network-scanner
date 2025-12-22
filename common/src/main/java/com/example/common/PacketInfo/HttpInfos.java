@@ -1,7 +1,7 @@
 package com.example.common.PacketInfo;
 
-import com.seguranca.rede.scanner.auth_service.src.UserInfo.User;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.persistence.*;
+import jakarta.servlet.http.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

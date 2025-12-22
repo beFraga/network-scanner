@@ -1,4 +1,4 @@
-package com.example.capture.Capture.Capture;
+package com.example.capture.Capture;
 
 import com.example.common.PacketInfo.HttpInfos;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,0 +1,3 @@
+package authRunner
+
+rootProject.name = 'authRunner'

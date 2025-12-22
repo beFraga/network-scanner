@@ -7,20 +7,27 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <groupId>com.exemplo</groupId>
+        <artifactId>meu-projeto</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>com.seguranca.rede</groupId>
     <artifactId>auth-service</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 
     <properties>
         <java.version>17</java.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!-- Web / API -->
         <dependency>
@@ -101,6 +108,8 @@
                             <artifactId>lombok</artifactId>
                         </path>
                     </annotationProcessorPaths>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
 

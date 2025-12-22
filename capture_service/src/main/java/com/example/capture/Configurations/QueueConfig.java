@@ -1,4 +1,4 @@
-package com.example.capture.Capture.Configurations;
+package com.example.capture.Configurations;
 
 import com.example.common.PacketInfo.HttpInfos;
 import org.springframework.context.annotation.Bean;

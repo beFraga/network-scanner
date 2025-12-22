@@ -1,11 +1,11 @@
-package com.example.capture.Capture.Capture;
+package com.example.capture.Capture;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.example.common.PacketInfo.*;
-import com.example.capture.Capture.Repository.HttpRepository;
-import com.example.capture.Capture.Repository.TcpRepository;
+import com.example.capture.Repository.HttpRepository;
+import com.example.capture.Repository.TcpRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 

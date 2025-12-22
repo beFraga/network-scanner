@@ -1,4 +1,4 @@
-package com.example.capture.Capture.Controller;
+package com.example.capture.Controller;
 
 import org.springframework.web.bind.annotation.*;
 

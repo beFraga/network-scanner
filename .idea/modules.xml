@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Scanner_Java.iml" filepath="$PROJECT_DIR$/.idea/Scanner_Java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auth_service/auth-service.iml" filepath="$PROJECT_DIR$/auth_service/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/capture_service/capture-service.iml" filepath="$PROJECT_DIR$/capture_service/capture-service.iml" />
     </modules>
   </component>
 </project>

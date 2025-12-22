@@ -1,9 +1,10 @@
 package com.example.common.PacketInfo;
 
-import PacketInfo.HttpInfos;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.pcap4j.packet.*;
 
 @Entity
 @Table(name = "tcp_infos")
@@ -31,7 +32,7 @@ public class TcpInfos {
     private Long sequenceNumber;
 
     @Lob
-    private Packet payload;
+    private String payload;
 
     @ManyToOne
     @JoinColumn(name = "http_infos_id")
@@ -46,7 +47,7 @@ public class TcpInfos {
         this.localPort = tcpPacket.getHeader().getSrcPort().valueAsInt();
         this.remotePort = tcpPacket.getHeader().getDstPort().valueAsInt();
         this.sequenceNumber = Long.valueOf(tcpPacket.getHeader().getSequenceNumber());
-        this.payload = tcpPacket.getPayload();
+        this.payload = tcpPacket.getPayload().toString();
         this.flag = false;
     }
 

@@ -1,9 +1,9 @@
-package com.example.capture.Capture.Capture;
+package com.example.capture.Capture;
 
-import com.example.capture.Capture.Capture.PacketAuxiliarFunctions;
+import com.example.capture.Capture.PacketAuxiliarFunctions;
 import com.example.common.PacketInfo.*;
-import com.example.capture.Capture.Repository.HttpRepository;
-import com.example.capture.Capture.Repository.TcpRepository;
+import com.example.capture.Repository.HttpRepository;
+import com.example.capture.Repository.TcpRepository;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 

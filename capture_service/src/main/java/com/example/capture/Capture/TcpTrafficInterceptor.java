@@ -1,4 +1,4 @@
-package com.example.capture.Capture.Capture;
+package com.example.capture.Capture;
 
 import com.example.common.PacketInfo.TcpInfos;
 import org.pcap4j.packet.*;
