@@ -1,6 +1,7 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 
-package packet.analysis;
+package packet;
 
 option java_package = "com.seguranca.rede.grpc";
 option java_outer_classname = "PacketAnalysisProto";
@@ -41,4 +42,22 @@ message TcpMeta{
 message AnalysisAck{
   bool accepted = 1;
   string message = 2;
+}
+
+message PacketEvent {
+  string remoteAddress = 1;
+  string localAddress = 2;
+  uint32 remotePort = 3;
+  string protocol = 4;
+  uint64 sequenceNumber = 5;
+  uint32 payloadSize = 6;
+  bool flag = 7;
+}
+
+message EventBatch {
+  repeated PacketEvent events = 1;
+}
+
+service PacketAnalyzer {
+  rpc GetEvents(google.protobuf.Empty) returns (EventBatch);
 }

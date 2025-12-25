@@ -1,0 +1,4 @@
+matplotlib==3.9.0
+grpcio==1.66.1
+grpcio-tools==1.66.1
+protobuf>=4.25.0

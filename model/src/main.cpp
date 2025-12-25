@@ -7,6 +7,7 @@
 #include <tuple>
 #include "json.hpp"
 #include <filesystem>
+#include <cstdlib>
 
 using json = nlohmann::json;
 
@@ -117,6 +118,12 @@ int main(int argc, char* argv[]) {
 		std::cerr << "[main] falha ao ler argv[1]" << endl;
 		return 1;
 	}
+	const char* port_env = std::getenv("APP_PORT");
+    int port = port_env ? std::stoi(port_env) : 50051;
+
+    const char* threads_env = std::getenv("MODEL_THREADS");
+    int threads = threads_env ? std::stoi(threads_env) : 1;
+
 	if (strcmp(argv[1], "0") == 0) Main::train();
 	else Main::run();
 
