@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final HttpTrafficInterceptor trafficInterceptor;
-    private QueueConfig queue;
+    private final QueueConfig queue;
 
     @Bean
     public HttpTrafficInterceptor trafficInterceptor() {
@@ -19,8 +19,9 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Autowired
-    public WebConfig(HttpTrafficInterceptor trafficInterceptor) {
+    public WebConfig(HttpTrafficInterceptor trafficInterceptor, QueueConfig queue) {
         this.trafficInterceptor = trafficInterceptor;
+        this.queue = queue;
     }
 
     @Override

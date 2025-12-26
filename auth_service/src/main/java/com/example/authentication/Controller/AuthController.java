@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TwoFactorService twoFactorService;
     private final JwtUtil jwtUtil;
