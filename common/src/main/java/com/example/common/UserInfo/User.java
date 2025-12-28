@@ -1,5 +1,6 @@
-package com.example.common.PacketInfo;
+package com.example.common.UserInfo;
 
+import com.example.common.PacketInfo.HttpInfos;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

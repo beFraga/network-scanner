@@ -6,7 +6,7 @@ import com.example.authentication.DTO.LoginRequest;
 import com.example.authentication.Repository.UserRepository;
 import com.example.authentication.Security.JwtUtil;
 import com.example.authentication.User.TwoFactorService;
-import com.example.common.PacketInfo.User;
+import com.example.common.UserInfo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

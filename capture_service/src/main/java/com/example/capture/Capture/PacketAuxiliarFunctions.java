@@ -1,5 +1,6 @@
 package com.example.capture.Capture;
 
+import com.example.common.UserInfo.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -22,7 +23,6 @@ public class PacketAuxiliarFunctions {
     private final TcpRepository tcpRepository;
 
     // para leitura do JSON
-    private final Path directory = Paths.get("captures");
     private final Set<String> processedFiles = new HashSet<>();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -51,56 +51,52 @@ public class PacketAuxiliarFunctions {
 
     public void printConnections(Map<String, TreeMap<Long, HttpInfos>> connections, Set<HttpInfos> printedHttp) {
         System.out.println("Printing connections:");
-        connections.forEach((key, tree) -> {
-            tree.forEach((seqNumber, httpInfo) -> {
-                if (!printedHttp.contains(httpInfo)) {
-                    if (httpInfo.getMethod() != null) {
-                        System.out.println("-------------------------------------------");
-                        System.out.println(key + ": ");
-                        System.out.println("URI: " + httpInfo.getUri());
-                        System.out.println("Método: " + httpInfo.getMethod());
-                        System.out.println("Protocolo: " + httpInfo.getProtocol());
-                        System.out.println("Porta local HTTP: " + httpInfo.getLocalPort());
-                        System.out.println("Porta remota HTTP: " + httpInfo.getRemotePort());
-                        System.out.println("Endereço local HTTP: " + httpInfo.getLocalAddress());
-                        System.out.println("Endereço remoto HTTP " +  httpInfo.getRemoteAddress());
-                        if (httpInfo.getTcpPackets() != null) {
-                            httpInfo.getTcpPackets().forEach(t -> {
-                                System.out.println("Porta local: " + t.getLocalPort());
-                                System.out.println("Porta remota: " + t.getRemotePort());
-                            });
-                        }
-                        printedHttp.add(httpInfo);
+        connections.forEach((key, tree) -> tree.forEach((seqNumber, httpInfo) -> {
+            if (!printedHttp.contains(httpInfo)) {
+                if (httpInfo.getMethod() != null) {
+                    System.out.println("-------------------------------------------");
+                    System.out.println(key + ": ");
+                    System.out.println("URI: " + httpInfo.getUri());
+                    System.out.println("Método: " + httpInfo.getMethod());
+                    System.out.println("Protocolo: " + httpInfo.getProtocol());
+                    System.out.println("Porta local HTTP: " + httpInfo.getLocalPort());
+                    System.out.println("Porta remota HTTP: " + httpInfo.getRemotePort());
+                    System.out.println("Endereço local HTTP: " + httpInfo.getLocalAddress());
+                    System.out.println("Endereço remoto HTTP " +  httpInfo.getRemoteAddress());
+                    if (httpInfo.getTcpPackets() != null) {
+                        httpInfo.getTcpPackets().forEach(t -> {
+                            System.out.println("Porta local: " + t.getLocalPort());
+                            System.out.println("Porta remota: " + t.getRemotePort());
+                        });
                     }
-
-
+                    printedHttp.add(httpInfo);
                 }
-            });
-        });
+
+
+            }
+        }));
     }
 
     @Transactional
     public void saveData(Map<String, TreeMap<Long, HttpInfos>> connections, Set<HttpInfos> savedData, User user) {
         System.out.println("💾 Salvando dados:");
         Set<HttpInfos> novos = new HashSet<>();
-        connections.forEach((key, tree) -> {
-            tree.forEach((seqNumber, httpInfo) -> {
-                if (!savedData.contains(httpInfo)) {
-                    if (httpInfo.getMethod() != null) {
-                        // associa o usuário e salva HTTP + TCPs
-                        httpInfo.setUser(user);
-                        httpInfo.getTcpPackets().forEach(t -> {
-                            t.setFlag(false);
-                            t.setHttpInfos(httpInfo);
-                        });
-                        httpRepository.save(httpInfo);
-                        savedData.add(httpInfo);
-                        novos.add(httpInfo);
-                        System.out.println("✅ HTTP salvo: " + httpInfo.getUri());
-                    }
+        connections.forEach((key, tree) -> tree.forEach((seqNumber, httpInfo) -> {
+            if (!savedData.contains(httpInfo)) {
+                if (httpInfo.getMethod() != null) {
+                    // associa o usuário e salva HTTP + TCPs
+                    httpInfo.setUser(user);
+                    httpInfo.getTcpPackets().forEach(t -> {
+                        t.setFlag(false);
+                        t.setHttpInfos(httpInfo);
+                    });
+                    httpRepository.save(httpInfo);
+                    savedData.add(httpInfo);
+                    novos.add(httpInfo);
+                    System.out.println("✅ HTTP salvo: " + httpInfo.getUri());
                 }
-            });
-        });
+            }
+        }));
 
         if (!novos.isEmpty()) {
             createJson(novos);
@@ -112,7 +108,7 @@ public class PacketAuxiliarFunctions {
             return false;
         }
 
-        byte[] payloadData = tcp.getPayload().getBytes();
+        byte[] payloadData = tcp.getPayload().getRawData();
 
         if (payloadData.length < 4) {
             return false;

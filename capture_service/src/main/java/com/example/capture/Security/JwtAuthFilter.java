@@ -1,7 +1,7 @@
-package com.example.authentication.Security;
+package com.example.capture.Security;
 
-import com.example.authentication.Repository.UserRepository;
-import com.example.common.PacketInfo.User;
+import com.example.capture.Repository.UserRepository;
+import com.example.common.UserInfo.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

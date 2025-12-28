@@ -1,5 +1,6 @@
 package com.example.common.PacketInfo;
 
+import com.example.common.UserInfo.User;
 import jakarta.persistence.*;
 import jakarta.servlet.http.*;
 import lombok.Getter;

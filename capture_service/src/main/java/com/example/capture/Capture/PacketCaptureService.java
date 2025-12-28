@@ -1,9 +1,7 @@
 package com.example.capture.Capture;
 
-import com.example.capture.Capture.PacketAuxiliarFunctions;
 import com.example.common.PacketInfo.*;
-import com.example.capture.Repository.HttpRepository;
-import com.example.capture.Repository.TcpRepository;
+import com.example.common.UserInfo.User;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
@@ -19,27 +17,20 @@ public class PacketCaptureService{
     private ExecutorService connectHTTP = Executors.newSingleThreadExecutor();
     private ScheduledExecutorService printScheduler = Executors.newSingleThreadScheduledExecutor();
     private ScheduledExecutorService BDScheduler = Executors.newSingleThreadScheduledExecutor();
-    private ScheduledExecutorService flagReader = Executors.newSingleThreadScheduledExecutor();
 
     // Data structures
     private BlockingQueue<TcpInfos> tcpQueue = new LinkedBlockingQueue<>();
     private final BlockingQueue<HttpInfos> httpQueue;
-    public PacketCaptureService(BlockingQueue<HttpInfos> httpQueue, HttpRepository httpRepository, TcpRepository tcpRepository, PacketAuxiliarFunctions aux) {
+    public PacketCaptureService(BlockingQueue<HttpInfos> httpQueue, PacketAuxiliarFunctions aux) {
         this.httpQueue = httpQueue;
-        this.httpRepository = httpRepository;
-        this.tcpRepository = tcpRepository;
         this.aux = aux;
     }
     Map<String, TreeMap<Long, HttpInfos>> connections_repeat = new ConcurrentHashMap<>();
     private Set<HttpInfos> printedHttp = ConcurrentHashMap.newKeySet();
     private Set<HttpInfos> savedHttp = ConcurrentHashMap.newKeySet();
-    private final HttpRepository httpRepository;
-    private final TcpRepository tcpRepository;
 
     // Auxiliar Function
     private final PacketAuxiliarFunctions aux;
-
-
 
     // Packet capturing and Map generating
     public void startConnectPackets() {
@@ -63,7 +54,7 @@ public class PacketCaptureService{
                         if (isNewHttpRequest) {
                             HttpInfos newHttpInfo = new HttpInfos();
                             if (tcp.getPayload() != null) {
-                                newHttpInfo.setHeaderPayload(tcp.getPayload().getBytes());
+                                newHttpInfo.setHeaderPayload(tcp.getPayload().getRawData());
                             }
                             connections_repeat.computeIfAbsent(key, k -> new TreeMap<>()).put(tcp.getSequenceNumber(), new HttpInfos());
                         }
@@ -119,22 +110,18 @@ public class PacketCaptureService{
 
     // Packets display
     public void schedulePrintTask(int seconds, User user) {
-        Runnable printTask = () -> {
-            aux.printConnections(connections_repeat, printedHttp);
-        };
-        Runnable saveDataTask = () -> {
-            aux.saveData(connections_repeat, savedHttp, user);
-        };
+        Runnable printTask = () -> aux.printConnections(connections_repeat, printedHttp);
+        Runnable saveDataTask = () -> aux.saveData(connections_repeat, savedHttp, user);
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
     }
 
     public void readJson(){
             try {
-                // Se 'model' for o caminho correto (como discutimos, caminho relativo)
+                // Se 'model' for o caminho correto
                 aux.updateJson("/network-scanner-javaml/model/response.json");
             } catch (Exception e) {
-                // **Crucial:** Imprima a exceção para ver o que está falhando
+                // Imprime a exceção para ver o que está falhando
                 System.err.println("Erro ao rodar getJson: " + e.getMessage());
                 e.printStackTrace();
             }

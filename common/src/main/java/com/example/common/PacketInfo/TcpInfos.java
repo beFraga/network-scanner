@@ -32,7 +32,7 @@ public class TcpInfos {
     private Long sequenceNumber;
 
     @Lob
-    private String payload;
+    private Packet payload;
 
     @ManyToOne
     @JoinColumn(name = "http_infos_id")
@@ -47,7 +47,7 @@ public class TcpInfos {
         this.localPort = tcpPacket.getHeader().getSrcPort().valueAsInt();
         this.remotePort = tcpPacket.getHeader().getDstPort().valueAsInt();
         this.sequenceNumber = Long.valueOf(tcpPacket.getHeader().getSequenceNumber());
-        this.payload = tcpPacket.getPayload().toString();
+        this.payload = tcpPacket.getPayload();
         this.flag = false;
     }
 

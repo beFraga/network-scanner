@@ -1,4 +1,4 @@
-package com.example.common.PacketInfo;
+package com.example.common.UserInfo;
 
 import jakarta.persistence.*;
 import lombok.Getter;

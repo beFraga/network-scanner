@@ -10,11 +10,4 @@ import java.util.List;
 public class PlotRequest {
     private List<String> headers;
 
-    public List<String> getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(List<String> headers) {
-        this.headers = headers;
-    }
 }

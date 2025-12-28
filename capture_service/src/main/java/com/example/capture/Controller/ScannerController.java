@@ -6,7 +6,7 @@ import com.example.capture.DTO.PlotRequest;
 import com.example.capture.External.ProcessRunnerCPP;
 import com.example.capture.External.PythonPlotter;
 import com.example.capture.Repository.UserRepository;
-import com.example.common.PacketInfo.User;
+import com.example.common.UserInfo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.example.common.PacketInfo.*;
 
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
-            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP("/network-scanner-javaml/model", true, user.getInteravlo(), packetCaptureService);
+            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP("/network-scanner-javaml/model", false, user.getInteravlo(), packetCaptureService);
             pRCPP.runCppMakefile();
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
