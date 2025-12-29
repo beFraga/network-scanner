@@ -1,5 +1,6 @@
-package com.example.common.UserInfo;
+package com.example.authentication.TwoFactor;
 
+import com.example.common.UserInfo.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,8 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 public class TwoFactorCode {
-    @Id @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

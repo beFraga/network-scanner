@@ -39,7 +39,7 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
-            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP("/network-scanner-javaml/model", false, user.getInteravlo(), packetCaptureService);
+            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP("../../../../../../../../model/", false, user.getInteravlo(), packetCaptureService);
             pRCPP.runCppMakefile();
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class ScannerController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/manual")
     public ResponseEntity<byte[]> getManual() throws IOException {
-        Path path = Paths.get("/network-scanner-javaml/Scanner/user_manual.pdf");
+        Path path = Paths.get("../../../../../../../../user_manual.pdf");
         byte[] bytes = Files.readAllBytes(path);
 
         HttpHeaders headers = new HttpHeaders();

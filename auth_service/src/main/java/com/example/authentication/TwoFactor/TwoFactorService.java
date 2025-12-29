@@ -1,7 +1,6 @@
-package com.example.authentication.User;
+package com.example.authentication.TwoFactor;
 
 import com.example.authentication.Repository.TwoFactorCodeRepository;
-import com.example.common.UserInfo.TwoFactorCode;
 import com.example.common.UserInfo.User;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
