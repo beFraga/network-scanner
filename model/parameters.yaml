@@ -1,0 +1,7 @@
+lstm_ae:
+  batch_size: 64
+  learning_rate: 0.001
+  max_epochs: 200
+  lr_decay_every_n_epoch: 80
+  lr_decay_rate: 0.5
+  loss:
