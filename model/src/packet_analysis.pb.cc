@@ -85,8 +85,40 @@ struct AnalysisAckDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AnalysisAckDefaultTypeInternal _AnalysisAck_default_instance_;
+PROTOBUF_CONSTEXPR PacketEvent::PacketEvent(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.remoteaddress_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.localaddress_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.protocol_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.remoteport_)*/0u
+  , /*decltype(_impl_.payloadsize_)*/0u
+  , /*decltype(_impl_.sequencenumber_)*/uint64_t{0u}
+  , /*decltype(_impl_.flag_)*/false
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct PacketEventDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PacketEventDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PacketEventDefaultTypeInternal() {}
+  union {
+    PacketEvent _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PacketEventDefaultTypeInternal _PacketEvent_default_instance_;
+PROTOBUF_CONSTEXPR EventBatch::EventBatch(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.events_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct EventBatchDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR EventBatchDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~EventBatchDefaultTypeInternal() {}
+  union {
+    EventBatch _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EventBatchDefaultTypeInternal _EventBatch_default_instance_;
 }  // namespace packet
-static ::_pb::Metadata file_level_metadata_packet_5fanalysis_2eproto[4];
+static ::_pb::Metadata file_level_metadata_packet_5fanalysis_2eproto[6];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_packet_5fanalysis_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_packet_5fanalysis_2eproto = nullptr;
 
@@ -131,12 +163,34 @@ const uint32_t TableStruct_packet_5fanalysis_2eproto::offsets[] PROTOBUF_SECTION
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _impl_.accepted_),
   PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _impl_.message_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.remoteaddress_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.localaddress_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.remoteport_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.protocol_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.sequencenumber_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.payloadsize_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.flag_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::packet::EventBatch, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::packet::EventBatch, _impl_.events_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::packet::PacketWindow)},
   { 10, -1, -1, sizeof(::packet::HttpSession)},
   { 20, -1, -1, sizeof(::packet::TcpMeta)},
   { 32, -1, -1, sizeof(::packet::AnalysisAck)},
+  { 40, -1, -1, sizeof(::packet::PacketEvent)},
+  { 53, -1, -1, sizeof(::packet::EventBatch)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -144,30 +198,43 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::packet::_HttpSession_default_instance_._instance,
   &::packet::_TcpMeta_default_instance_._instance,
   &::packet::_AnalysisAck_default_instance_._instance,
+  &::packet::_PacketEvent_default_instance_._instance,
+  &::packet::_EventBatch_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_packet_5fanalysis_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\025packet_analysis.proto\022\006packet\"u\n\014Packe"
-  "tWindow\022\024\n\014window_start\030\001 \001(\003\022\022\n\nwindow_"
-  "end\030\002 \001(\003\022\017\n\007user_id\030\003 \001(\003\022*\n\rhttp_sessi"
-  "ons\030\004 \003(\0132\023.packet.HttpSession\"b\n\013HttpSe"
-  "ssion\022\016\n\006method\030\001 \001(\t\022\020\n\010protocol\030\002 \001(\t\022"
-  "\013\n\003uri\030\003 \001(\t\022$\n\013tcp_packets\030\004 \003(\0132\017.pack"
-  "et.TcpMeta\"\210\001\n\007TcpMeta\022\025\n\rlocal_address\030"
-  "\001 \001(\t\022\026\n\016remote_address\030\002 \001(\t\022\022\n\nlocal_p"
-  "ort\030\003 \001(\005\022\023\n\013remote_port\030\004 \001(\005\022\027\n\017sequen"
-  "ce_number\030\005 \001(\004\022\014\n\004flag\030\006 \001(\010\"0\n\013Analysi"
-  "sAck\022\020\n\010accepted\030\001 \001(\010\022\017\n\007message\030\002 \001(\t2"
-  "T\n\025PacketAnalysisService\022;\n\014StreamWindow"
-  "\022\024.packet.PacketWindow\032\023.packet.Analysis"
-  "Ack(\001B.\n\027com.seguranca.rede.grpcB\023Packet"
-  "AnalysisProtob\006proto3"
+  "\n\025packet_analysis.proto\022\006packet\032\033google/"
+  "protobuf/empty.proto\"u\n\014PacketWindow\022\024\n\014"
+  "window_start\030\001 \001(\003\022\022\n\nwindow_end\030\002 \001(\003\022\017"
+  "\n\007user_id\030\003 \001(\003\022*\n\rhttp_sessions\030\004 \003(\0132\023"
+  ".packet.HttpSession\"b\n\013HttpSession\022\016\n\006me"
+  "thod\030\001 \001(\t\022\020\n\010protocol\030\002 \001(\t\022\013\n\003uri\030\003 \001("
+  "\t\022$\n\013tcp_packets\030\004 \003(\0132\017.packet.TcpMeta\""
+  "\210\001\n\007TcpMeta\022\025\n\rlocal_address\030\001 \001(\t\022\026\n\016re"
+  "mote_address\030\002 \001(\t\022\022\n\nlocal_port\030\003 \001(\005\022\023"
+  "\n\013remote_port\030\004 \001(\005\022\027\n\017sequence_number\030\005"
+  " \001(\004\022\014\n\004flag\030\006 \001(\010\"0\n\013AnalysisAck\022\020\n\010acc"
+  "epted\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\"\233\001\n\013PacketE"
+  "vent\022\025\n\rremoteAddress\030\001 \001(\t\022\024\n\014localAddr"
+  "ess\030\002 \001(\t\022\022\n\nremotePort\030\003 \001(\r\022\020\n\010protoco"
+  "l\030\004 \001(\t\022\026\n\016sequenceNumber\030\005 \001(\004\022\023\n\013paylo"
+  "adSize\030\006 \001(\r\022\014\n\004flag\030\007 \001(\010\"1\n\nEventBatch"
+  "\022#\n\006events\030\001 \003(\0132\023.packet.PacketEvent2T\n"
+  "\025PacketAnalysisService\022;\n\014StreamWindow\022\024"
+  ".packet.PacketWindow\032\023.packet.AnalysisAc"
+  "k(\0012I\n\016PacketAnalyzer\0227\n\tGetEvents\022\026.goo"
+  "gle.protobuf.Empty\032\022.packet.EventBatchB."
+  "\n\027com.seguranca.rede.grpcB\023PacketAnalysi"
+  "sProtob\006proto3"
   ;
+static const ::_pbi::DescriptorTable* const descriptor_table_packet_5fanalysis_2eproto_deps[1] = {
+  &::descriptor_table_google_2fprotobuf_2fempty_2eproto,
+};
 static ::_pbi::once_flag descriptor_table_packet_5fanalysis_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_packet_5fanalysis_2eproto = {
-    false, false, 581, descriptor_table_protodef_packet_5fanalysis_2eproto,
+    false, false, 894, descriptor_table_protodef_packet_5fanalysis_2eproto,
     "packet_analysis.proto",
-    &descriptor_table_packet_5fanalysis_2eproto_once, nullptr, 0, 4,
+    &descriptor_table_packet_5fanalysis_2eproto_once, descriptor_table_packet_5fanalysis_2eproto_deps, 1, 6,
     schemas, file_default_instances, TableStruct_packet_5fanalysis_2eproto::offsets,
     file_level_metadata_packet_5fanalysis_2eproto, file_level_enum_descriptors_packet_5fanalysis_2eproto,
     file_level_service_descriptors_packet_5fanalysis_2eproto,
@@ -1377,6 +1444,602 @@ void AnalysisAck::InternalSwap(AnalysisAck* other) {
       file_level_metadata_packet_5fanalysis_2eproto[3]);
 }
 
+// ===================================================================
+
+class PacketEvent::_Internal {
+ public:
+};
+
+PacketEvent::PacketEvent(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:packet.PacketEvent)
+}
+PacketEvent::PacketEvent(const PacketEvent& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  PacketEvent* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.remoteaddress_){}
+    , decltype(_impl_.localaddress_){}
+    , decltype(_impl_.protocol_){}
+    , decltype(_impl_.remoteport_){}
+    , decltype(_impl_.payloadsize_){}
+    , decltype(_impl_.sequencenumber_){}
+    , decltype(_impl_.flag_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.remoteaddress_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.remoteaddress_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_remoteaddress().empty()) {
+    _this->_impl_.remoteaddress_.Set(from._internal_remoteaddress(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.localaddress_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.localaddress_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_localaddress().empty()) {
+    _this->_impl_.localaddress_.Set(from._internal_localaddress(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.protocol_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.protocol_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_protocol().empty()) {
+    _this->_impl_.protocol_.Set(from._internal_protocol(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.remoteport_, &from._impl_.remoteport_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.flag_) -
+    reinterpret_cast<char*>(&_impl_.remoteport_)) + sizeof(_impl_.flag_));
+  // @@protoc_insertion_point(copy_constructor:packet.PacketEvent)
+}
+
+inline void PacketEvent::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.remoteaddress_){}
+    , decltype(_impl_.localaddress_){}
+    , decltype(_impl_.protocol_){}
+    , decltype(_impl_.remoteport_){0u}
+    , decltype(_impl_.payloadsize_){0u}
+    , decltype(_impl_.sequencenumber_){uint64_t{0u}}
+    , decltype(_impl_.flag_){false}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.remoteaddress_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.remoteaddress_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.localaddress_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.localaddress_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.protocol_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.protocol_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+PacketEvent::~PacketEvent() {
+  // @@protoc_insertion_point(destructor:packet.PacketEvent)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void PacketEvent::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.remoteaddress_.Destroy();
+  _impl_.localaddress_.Destroy();
+  _impl_.protocol_.Destroy();
+}
+
+void PacketEvent::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void PacketEvent::Clear() {
+// @@protoc_insertion_point(message_clear_start:packet.PacketEvent)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.remoteaddress_.ClearToEmpty();
+  _impl_.localaddress_.ClearToEmpty();
+  _impl_.protocol_.ClearToEmpty();
+  ::memset(&_impl_.remoteport_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.flag_) -
+      reinterpret_cast<char*>(&_impl_.remoteport_)) + sizeof(_impl_.flag_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PacketEvent::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string remoteAddress = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_remoteaddress();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.remoteAddress"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string localAddress = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_localaddress();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.localAddress"));
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 remotePort = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.remoteport_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string protocol = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          auto str = _internal_mutable_protocol();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.protocol"));
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 sequenceNumber = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.sequencenumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 payloadSize = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.payloadsize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool flag = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+          _impl_.flag_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* PacketEvent::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:packet.PacketEvent)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string remoteAddress = 1;
+  if (!this->_internal_remoteaddress().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_remoteaddress().data(), static_cast<int>(this->_internal_remoteaddress().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.PacketEvent.remoteAddress");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_remoteaddress(), target);
+  }
+
+  // string localAddress = 2;
+  if (!this->_internal_localaddress().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_localaddress().data(), static_cast<int>(this->_internal_localaddress().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.PacketEvent.localAddress");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_localaddress(), target);
+  }
+
+  // uint32 remotePort = 3;
+  if (this->_internal_remoteport() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(3, this->_internal_remoteport(), target);
+  }
+
+  // string protocol = 4;
+  if (!this->_internal_protocol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_protocol().data(), static_cast<int>(this->_internal_protocol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.PacketEvent.protocol");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_protocol(), target);
+  }
+
+  // uint64 sequenceNumber = 5;
+  if (this->_internal_sequencenumber() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(5, this->_internal_sequencenumber(), target);
+  }
+
+  // uint32 payloadSize = 6;
+  if (this->_internal_payloadsize() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(6, this->_internal_payloadsize(), target);
+  }
+
+  // bool flag = 7;
+  if (this->_internal_flag() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(7, this->_internal_flag(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:packet.PacketEvent)
+  return target;
+}
+
+size_t PacketEvent::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:packet.PacketEvent)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string remoteAddress = 1;
+  if (!this->_internal_remoteaddress().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_remoteaddress());
+  }
+
+  // string localAddress = 2;
+  if (!this->_internal_localaddress().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_localaddress());
+  }
+
+  // string protocol = 4;
+  if (!this->_internal_protocol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_protocol());
+  }
+
+  // uint32 remotePort = 3;
+  if (this->_internal_remoteport() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_remoteport());
+  }
+
+  // uint32 payloadSize = 6;
+  if (this->_internal_payloadsize() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_payloadsize());
+  }
+
+  // uint64 sequenceNumber = 5;
+  if (this->_internal_sequencenumber() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_sequencenumber());
+  }
+
+  // bool flag = 7;
+  if (this->_internal_flag() != 0) {
+    total_size += 1 + 1;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PacketEvent::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    PacketEvent::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PacketEvent::GetClassData() const { return &_class_data_; }
+
+
+void PacketEvent::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<PacketEvent*>(&to_msg);
+  auto& from = static_cast<const PacketEvent&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:packet.PacketEvent)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_remoteaddress().empty()) {
+    _this->_internal_set_remoteaddress(from._internal_remoteaddress());
+  }
+  if (!from._internal_localaddress().empty()) {
+    _this->_internal_set_localaddress(from._internal_localaddress());
+  }
+  if (!from._internal_protocol().empty()) {
+    _this->_internal_set_protocol(from._internal_protocol());
+  }
+  if (from._internal_remoteport() != 0) {
+    _this->_internal_set_remoteport(from._internal_remoteport());
+  }
+  if (from._internal_payloadsize() != 0) {
+    _this->_internal_set_payloadsize(from._internal_payloadsize());
+  }
+  if (from._internal_sequencenumber() != 0) {
+    _this->_internal_set_sequencenumber(from._internal_sequencenumber());
+  }
+  if (from._internal_flag() != 0) {
+    _this->_internal_set_flag(from._internal_flag());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PacketEvent::CopyFrom(const PacketEvent& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:packet.PacketEvent)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PacketEvent::IsInitialized() const {
+  return true;
+}
+
+void PacketEvent::InternalSwap(PacketEvent* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.remoteaddress_, lhs_arena,
+      &other->_impl_.remoteaddress_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.localaddress_, lhs_arena,
+      &other->_impl_.localaddress_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.protocol_, lhs_arena,
+      &other->_impl_.protocol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PacketEvent, _impl_.flag_)
+      + sizeof(PacketEvent::_impl_.flag_)
+      - PROTOBUF_FIELD_OFFSET(PacketEvent, _impl_.remoteport_)>(
+          reinterpret_cast<char*>(&_impl_.remoteport_),
+          reinterpret_cast<char*>(&other->_impl_.remoteport_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PacketEvent::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
+      file_level_metadata_packet_5fanalysis_2eproto[4]);
+}
+
+// ===================================================================
+
+class EventBatch::_Internal {
+ public:
+};
+
+EventBatch::EventBatch(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:packet.EventBatch)
+}
+EventBatch::EventBatch(const EventBatch& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  EventBatch* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.events_){from._impl_.events_}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:packet.EventBatch)
+}
+
+inline void EventBatch::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.events_){arena}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+EventBatch::~EventBatch() {
+  // @@protoc_insertion_point(destructor:packet.EventBatch)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void EventBatch::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.events_.~RepeatedPtrField();
+}
+
+void EventBatch::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void EventBatch::Clear() {
+// @@protoc_insertion_point(message_clear_start:packet.EventBatch)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.events_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* EventBatch::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .packet.PacketEvent events = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_events(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* EventBatch::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:packet.EventBatch)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .packet.PacketEvent events = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_events_size()); i < n; i++) {
+    const auto& repfield = this->_internal_events(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:packet.EventBatch)
+  return target;
+}
+
+size_t EventBatch::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:packet.EventBatch)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .packet.PacketEvent events = 1;
+  total_size += 1UL * this->_internal_events_size();
+  for (const auto& msg : this->_impl_.events_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData EventBatch::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    EventBatch::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*EventBatch::GetClassData() const { return &_class_data_; }
+
+
+void EventBatch::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<EventBatch*>(&to_msg);
+  auto& from = static_cast<const EventBatch&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:packet.EventBatch)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.events_.MergeFrom(from._impl_.events_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void EventBatch::CopyFrom(const EventBatch& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:packet.EventBatch)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool EventBatch::IsInitialized() const {
+  return true;
+}
+
+void EventBatch::InternalSwap(EventBatch* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.events_.InternalSwap(&other->_impl_.events_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata EventBatch::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
+      file_level_metadata_packet_5fanalysis_2eproto[5]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace packet
 PROTOBUF_NAMESPACE_OPEN
@@ -1395,6 +2058,14 @@ Arena::CreateMaybeMessage< ::packet::TcpMeta >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::packet::AnalysisAck*
 Arena::CreateMaybeMessage< ::packet::AnalysisAck >(Arena* arena) {
   return Arena::CreateMessageInternal< ::packet::AnalysisAck >(arena);
+}
+template<> PROTOBUF_NOINLINE ::packet::PacketEvent*
+Arena::CreateMaybeMessage< ::packet::PacketEvent >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::packet::PacketEvent >(arena);
+}
+template<> PROTOBUF_NOINLINE ::packet::EventBatch*
+Arena::CreateMaybeMessage< ::packet::EventBatch >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::packet::EventBatch >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

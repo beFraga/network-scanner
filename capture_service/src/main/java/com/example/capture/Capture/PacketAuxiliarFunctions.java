@@ -10,11 +10,14 @@ import com.example.capture.Repository.TcpRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 public class PacketAuxiliarFunctions {
@@ -71,8 +74,6 @@ public class PacketAuxiliarFunctions {
                     }
                     printedHttp.add(httpInfo);
                 }
-
-
             }
         }));
     }
@@ -99,7 +100,9 @@ public class PacketAuxiliarFunctions {
         }));
 
         if (!novos.isEmpty()) {
-            createJson(novos);
+            Path path = Paths.get("captures").toAbsolutePath().normalize();
+            File modelInput = Paths.get("model/data.json").toAbsolutePath().normalize().toFile();
+            createJson(novos, path, modelInput);
         }
     }
 
@@ -127,38 +130,40 @@ public class PacketAuxiliarFunctions {
     }
 
     @Transactional
-    public void createJson(Set<HttpInfos> httpInfos) {
+    public void createJson(Set<HttpInfos> httpInfos, Path outputPath, File modelInput) {
         try {
             // cada TCP vira um item da lista
+
             List<Map<String, Object>> flatPackets = httpInfos.stream()
                     .flatMap(http -> http.getTcpPackets().stream()
-                            .map(tcp -> Map.<String, Object>of(
-                                    "method", http.getMethod(),
-                                    "protocol", http.getProtocol(),
-                                    "id", tcp.getId(),
-                                    "sequenceNumber", tcp.getSequenceNumber(),
-                                    "localAddress", tcp.getLocalAddress(),
-                                    "remoteAddress", tcp.getRemoteAddress(),
-                                    "remotePort", tcp.getRemotePort(),
-                                    "payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0
-                            ))
-                    )
-                    .toList();
+                            .map(tcp -> {
+                                Map<String, Object> merged = new LinkedHashMap<>();
+                                merged.put("method", http.getMethod());
+                                merged.put("protocol", http.getProtocol());
+                                merged.put("id", tcp.getId());
+                                merged.put("sequenceNumber", tcp.getSequenceNumber());
+                                merged.put("localAddress", tcp.getLocalAddress());
+                                merged.put("remoteAddress", tcp.getRemoteAddress());
+                                merged.put("remotePort", tcp.getRemotePort());
+                                merged.put("payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0);
+
+                                return merged;
+                            })
+                    ).collect(Collectors.toList());
 
             // Configura o ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
             // Cria diretório e arquivo
-            Path outputDir = Paths.get("../captures");
-            Files.createDirectories(outputDir);
+            Files.createDirectories(outputPath);
             String filename = "../captures/capture_" + System.currentTimeMillis() + ".json";
 
             // Escreve o JSON diretamente como lista
             mapper.writeValue(Paths.get(filename).toFile(), flatPackets);
 
             // Escrever em data.json do ML os novos dados capturados no intervalo
-            mapper.writeValue(Paths.get("/network-scanner-javaml/model/data.json").toFile(), flatPackets);
+            mapper.writeValue(modelInput, flatPackets);
 
             System.out.println("📄 JSON achatado salvo em: " + filename);
 
@@ -186,7 +191,6 @@ public class PacketAuxiliarFunctions {
             for (JsonNode node : root) {
                 Long id = node.get("id").asLong();
                 Boolean flag = node.get("flag").asBoolean();
-
                 ids.add(id);
                 flags.add(flag);
             }
@@ -197,38 +201,40 @@ public class PacketAuxiliarFunctions {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
             // Lista que irá armazenar TODOS os JSONs atualizados
-            List<Map<String, Object>> mergedList = new ArrayList<>();
-
+            List<Map<String, Object>> mergedList = List.of();
             // Atualiza no banco de dados
             for (int i = 0; i < ids.size(); i++) {
                 System.out.println("🆔 ID: " + ids.get(i) + " | 🚩 FLAG: " + flags.get(i));
-                int finalI = i;
-                tcpRepository.findById(ids.get(i)).ifPresent(tcp -> {
-                    tcp.setFlag(flags.get(finalI));
-                    tcpRepository.save(tcp);
-
-                    // Para atualização do data.json do plotter
-                    Map<String, Object> merged = new LinkedHashMap<>();
-                    merged.put("id", tcp.getId());
-                    merged.put("method", tcp.getHttpInfos().getMethod());
-                    merged.put("protocol", tcp.getHttpInfos().getProtocol());
-                    merged.put("localAddress", tcp.getLocalAddress());
-                    merged.put("remoteAddress", tcp.getRemoteAddress());
-                    merged.put("remotePort", tcp.getRemotePort());
-                    merged.put("payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0);
-                    merged.put("flag", tcp.getFlag());
-                    merged.put("sequenceNumber", tcp.getSequenceNumber());
-
-                    // 3. Adiciona à lista final
-                    mergedList.add(merged);
-                });
+                mergedList = IntStream.range(0, ids.size())
+                        .mapToObj(j -> {
+                            return tcpRepository.findById(ids.get(j)).map(tcp -> {
+                                // Atualiza o banco
+                                tcp.setFlag(flags.get(j));
+                                tcpRepository.save(tcp);
+                                // Cria o objeto para o JSON
+                                Map<String, Object> merged = new LinkedHashMap<>();
+                                merged.put("id", tcp.getId());
+                                merged.put("method", tcp.getHttpInfos().getMethod());
+                                merged.put("protocol", tcp.getHttpInfos().getProtocol());
+                                merged.put("localAddress", tcp.getLocalAddress());
+                                merged.put("remoteAddress", tcp.getRemoteAddress());
+                                merged.put("remotePort", tcp.getRemotePort());
+                                merged.put("payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0);
+                                merged.put("flag", tcp.getFlag());
+                                merged.put("sequenceNumber", tcp.getSequenceNumber());
+                                return merged;
+                            });
+                        })
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .toList();
             }
 
             // Marca como processado
             processedFiles.add(path.toString());
 
             // 4. Salva TODOS no mesmo data.json
-            Path updatedJsonPath = Paths.get("/network-scanner-javaml/plotter/data.json");
+            Path updatedJsonPath = Paths.get("plotter/data.json").toAbsolutePath().normalize();
 
             try {
                 mapper.writeValue(updatedJsonPath.toFile(), mergedList);

@@ -39,8 +39,10 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
-            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP("../../../../../../../../model/", false, user.getInteravlo(), packetCaptureService);
+            String path = Paths.get("model").normalize().toAbsolutePath().toString();
+            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP(path, false, user.getInteravlo(), packetCaptureService);
             pRCPP.runCppMakefile();
+
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao iniciar captura: " + e.getMessage());
@@ -50,7 +52,7 @@ public class ScannerController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/manual")
     public ResponseEntity<byte[]> getManual() throws IOException {
-        Path path = Paths.get("../../../../../../../../user_manual.pdf");
+        Path path = Paths.get("user_manual.pdf").normalize().toAbsolutePath();
         byte[] bytes = Files.readAllBytes(path);
 
         HttpHeaders headers = new HttpHeaders();
@@ -68,7 +70,8 @@ public class ScannerController {
             List<String> headers = dto.getHeaders();
 
             // chama o plotter Python
-            PythonPlotter.generatePlot(headers);
+            String path = Paths.get("plotter").toAbsolutePath().normalize().toString();
+            PythonPlotter.generatePlot(headers, path);
 
             return ResponseEntity.ok("Plot(s) gerado(s) com sucesso!");
         }

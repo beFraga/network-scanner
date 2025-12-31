@@ -5,7 +5,7 @@ LDFLAGS = `pkg-config --libs protobuf grpc++ grpc` -lgrpc++_reflection -ldl
 SRC_DIR = src
 INC_DIR = include
 BUILD_DIR = build
-PROTO_DIR = proto
+PROTO_DIR = ../proto
 
 PROTO_NAME = packet_analysis
 

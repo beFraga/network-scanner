@@ -1,6 +1,5 @@
-package com.example.authentication.TwoFactor;
+package com.example.common.UserInfo;
 
-import com.example.common.UserInfo.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

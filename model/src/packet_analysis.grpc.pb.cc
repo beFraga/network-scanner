@@ -75,5 +75,66 @@ PacketAnalysisService::Service::~Service() {
 }
 
 
+static const char* PacketAnalyzer_method_names[] = {
+  "/packet.PacketAnalyzer/GetEvents",
+};
+
+std::unique_ptr< PacketAnalyzer::Stub> PacketAnalyzer::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
+  (void)options;
+  std::unique_ptr< PacketAnalyzer::Stub> stub(new PacketAnalyzer::Stub(channel, options));
+  return stub;
+}
+
+PacketAnalyzer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_GetEvents_(PacketAnalyzer_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  {}
+
+::grpc::Status PacketAnalyzer::Stub::GetEvents(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::packet::EventBatch* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::google::protobuf::Empty, ::packet::EventBatch, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetEvents_, context, request, response);
+}
+
+void PacketAnalyzer::Stub::async::GetEvents(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::packet::EventBatch* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::google::protobuf::Empty, ::packet::EventBatch, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetEvents_, context, request, response, std::move(f));
+}
+
+void PacketAnalyzer::Stub::async::GetEvents(::grpc::ClientContext* context, const ::google::protobuf::Empty* request, ::packet::EventBatch* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetEvents_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::packet::EventBatch>* PacketAnalyzer::Stub::PrepareAsyncGetEventsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::packet::EventBatch, ::google::protobuf::Empty, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetEvents_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::packet::EventBatch>* PacketAnalyzer::Stub::AsyncGetEventsRaw(::grpc::ClientContext* context, const ::google::protobuf::Empty& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncGetEventsRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+PacketAnalyzer::Service::Service() {
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      PacketAnalyzer_method_names[0],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< PacketAnalyzer::Service, ::google::protobuf::Empty, ::packet::EventBatch, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](PacketAnalyzer::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::google::protobuf::Empty* req,
+             ::packet::EventBatch* resp) {
+               return service->GetEvents(ctx, req, resp);
+             }, this)));
+}
+
+PacketAnalyzer::Service::~Service() {
+}
+
+::grpc::Status PacketAnalyzer::Service::GetEvents(::grpc::ServerContext* context, const ::google::protobuf::Empty* request, ::packet::EventBatch* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+
 }  // namespace packet
 

@@ -5,6 +5,7 @@ import com.example.common.UserInfo.User;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -119,7 +120,8 @@ public class PacketCaptureService{
     public void readJson(){
             try {
                 // Se 'model' for o caminho correto
-                aux.updateJson("/network-scanner-javaml/model/response.json");
+                String path = Paths.get("model/response.json").toAbsolutePath().normalize().toString();
+                aux.updateJson(path);
             } catch (Exception e) {
                 // Imprime a exceção para ver o que está falhando
                 System.err.println("Erro ao rodar getJson: " + e.getMessage());

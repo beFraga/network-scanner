@@ -1,8 +1,7 @@
 package com.example.authentication.Repository;
 
 
-import com.example.authentication.TwoFactor.TwoFactorCode;
-import com.example.common.UserInfo.User;
+import com.example.common.UserInfo.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
