@@ -1,8 +1,8 @@
 [ {
   "method" : "GET",
   "protocol" : "HTTP/1.1",
-  "id" : 60,
-  "sequenceNumber" : 1575271480,
+  "id" : 66,
+  "sequenceNumber" : 1669312261,
   "localAddress" : "192.168.0.50",
   "remoteAddress" : "192.168.0.16",
   "remotePort" : 8081,
@@ -10,8 +10,8 @@
 }, {
   "method" : "GET",
   "protocol" : "HTTP/1.1",
-  "id" : 61,
-  "sequenceNumber" : 1575271893,
+  "id" : 67,
+  "sequenceNumber" : 1669312674,
   "localAddress" : "192.168.0.50",
   "remoteAddress" : "192.168.0.16",
   "remotePort" : 8081,
@@ -19,19 +19,10 @@
 }, {
   "method" : "GET",
   "protocol" : "HTTP/1.1",
-  "id" : 62,
-  "sequenceNumber" : 1575271893,
+  "id" : 72,
+  "sequenceNumber" : 1669313500,
   "localAddress" : "192.168.0.50",
   "remoteAddress" : "192.168.0.16",
   "remotePort" : 8081,
   "payloadSize" : 413
-}, {
-  "method" : "GET",
-  "protocol" : "HTTP/1.1",
-  "id" : 63,
-  "sequenceNumber" : 1575272306,
-  "localAddress" : "192.168.0.50",
-  "remoteAddress" : "192.168.0.16",
-  "remotePort" : 8081,
-  "payloadSize" : 0
-} ]
+}]

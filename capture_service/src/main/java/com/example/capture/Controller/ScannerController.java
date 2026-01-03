@@ -3,7 +3,6 @@ package com.example.capture.Controller;
 import com.example.capture.Capture.PacketCaptureService;
 import com.example.capture.DTO.ConfigOptions;
 import com.example.capture.DTO.PlotRequest;
-import com.example.capture.External.ProcessRunnerCPP;
 import com.example.capture.External.PythonPlotter;
 import com.example.capture.Repository.UserRepository;
 import com.example.common.UserInfo.User;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -38,11 +38,7 @@ public class ScannerController {
     public ResponseEntity<?> startCapture(@AuthenticationPrincipal User user) {
         try {
             packetCaptureService.startConnectPackets();
-            packetCaptureService.schedulePrintTask(user.getInteravlo(), user);
-            String path = Paths.get("model").normalize().toAbsolutePath().toString();
-            ProcessRunnerCPP pRCPP = new ProcessRunnerCPP(path, false, user.getInteravlo(), packetCaptureService);
-            pRCPP.runCppMakefile();
-
+            packetCaptureService.schedulePacketGathering(user.getInteravlo(), user);
             return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao iniciar captura: " + e.getMessage());

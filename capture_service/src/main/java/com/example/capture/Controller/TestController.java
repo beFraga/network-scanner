@@ -2,6 +2,7 @@ package com.example.capture.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping(value = "/test")
 public class TestController {
@@ -13,4 +14,5 @@ public class TestController {
 
     @GetMapping("/catch_http")
     public void capture() {}
+
 }

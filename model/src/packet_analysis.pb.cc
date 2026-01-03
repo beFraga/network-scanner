@@ -23,7 +23,7 @@ namespace _pbi = _pb::internal;
 namespace packet {
 PROTOBUF_CONSTEXPR PacketWindow::PacketWindow(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.http_sessions_)*/{}
+    /*decltype(_impl_.tcp_packets_)*/{}
   , /*decltype(_impl_.window_start_)*/int64_t{0}
   , /*decltype(_impl_.window_end_)*/int64_t{0}
   , /*decltype(_impl_.user_id_)*/int64_t{0}
@@ -37,30 +37,16 @@ struct PacketWindowDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PacketWindowDefaultTypeInternal _PacketWindow_default_instance_;
-PROTOBUF_CONSTEXPR HttpSession::HttpSession(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.tcp_packets_)*/{}
-  , /*decltype(_impl_.method_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.protocol_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.uri_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct HttpSessionDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR HttpSessionDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~HttpSessionDefaultTypeInternal() {}
-  union {
-    HttpSession _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HttpSessionDefaultTypeInternal _HttpSession_default_instance_;
 PROTOBUF_CONSTEXPR TcpMeta::TcpMeta(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.local_address_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+    /*decltype(_impl_.method_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.protocol_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.local_address_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.remote_address_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.local_port_)*/0
-  , /*decltype(_impl_.remote_port_)*/0
+  , /*decltype(_impl_.id_)*/int64_t{0}
   , /*decltype(_impl_.sequence_number_)*/uint64_t{0u}
-  , /*decltype(_impl_.flag_)*/false
+  , /*decltype(_impl_.payload_size_)*/uint64_t{0u}
+  , /*decltype(_impl_.remote_port_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct TcpMetaDefaultTypeInternal {
   PROTOBUF_CONSTEXPR TcpMetaDefaultTypeInternal()
@@ -74,6 +60,8 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR AnalysisAck::AnalysisAck(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.message_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.window_start_)*/int64_t{0}
+  , /*decltype(_impl_.window_end_)*/int64_t{0}
   , /*decltype(_impl_.accepted_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AnalysisAckDefaultTypeInternal {
@@ -87,13 +75,15 @@ struct AnalysisAckDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AnalysisAckDefaultTypeInternal _AnalysisAck_default_instance_;
 PROTOBUF_CONSTEXPR PacketEvent::PacketEvent(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.remoteaddress_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.localaddress_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+    /*decltype(_impl_.method_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.protocol_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.remoteport_)*/0u
-  , /*decltype(_impl_.payloadsize_)*/0u
-  , /*decltype(_impl_.sequencenumber_)*/uint64_t{0u}
+  , /*decltype(_impl_.local_address_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.remote_address_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.id_)*/int64_t{0}
+  , /*decltype(_impl_.sequence_number_)*/uint64_t{0u}
+  , /*decltype(_impl_.remote_port_)*/0
   , /*decltype(_impl_.flag_)*/false
+  , /*decltype(_impl_.payload_size_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct PacketEventDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PacketEventDefaultTypeInternal()
@@ -118,7 +108,7 @@ struct EventBatchDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EventBatchDefaultTypeInternal _EventBatch_default_instance_;
 }  // namespace packet
-static ::_pb::Metadata file_level_metadata_packet_5fanalysis_2eproto[6];
+static ::_pb::Metadata file_level_metadata_packet_5fanalysis_2eproto[5];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_packet_5fanalysis_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_packet_5fanalysis_2eproto = nullptr;
 
@@ -132,29 +122,21 @@ const uint32_t TableStruct_packet_5fanalysis_2eproto::offsets[] PROTOBUF_SECTION
   PROTOBUF_FIELD_OFFSET(::packet::PacketWindow, _impl_.window_start_),
   PROTOBUF_FIELD_OFFSET(::packet::PacketWindow, _impl_.window_end_),
   PROTOBUF_FIELD_OFFSET(::packet::PacketWindow, _impl_.user_id_),
-  PROTOBUF_FIELD_OFFSET(::packet::PacketWindow, _impl_.http_sessions_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::packet::HttpSession, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::packet::HttpSession, _impl_.method_),
-  PROTOBUF_FIELD_OFFSET(::packet::HttpSession, _impl_.protocol_),
-  PROTOBUF_FIELD_OFFSET(::packet::HttpSession, _impl_.uri_),
-  PROTOBUF_FIELD_OFFSET(::packet::HttpSession, _impl_.tcp_packets_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketWindow, _impl_.tcp_packets_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.method_),
+  PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.protocol_),
+  PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.id_),
   PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.local_address_),
   PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.remote_address_),
-  PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.local_port_),
   PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.remote_port_),
   PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.sequence_number_),
-  PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.flag_),
+  PROTOBUF_FIELD_OFFSET(::packet::TcpMeta, _impl_.payload_size_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -163,18 +145,22 @@ const uint32_t TableStruct_packet_5fanalysis_2eproto::offsets[] PROTOBUF_SECTION
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _impl_.accepted_),
   PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _impl_.message_),
+  PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _impl_.window_start_),
+  PROTOBUF_FIELD_OFFSET(::packet::AnalysisAck, _impl_.window_end_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.remoteaddress_),
-  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.localaddress_),
-  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.remoteport_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.method_),
   PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.protocol_),
-  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.sequencenumber_),
-  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.payloadsize_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.id_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.local_address_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.remote_address_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.remote_port_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.sequence_number_),
+  PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.payload_size_),
   PROTOBUF_FIELD_OFFSET(::packet::PacketEvent, _impl_.flag_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::packet::EventBatch, _internal_metadata_),
@@ -186,16 +172,14 @@ const uint32_t TableStruct_packet_5fanalysis_2eproto::offsets[] PROTOBUF_SECTION
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::packet::PacketWindow)},
-  { 10, -1, -1, sizeof(::packet::HttpSession)},
-  { 20, -1, -1, sizeof(::packet::TcpMeta)},
-  { 32, -1, -1, sizeof(::packet::AnalysisAck)},
-  { 40, -1, -1, sizeof(::packet::PacketEvent)},
-  { 53, -1, -1, sizeof(::packet::EventBatch)},
+  { 10, -1, -1, sizeof(::packet::TcpMeta)},
+  { 24, -1, -1, sizeof(::packet::AnalysisAck)},
+  { 34, -1, -1, sizeof(::packet::PacketEvent)},
+  { 49, -1, -1, sizeof(::packet::EventBatch)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
   &::packet::_PacketWindow_default_instance_._instance,
-  &::packet::_HttpSession_default_instance_._instance,
   &::packet::_TcpMeta_default_instance_._instance,
   &::packet::_AnalysisAck_default_instance_._instance,
   &::packet::_PacketEvent_default_instance_._instance,
@@ -204,37 +188,37 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_packet_5fanalysis_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\025packet_analysis.proto\022\006packet\032\033google/"
-  "protobuf/empty.proto\"u\n\014PacketWindow\022\024\n\014"
+  "protobuf/empty.proto\"o\n\014PacketWindow\022\024\n\014"
   "window_start\030\001 \001(\003\022\022\n\nwindow_end\030\002 \001(\003\022\017"
-  "\n\007user_id\030\003 \001(\003\022*\n\rhttp_sessions\030\004 \003(\0132\023"
-  ".packet.HttpSession\"b\n\013HttpSession\022\016\n\006me"
-  "thod\030\001 \001(\t\022\020\n\010protocol\030\002 \001(\t\022\013\n\003uri\030\003 \001("
-  "\t\022$\n\013tcp_packets\030\004 \003(\0132\017.packet.TcpMeta\""
-  "\210\001\n\007TcpMeta\022\025\n\rlocal_address\030\001 \001(\t\022\026\n\016re"
-  "mote_address\030\002 \001(\t\022\022\n\nlocal_port\030\003 \001(\005\022\023"
-  "\n\013remote_port\030\004 \001(\005\022\027\n\017sequence_number\030\005"
-  " \001(\004\022\014\n\004flag\030\006 \001(\010\"0\n\013AnalysisAck\022\020\n\010acc"
-  "epted\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\"\233\001\n\013PacketE"
-  "vent\022\025\n\rremoteAddress\030\001 \001(\t\022\024\n\014localAddr"
-  "ess\030\002 \001(\t\022\022\n\nremotePort\030\003 \001(\r\022\020\n\010protoco"
-  "l\030\004 \001(\t\022\026\n\016sequenceNumber\030\005 \001(\004\022\023\n\013paylo"
-  "adSize\030\006 \001(\r\022\014\n\004flag\030\007 \001(\010\"1\n\nEventBatch"
-  "\022#\n\006events\030\001 \003(\0132\023.packet.PacketEvent2T\n"
-  "\025PacketAnalysisService\022;\n\014StreamWindow\022\024"
-  ".packet.PacketWindow\032\023.packet.AnalysisAc"
-  "k(\0012I\n\016PacketAnalyzer\0227\n\tGetEvents\022\026.goo"
-  "gle.protobuf.Empty\032\022.packet.EventBatchB."
-  "\n\027com.seguranca.rede.grpcB\023PacketAnalysi"
-  "sProtob\006proto3"
+  "\n\007user_id\030\003 \001(\003\022$\n\013tcp_packets\030\004 \003(\0132\017.p"
+  "acket.TcpMeta\"\252\001\n\007TcpMeta\022\016\n\006method\030\001 \001("
+  "\t\022\020\n\010protocol\030\002 \001(\t\022\n\n\002id\030\003 \001(\003\022\025\n\rlocal"
+  "_address\030\004 \001(\t\022\026\n\016remote_address\030\005 \001(\t\022\023"
+  "\n\013remote_port\030\006 \001(\005\022\027\n\017sequence_number\030\007"
+  " \001(\004\022\024\n\014payload_size\030\010 \001(\004\"Z\n\013AnalysisAc"
+  "k\022\020\n\010accepted\030\001 \001(\010\022\017\n\007message\030\002 \001(\t\022\024\n\014"
+  "window_start\030\003 \001(\003\022\022\n\nwindow_end\030\004 \001(\003\"\274"
+  "\001\n\013PacketEvent\022\016\n\006method\030\001 \001(\t\022\020\n\010protoc"
+  "ol\030\002 \001(\t\022\n\n\002id\030\003 \001(\003\022\025\n\rlocal_address\030\004 "
+  "\001(\t\022\026\n\016remote_address\030\005 \001(\t\022\023\n\013remote_po"
+  "rt\030\006 \001(\005\022\027\n\017sequence_number\030\007 \001(\004\022\024\n\014pay"
+  "load_size\030\010 \001(\004\022\014\n\004flag\030\t \001(\010\"1\n\nEventBa"
+  "tch\022#\n\006events\030\001 \003(\0132\023.packet.PacketEvent"
+  "2T\n\025PacketAnalysisService\022;\n\014StreamWindo"
+  "w\022\024.packet.PacketWindow\032\023.packet.Analysi"
+  "sAck(\0012I\n\016PacketAnalyzer\0227\n\tGetEvents\022\026."
+  "google.protobuf.Empty\032\022.packet.EventBatc"
+  "hB/\n\030com.example.capture.grpcB\023PacketAna"
+  "lysisProtob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_packet_5fanalysis_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fempty_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_packet_5fanalysis_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_packet_5fanalysis_2eproto = {
-    false, false, 894, descriptor_table_protodef_packet_5fanalysis_2eproto,
+    false, false, 898, descriptor_table_protodef_packet_5fanalysis_2eproto,
     "packet_analysis.proto",
-    &descriptor_table_packet_5fanalysis_2eproto_once, descriptor_table_packet_5fanalysis_2eproto_deps, 1, 6,
+    &descriptor_table_packet_5fanalysis_2eproto_once, descriptor_table_packet_5fanalysis_2eproto_deps, 1, 5,
     schemas, file_default_instances, TableStruct_packet_5fanalysis_2eproto::offsets,
     file_level_metadata_packet_5fanalysis_2eproto, file_level_enum_descriptors_packet_5fanalysis_2eproto,
     file_level_service_descriptors_packet_5fanalysis_2eproto,
@@ -263,7 +247,7 @@ PacketWindow::PacketWindow(const PacketWindow& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   PacketWindow* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.http_sessions_){from._impl_.http_sessions_}
+      decltype(_impl_.tcp_packets_){from._impl_.tcp_packets_}
     , decltype(_impl_.window_start_){}
     , decltype(_impl_.window_end_){}
     , decltype(_impl_.user_id_){}
@@ -281,7 +265,7 @@ inline void PacketWindow::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.http_sessions_){arena}
+      decltype(_impl_.tcp_packets_){arena}
     , decltype(_impl_.window_start_){int64_t{0}}
     , decltype(_impl_.window_end_){int64_t{0}}
     , decltype(_impl_.user_id_){int64_t{0}}
@@ -300,7 +284,7 @@ PacketWindow::~PacketWindow() {
 
 inline void PacketWindow::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.http_sessions_.~RepeatedPtrField();
+  _impl_.tcp_packets_.~RepeatedPtrField();
 }
 
 void PacketWindow::SetCachedSize(int size) const {
@@ -313,7 +297,7 @@ void PacketWindow::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.http_sessions_.Clear();
+  _impl_.tcp_packets_.Clear();
   ::memset(&_impl_.window_start_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&_impl_.user_id_) -
       reinterpret_cast<char*>(&_impl_.window_start_)) + sizeof(_impl_.user_id_));
@@ -350,13 +334,13 @@ const char* PacketWindow::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
         } else
           goto handle_unusual;
         continue;
-      // repeated .packet.HttpSession http_sessions = 4;
+      // repeated .packet.TcpMeta tcp_packets = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_http_sessions(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_tcp_packets(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
@@ -410,10 +394,10 @@ uint8_t* PacketWindow::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_user_id(), target);
   }
 
-  // repeated .packet.HttpSession http_sessions = 4;
+  // repeated .packet.TcpMeta tcp_packets = 4;
   for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_http_sessions_size()); i < n; i++) {
-    const auto& repfield = this->_internal_http_sessions(i);
+      n = static_cast<unsigned>(this->_internal_tcp_packets_size()); i < n; i++) {
+    const auto& repfield = this->_internal_tcp_packets(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
         InternalWriteMessage(4, repfield, repfield.GetCachedSize(), target, stream);
   }
@@ -434,9 +418,9 @@ size_t PacketWindow::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .packet.HttpSession http_sessions = 4;
-  total_size += 1UL * this->_internal_http_sessions_size();
-  for (const auto& msg : this->_impl_.http_sessions_) {
+  // repeated .packet.TcpMeta tcp_packets = 4;
+  total_size += 1UL * this->_internal_tcp_packets_size();
+  for (const auto& msg : this->_impl_.tcp_packets_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -474,7 +458,7 @@ void PacketWindow::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.http_sessions_.MergeFrom(from._impl_.http_sessions_);
+  _this->_impl_.tcp_packets_.MergeFrom(from._impl_.tcp_packets_);
   if (from._internal_window_start() != 0) {
     _this->_internal_set_window_start(from._internal_window_start());
   }
@@ -501,7 +485,7 @@ bool PacketWindow::IsInitialized() const {
 void PacketWindow::InternalSwap(PacketWindow* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.http_sessions_.InternalSwap(&other->_impl_.http_sessions_);
+  _impl_.tcp_packets_.InternalSwap(&other->_impl_.tcp_packets_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PacketWindow, _impl_.user_id_)
       + sizeof(PacketWindow::_impl_.user_id_)
@@ -518,24 +502,28 @@ void PacketWindow::InternalSwap(PacketWindow* other) {
 
 // ===================================================================
 
-class HttpSession::_Internal {
+class TcpMeta::_Internal {
  public:
 };
 
-HttpSession::HttpSession(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+TcpMeta::TcpMeta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:packet.HttpSession)
+  // @@protoc_insertion_point(arena_constructor:packet.TcpMeta)
 }
-HttpSession::HttpSession(const HttpSession& from)
+TcpMeta::TcpMeta(const TcpMeta& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  HttpSession* const _this = this; (void)_this;
+  TcpMeta* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.tcp_packets_){from._impl_.tcp_packets_}
-    , decltype(_impl_.method_){}
+      decltype(_impl_.method_){}
     , decltype(_impl_.protocol_){}
-    , decltype(_impl_.uri_){}
+    , decltype(_impl_.local_address_){}
+    , decltype(_impl_.remote_address_){}
+    , decltype(_impl_.id_){}
+    , decltype(_impl_.sequence_number_){}
+    , decltype(_impl_.payload_size_){}
+    , decltype(_impl_.remote_port_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -555,329 +543,6 @@ HttpSession::HttpSession(const HttpSession& from)
     _this->_impl_.protocol_.Set(from._internal_protocol(), 
       _this->GetArenaForAllocation());
   }
-  _impl_.uri_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.uri_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_uri().empty()) {
-    _this->_impl_.uri_.Set(from._internal_uri(), 
-      _this->GetArenaForAllocation());
-  }
-  // @@protoc_insertion_point(copy_constructor:packet.HttpSession)
-}
-
-inline void HttpSession::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.tcp_packets_){arena}
-    , decltype(_impl_.method_){}
-    , decltype(_impl_.protocol_){}
-    , decltype(_impl_.uri_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.method_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.method_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.protocol_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.protocol_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.uri_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.uri_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-}
-
-HttpSession::~HttpSession() {
-  // @@protoc_insertion_point(destructor:packet.HttpSession)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void HttpSession::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.tcp_packets_.~RepeatedPtrField();
-  _impl_.method_.Destroy();
-  _impl_.protocol_.Destroy();
-  _impl_.uri_.Destroy();
-}
-
-void HttpSession::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void HttpSession::Clear() {
-// @@protoc_insertion_point(message_clear_start:packet.HttpSession)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.tcp_packets_.Clear();
-  _impl_.method_.ClearToEmpty();
-  _impl_.protocol_.ClearToEmpty();
-  _impl_.uri_.ClearToEmpty();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* HttpSession::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string method = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_method();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "packet.HttpSession.method"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string protocol = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_protocol();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "packet.HttpSession.protocol"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string uri = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_uri();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "packet.HttpSession.uri"));
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .packet.TcpMeta tcp_packets = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_tcp_packets(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* HttpSession::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:packet.HttpSession)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string method = 1;
-  if (!this->_internal_method().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_method().data(), static_cast<int>(this->_internal_method().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "packet.HttpSession.method");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_method(), target);
-  }
-
-  // string protocol = 2;
-  if (!this->_internal_protocol().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_protocol().data(), static_cast<int>(this->_internal_protocol().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "packet.HttpSession.protocol");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_protocol(), target);
-  }
-
-  // string uri = 3;
-  if (!this->_internal_uri().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_uri().data(), static_cast<int>(this->_internal_uri().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "packet.HttpSession.uri");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_uri(), target);
-  }
-
-  // repeated .packet.TcpMeta tcp_packets = 4;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_tcp_packets_size()); i < n; i++) {
-    const auto& repfield = this->_internal_tcp_packets(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(4, repfield, repfield.GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:packet.HttpSession)
-  return target;
-}
-
-size_t HttpSession::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:packet.HttpSession)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .packet.TcpMeta tcp_packets = 4;
-  total_size += 1UL * this->_internal_tcp_packets_size();
-  for (const auto& msg : this->_impl_.tcp_packets_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // string method = 1;
-  if (!this->_internal_method().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_method());
-  }
-
-  // string protocol = 2;
-  if (!this->_internal_protocol().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_protocol());
-  }
-
-  // string uri = 3;
-  if (!this->_internal_uri().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_uri());
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData HttpSession::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    HttpSession::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*HttpSession::GetClassData() const { return &_class_data_; }
-
-
-void HttpSession::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<HttpSession*>(&to_msg);
-  auto& from = static_cast<const HttpSession&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:packet.HttpSession)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  _this->_impl_.tcp_packets_.MergeFrom(from._impl_.tcp_packets_);
-  if (!from._internal_method().empty()) {
-    _this->_internal_set_method(from._internal_method());
-  }
-  if (!from._internal_protocol().empty()) {
-    _this->_internal_set_protocol(from._internal_protocol());
-  }
-  if (!from._internal_uri().empty()) {
-    _this->_internal_set_uri(from._internal_uri());
-  }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void HttpSession::CopyFrom(const HttpSession& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:packet.HttpSession)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool HttpSession::IsInitialized() const {
-  return true;
-}
-
-void HttpSession::InternalSwap(HttpSession* other) {
-  using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.tcp_packets_.InternalSwap(&other->_impl_.tcp_packets_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.method_, lhs_arena,
-      &other->_impl_.method_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.protocol_, lhs_arena,
-      &other->_impl_.protocol_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.uri_, lhs_arena,
-      &other->_impl_.uri_, rhs_arena
-  );
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata HttpSession::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
-      file_level_metadata_packet_5fanalysis_2eproto[1]);
-}
-
-// ===================================================================
-
-class TcpMeta::_Internal {
- public:
-};
-
-TcpMeta::TcpMeta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:packet.TcpMeta)
-}
-TcpMeta::TcpMeta(const TcpMeta& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  TcpMeta* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.local_address_){}
-    , decltype(_impl_.remote_address_){}
-    , decltype(_impl_.local_port_){}
-    , decltype(_impl_.remote_port_){}
-    , decltype(_impl_.sequence_number_){}
-    , decltype(_impl_.flag_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.local_address_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.local_address_.Set("", GetArenaForAllocation());
@@ -894,9 +559,9 @@ TcpMeta::TcpMeta(const TcpMeta& from)
     _this->_impl_.remote_address_.Set(from._internal_remote_address(), 
       _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.local_port_, &from._impl_.local_port_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.flag_) -
-    reinterpret_cast<char*>(&_impl_.local_port_)) + sizeof(_impl_.flag_));
+  ::memcpy(&_impl_.id_, &from._impl_.id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.remote_port_) -
+    reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.remote_port_));
   // @@protoc_insertion_point(copy_constructor:packet.TcpMeta)
 }
 
@@ -905,14 +570,24 @@ inline void TcpMeta::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.local_address_){}
+      decltype(_impl_.method_){}
+    , decltype(_impl_.protocol_){}
+    , decltype(_impl_.local_address_){}
     , decltype(_impl_.remote_address_){}
-    , decltype(_impl_.local_port_){0}
-    , decltype(_impl_.remote_port_){0}
+    , decltype(_impl_.id_){int64_t{0}}
     , decltype(_impl_.sequence_number_){uint64_t{0u}}
-    , decltype(_impl_.flag_){false}
+    , decltype(_impl_.payload_size_){uint64_t{0u}}
+    , decltype(_impl_.remote_port_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+  _impl_.method_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.method_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.protocol_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.protocol_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.local_address_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.local_address_.Set("", GetArenaForAllocation());
@@ -934,6 +609,8 @@ TcpMeta::~TcpMeta() {
 
 inline void TcpMeta::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.method_.Destroy();
+  _impl_.protocol_.Destroy();
   _impl_.local_address_.Destroy();
   _impl_.remote_address_.Destroy();
 }
@@ -948,11 +625,13 @@ void TcpMeta::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.method_.ClearToEmpty();
+  _impl_.protocol_.ClearToEmpty();
   _impl_.local_address_.ClearToEmpty();
   _impl_.remote_address_.ClearToEmpty();
-  ::memset(&_impl_.local_port_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.flag_) -
-      reinterpret_cast<char*>(&_impl_.local_port_)) + sizeof(_impl_.flag_));
+  ::memset(&_impl_.id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.remote_port_) -
+      reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.remote_port_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -962,9 +641,37 @@ const char* TcpMeta::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string local_address = 1;
+      // string method = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_method();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.TcpMeta.method"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string protocol = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_protocol();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.TcpMeta.protocol"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 id = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_address = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           auto str = _internal_mutable_local_address();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -972,9 +679,9 @@ const char* TcpMeta::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
         } else
           goto handle_unusual;
         continue;
-      // string remote_address = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+      // string remote_address = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           auto str = _internal_mutable_remote_address();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -982,34 +689,26 @@ const char* TcpMeta::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
         } else
           goto handle_unusual;
         continue;
-      // int32 local_port = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          _impl_.local_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 remote_port = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+      // int32 remote_port = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
           _impl_.remote_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint64 sequence_number = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+      // uint64 sequence_number = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
           _impl_.sequence_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // bool flag = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
-          _impl_.flag_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+      // uint64 payload_size = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+          _impl_.payload_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1043,48 +742,68 @@ uint8_t* TcpMeta::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string local_address = 1;
+  // string method = 1;
+  if (!this->_internal_method().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_method().data(), static_cast<int>(this->_internal_method().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.TcpMeta.method");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_method(), target);
+  }
+
+  // string protocol = 2;
+  if (!this->_internal_protocol().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_protocol().data(), static_cast<int>(this->_internal_protocol().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.TcpMeta.protocol");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_protocol(), target);
+  }
+
+  // int64 id = 3;
+  if (this->_internal_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_id(), target);
+  }
+
+  // string local_address = 4;
   if (!this->_internal_local_address().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_local_address().data(), static_cast<int>(this->_internal_local_address().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "packet.TcpMeta.local_address");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_local_address(), target);
+        4, this->_internal_local_address(), target);
   }
 
-  // string remote_address = 2;
+  // string remote_address = 5;
   if (!this->_internal_remote_address().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_remote_address().data(), static_cast<int>(this->_internal_remote_address().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "packet.TcpMeta.remote_address");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_remote_address(), target);
+        5, this->_internal_remote_address(), target);
   }
 
-  // int32 local_port = 3;
-  if (this->_internal_local_port() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_local_port(), target);
-  }
-
-  // int32 remote_port = 4;
+  // int32 remote_port = 6;
   if (this->_internal_remote_port() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_remote_port(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(6, this->_internal_remote_port(), target);
   }
 
-  // uint64 sequence_number = 5;
+  // uint64 sequence_number = 7;
   if (this->_internal_sequence_number() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(5, this->_internal_sequence_number(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(7, this->_internal_sequence_number(), target);
   }
 
-  // bool flag = 6;
-  if (this->_internal_flag() != 0) {
+  // uint64 payload_size = 8;
+  if (this->_internal_payload_size() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(6, this->_internal_flag(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(8, this->_internal_payload_size(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1103,38 +822,52 @@ size_t TcpMeta::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string local_address = 1;
+  // string method = 1;
+  if (!this->_internal_method().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_method());
+  }
+
+  // string protocol = 2;
+  if (!this->_internal_protocol().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_protocol());
+  }
+
+  // string local_address = 4;
   if (!this->_internal_local_address().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_local_address());
   }
 
-  // string remote_address = 2;
+  // string remote_address = 5;
   if (!this->_internal_remote_address().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_remote_address());
   }
 
-  // int32 local_port = 3;
-  if (this->_internal_local_port() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_port());
+  // int64 id = 3;
+  if (this->_internal_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_id());
   }
 
-  // int32 remote_port = 4;
-  if (this->_internal_remote_port() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_remote_port());
-  }
-
-  // uint64 sequence_number = 5;
+  // uint64 sequence_number = 7;
   if (this->_internal_sequence_number() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_sequence_number());
   }
 
-  // bool flag = 6;
-  if (this->_internal_flag() != 0) {
-    total_size += 1 + 1;
+  // uint64 payload_size = 8;
+  if (this->_internal_payload_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_payload_size());
+  }
+
+  // int32 remote_port = 6;
+  if (this->_internal_remote_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_remote_port());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1155,23 +888,29 @@ void TcpMeta::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_method().empty()) {
+    _this->_internal_set_method(from._internal_method());
+  }
+  if (!from._internal_protocol().empty()) {
+    _this->_internal_set_protocol(from._internal_protocol());
+  }
   if (!from._internal_local_address().empty()) {
     _this->_internal_set_local_address(from._internal_local_address());
   }
   if (!from._internal_remote_address().empty()) {
     _this->_internal_set_remote_address(from._internal_remote_address());
   }
-  if (from._internal_local_port() != 0) {
-    _this->_internal_set_local_port(from._internal_local_port());
-  }
-  if (from._internal_remote_port() != 0) {
-    _this->_internal_set_remote_port(from._internal_remote_port());
+  if (from._internal_id() != 0) {
+    _this->_internal_set_id(from._internal_id());
   }
   if (from._internal_sequence_number() != 0) {
     _this->_internal_set_sequence_number(from._internal_sequence_number());
   }
-  if (from._internal_flag() != 0) {
-    _this->_internal_set_flag(from._internal_flag());
+  if (from._internal_payload_size() != 0) {
+    _this->_internal_set_payload_size(from._internal_payload_size());
+  }
+  if (from._internal_remote_port() != 0) {
+    _this->_internal_set_remote_port(from._internal_remote_port());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1193,6 +932,14 @@ void TcpMeta::InternalSwap(TcpMeta* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.method_, lhs_arena,
+      &other->_impl_.method_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.protocol_, lhs_arena,
+      &other->_impl_.protocol_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.local_address_, lhs_arena,
       &other->_impl_.local_address_, rhs_arena
   );
@@ -1201,17 +948,17 @@ void TcpMeta::InternalSwap(TcpMeta* other) {
       &other->_impl_.remote_address_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(TcpMeta, _impl_.flag_)
-      + sizeof(TcpMeta::_impl_.flag_)
-      - PROTOBUF_FIELD_OFFSET(TcpMeta, _impl_.local_port_)>(
-          reinterpret_cast<char*>(&_impl_.local_port_),
-          reinterpret_cast<char*>(&other->_impl_.local_port_));
+      PROTOBUF_FIELD_OFFSET(TcpMeta, _impl_.remote_port_)
+      + sizeof(TcpMeta::_impl_.remote_port_)
+      - PROTOBUF_FIELD_OFFSET(TcpMeta, _impl_.id_)>(
+          reinterpret_cast<char*>(&_impl_.id_),
+          reinterpret_cast<char*>(&other->_impl_.id_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TcpMeta::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
-      file_level_metadata_packet_5fanalysis_2eproto[2]);
+      file_level_metadata_packet_5fanalysis_2eproto[1]);
 }
 
 // ===================================================================
@@ -1231,6 +978,8 @@ AnalysisAck::AnalysisAck(const AnalysisAck& from)
   AnalysisAck* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.message_){}
+    , decltype(_impl_.window_start_){}
+    , decltype(_impl_.window_end_){}
     , decltype(_impl_.accepted_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
@@ -1243,7 +992,9 @@ AnalysisAck::AnalysisAck(const AnalysisAck& from)
     _this->_impl_.message_.Set(from._internal_message(), 
       _this->GetArenaForAllocation());
   }
-  _this->_impl_.accepted_ = from._impl_.accepted_;
+  ::memcpy(&_impl_.window_start_, &from._impl_.window_start_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.accepted_) -
+    reinterpret_cast<char*>(&_impl_.window_start_)) + sizeof(_impl_.accepted_));
   // @@protoc_insertion_point(copy_constructor:packet.AnalysisAck)
 }
 
@@ -1253,6 +1004,8 @@ inline void AnalysisAck::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.message_){}
+    , decltype(_impl_.window_start_){int64_t{0}}
+    , decltype(_impl_.window_end_){int64_t{0}}
     , decltype(_impl_.accepted_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -1287,7 +1040,9 @@ void AnalysisAck::Clear() {
   (void) cached_has_bits;
 
   _impl_.message_.ClearToEmpty();
-  _impl_.accepted_ = false;
+  ::memset(&_impl_.window_start_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.accepted_) -
+      reinterpret_cast<char*>(&_impl_.window_start_)) + sizeof(_impl_.accepted_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1312,6 +1067,22 @@ const char* AnalysisAck::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "packet.AnalysisAck.message"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 window_start = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.window_start_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 window_end = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.window_end_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -1360,6 +1131,18 @@ uint8_t* AnalysisAck::_InternalSerialize(
         2, this->_internal_message(), target);
   }
 
+  // int64 window_start = 3;
+  if (this->_internal_window_start() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_window_start(), target);
+  }
+
+  // int64 window_end = 4;
+  if (this->_internal_window_end() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(4, this->_internal_window_end(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1381,6 +1164,16 @@ size_t AnalysisAck::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_message());
+  }
+
+  // int64 window_start = 3;
+  if (this->_internal_window_start() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_window_start());
+  }
+
+  // int64 window_end = 4;
+  if (this->_internal_window_end() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_window_end());
   }
 
   // bool accepted = 1;
@@ -1409,6 +1202,12 @@ void AnalysisAck::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   if (!from._internal_message().empty()) {
     _this->_internal_set_message(from._internal_message());
   }
+  if (from._internal_window_start() != 0) {
+    _this->_internal_set_window_start(from._internal_window_start());
+  }
+  if (from._internal_window_end() != 0) {
+    _this->_internal_set_window_end(from._internal_window_end());
+  }
   if (from._internal_accepted() != 0) {
     _this->_internal_set_accepted(from._internal_accepted());
   }
@@ -1435,13 +1234,18 @@ void AnalysisAck::InternalSwap(AnalysisAck* other) {
       &_impl_.message_, lhs_arena,
       &other->_impl_.message_, rhs_arena
   );
-  swap(_impl_.accepted_, other->_impl_.accepted_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AnalysisAck, _impl_.accepted_)
+      + sizeof(AnalysisAck::_impl_.accepted_)
+      - PROTOBUF_FIELD_OFFSET(AnalysisAck, _impl_.window_start_)>(
+          reinterpret_cast<char*>(&_impl_.window_start_),
+          reinterpret_cast<char*>(&other->_impl_.window_start_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AnalysisAck::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
-      file_level_metadata_packet_5fanalysis_2eproto[3]);
+      file_level_metadata_packet_5fanalysis_2eproto[2]);
 }
 
 // ===================================================================
@@ -1460,30 +1264,24 @@ PacketEvent::PacketEvent(const PacketEvent& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   PacketEvent* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.remoteaddress_){}
-    , decltype(_impl_.localaddress_){}
+      decltype(_impl_.method_){}
     , decltype(_impl_.protocol_){}
-    , decltype(_impl_.remoteport_){}
-    , decltype(_impl_.payloadsize_){}
-    , decltype(_impl_.sequencenumber_){}
+    , decltype(_impl_.local_address_){}
+    , decltype(_impl_.remote_address_){}
+    , decltype(_impl_.id_){}
+    , decltype(_impl_.sequence_number_){}
+    , decltype(_impl_.remote_port_){}
     , decltype(_impl_.flag_){}
+    , decltype(_impl_.payload_size_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.remoteaddress_.InitDefault();
+  _impl_.method_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.remoteaddress_.Set("", GetArenaForAllocation());
+    _impl_.method_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_remoteaddress().empty()) {
-    _this->_impl_.remoteaddress_.Set(from._internal_remoteaddress(), 
-      _this->GetArenaForAllocation());
-  }
-  _impl_.localaddress_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.localaddress_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_localaddress().empty()) {
-    _this->_impl_.localaddress_.Set(from._internal_localaddress(), 
+  if (!from._internal_method().empty()) {
+    _this->_impl_.method_.Set(from._internal_method(), 
       _this->GetArenaForAllocation());
   }
   _impl_.protocol_.InitDefault();
@@ -1494,9 +1292,25 @@ PacketEvent::PacketEvent(const PacketEvent& from)
     _this->_impl_.protocol_.Set(from._internal_protocol(), 
       _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.remoteport_, &from._impl_.remoteport_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.flag_) -
-    reinterpret_cast<char*>(&_impl_.remoteport_)) + sizeof(_impl_.flag_));
+  _impl_.local_address_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_address_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_address().empty()) {
+    _this->_impl_.local_address_.Set(from._internal_local_address(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.remote_address_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.remote_address_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_remote_address().empty()) {
+    _this->_impl_.remote_address_.Set(from._internal_remote_address(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.id_, &from._impl_.id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.payload_size_) -
+    reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.payload_size_));
   // @@protoc_insertion_point(copy_constructor:packet.PacketEvent)
 }
 
@@ -1505,26 +1319,32 @@ inline void PacketEvent::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.remoteaddress_){}
-    , decltype(_impl_.localaddress_){}
+      decltype(_impl_.method_){}
     , decltype(_impl_.protocol_){}
-    , decltype(_impl_.remoteport_){0u}
-    , decltype(_impl_.payloadsize_){0u}
-    , decltype(_impl_.sequencenumber_){uint64_t{0u}}
+    , decltype(_impl_.local_address_){}
+    , decltype(_impl_.remote_address_){}
+    , decltype(_impl_.id_){int64_t{0}}
+    , decltype(_impl_.sequence_number_){uint64_t{0u}}
+    , decltype(_impl_.remote_port_){0}
     , decltype(_impl_.flag_){false}
+    , decltype(_impl_.payload_size_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
-  _impl_.remoteaddress_.InitDefault();
+  _impl_.method_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.remoteaddress_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.localaddress_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.localaddress_.Set("", GetArenaForAllocation());
+    _impl_.method_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.protocol_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.protocol_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.local_address_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_address_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.remote_address_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.remote_address_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
@@ -1539,9 +1359,10 @@ PacketEvent::~PacketEvent() {
 
 inline void PacketEvent::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.remoteaddress_.Destroy();
-  _impl_.localaddress_.Destroy();
+  _impl_.method_.Destroy();
   _impl_.protocol_.Destroy();
+  _impl_.local_address_.Destroy();
+  _impl_.remote_address_.Destroy();
 }
 
 void PacketEvent::SetCachedSize(int size) const {
@@ -1554,12 +1375,13 @@ void PacketEvent::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.remoteaddress_.ClearToEmpty();
-  _impl_.localaddress_.ClearToEmpty();
+  _impl_.method_.ClearToEmpty();
   _impl_.protocol_.ClearToEmpty();
-  ::memset(&_impl_.remoteport_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.flag_) -
-      reinterpret_cast<char*>(&_impl_.remoteport_)) + sizeof(_impl_.flag_));
+  _impl_.local_address_.ClearToEmpty();
+  _impl_.remote_address_.ClearToEmpty();
+  ::memset(&_impl_.id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.payload_size_) -
+      reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.payload_size_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1569,37 +1391,19 @@ const char* PacketEvent::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string remoteAddress = 1;
+      // string method = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_remoteaddress();
+          auto str = _internal_mutable_method();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.remoteAddress"));
+          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.method"));
         } else
           goto handle_unusual;
         continue;
-      // string localAddress = 2;
+      // string protocol = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_localaddress();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.localAddress"));
-        } else
-          goto handle_unusual;
-        continue;
-      // uint32 remotePort = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          _impl_.remoteport_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string protocol = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           auto str = _internal_mutable_protocol();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -1607,25 +1411,61 @@ const char* PacketEvent::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
         } else
           goto handle_unusual;
         continue;
-      // uint64 sequenceNumber = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          _impl_.sequencenumber_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+      // int64 id = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 payloadSize = 6;
+      // string local_address = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          auto str = _internal_mutable_local_address();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.local_address"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string remote_address = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          auto str = _internal_mutable_remote_address();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "packet.PacketEvent.remote_address"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 remote_port = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
-          _impl_.payloadsize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.remote_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // bool flag = 7;
+      // uint64 sequence_number = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+          _impl_.sequence_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 payload_size = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+          _impl_.payload_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool flag = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
           _impl_.flag_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
@@ -1660,58 +1500,74 @@ uint8_t* PacketEvent::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string remoteAddress = 1;
-  if (!this->_internal_remoteaddress().empty()) {
+  // string method = 1;
+  if (!this->_internal_method().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_remoteaddress().data(), static_cast<int>(this->_internal_remoteaddress().length()),
+      this->_internal_method().data(), static_cast<int>(this->_internal_method().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "packet.PacketEvent.remoteAddress");
+      "packet.PacketEvent.method");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_remoteaddress(), target);
+        1, this->_internal_method(), target);
   }
 
-  // string localAddress = 2;
-  if (!this->_internal_localaddress().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_localaddress().data(), static_cast<int>(this->_internal_localaddress().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "packet.PacketEvent.localAddress");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_localaddress(), target);
-  }
-
-  // uint32 remotePort = 3;
-  if (this->_internal_remoteport() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(3, this->_internal_remoteport(), target);
-  }
-
-  // string protocol = 4;
+  // string protocol = 2;
   if (!this->_internal_protocol().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_protocol().data(), static_cast<int>(this->_internal_protocol().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "packet.PacketEvent.protocol");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_protocol(), target);
+        2, this->_internal_protocol(), target);
   }
 
-  // uint64 sequenceNumber = 5;
-  if (this->_internal_sequencenumber() != 0) {
+  // int64 id = 3;
+  if (this->_internal_id() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(5, this->_internal_sequencenumber(), target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_id(), target);
   }
 
-  // uint32 payloadSize = 6;
-  if (this->_internal_payloadsize() != 0) {
+  // string local_address = 4;
+  if (!this->_internal_local_address().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_address().data(), static_cast<int>(this->_internal_local_address().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.PacketEvent.local_address");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_local_address(), target);
+  }
+
+  // string remote_address = 5;
+  if (!this->_internal_remote_address().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_remote_address().data(), static_cast<int>(this->_internal_remote_address().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "packet.PacketEvent.remote_address");
+    target = stream->WriteStringMaybeAliased(
+        5, this->_internal_remote_address(), target);
+  }
+
+  // int32 remote_port = 6;
+  if (this->_internal_remote_port() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(6, this->_internal_payloadsize(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(6, this->_internal_remote_port(), target);
   }
 
-  // bool flag = 7;
+  // uint64 sequence_number = 7;
+  if (this->_internal_sequence_number() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(7, this->_internal_sequence_number(), target);
+  }
+
+  // uint64 payload_size = 8;
+  if (this->_internal_payload_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(8, this->_internal_payload_size(), target);
+  }
+
+  // bool flag = 9;
   if (this->_internal_flag() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(7, this->_internal_flag(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(9, this->_internal_flag(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1730,45 +1586,57 @@ size_t PacketEvent::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string remoteAddress = 1;
-  if (!this->_internal_remoteaddress().empty()) {
+  // string method = 1;
+  if (!this->_internal_method().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_remoteaddress());
+        this->_internal_method());
   }
 
-  // string localAddress = 2;
-  if (!this->_internal_localaddress().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_localaddress());
-  }
-
-  // string protocol = 4;
+  // string protocol = 2;
   if (!this->_internal_protocol().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_protocol());
   }
 
-  // uint32 remotePort = 3;
-  if (this->_internal_remoteport() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_remoteport());
+  // string local_address = 4;
+  if (!this->_internal_local_address().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_address());
   }
 
-  // uint32 payloadSize = 6;
-  if (this->_internal_payloadsize() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_payloadsize());
+  // string remote_address = 5;
+  if (!this->_internal_remote_address().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_remote_address());
   }
 
-  // uint64 sequenceNumber = 5;
-  if (this->_internal_sequencenumber() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_sequencenumber());
+  // int64 id = 3;
+  if (this->_internal_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_id());
   }
 
-  // bool flag = 7;
+  // uint64 sequence_number = 7;
+  if (this->_internal_sequence_number() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_sequence_number());
+  }
+
+  // int32 remote_port = 6;
+  if (this->_internal_remote_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_remote_port());
+  }
+
+  // bool flag = 9;
   if (this->_internal_flag() != 0) {
     total_size += 1 + 1;
+  }
+
+  // uint64 payload_size = 8;
+  if (this->_internal_payload_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_payload_size());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1789,26 +1657,32 @@ void PacketEvent::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_remoteaddress().empty()) {
-    _this->_internal_set_remoteaddress(from._internal_remoteaddress());
-  }
-  if (!from._internal_localaddress().empty()) {
-    _this->_internal_set_localaddress(from._internal_localaddress());
+  if (!from._internal_method().empty()) {
+    _this->_internal_set_method(from._internal_method());
   }
   if (!from._internal_protocol().empty()) {
     _this->_internal_set_protocol(from._internal_protocol());
   }
-  if (from._internal_remoteport() != 0) {
-    _this->_internal_set_remoteport(from._internal_remoteport());
+  if (!from._internal_local_address().empty()) {
+    _this->_internal_set_local_address(from._internal_local_address());
   }
-  if (from._internal_payloadsize() != 0) {
-    _this->_internal_set_payloadsize(from._internal_payloadsize());
+  if (!from._internal_remote_address().empty()) {
+    _this->_internal_set_remote_address(from._internal_remote_address());
   }
-  if (from._internal_sequencenumber() != 0) {
-    _this->_internal_set_sequencenumber(from._internal_sequencenumber());
+  if (from._internal_id() != 0) {
+    _this->_internal_set_id(from._internal_id());
+  }
+  if (from._internal_sequence_number() != 0) {
+    _this->_internal_set_sequence_number(from._internal_sequence_number());
+  }
+  if (from._internal_remote_port() != 0) {
+    _this->_internal_set_remote_port(from._internal_remote_port());
   }
   if (from._internal_flag() != 0) {
     _this->_internal_set_flag(from._internal_flag());
+  }
+  if (from._internal_payload_size() != 0) {
+    _this->_internal_set_payload_size(from._internal_payload_size());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1830,29 +1704,33 @@ void PacketEvent::InternalSwap(PacketEvent* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.remoteaddress_, lhs_arena,
-      &other->_impl_.remoteaddress_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.localaddress_, lhs_arena,
-      &other->_impl_.localaddress_, rhs_arena
+      &_impl_.method_, lhs_arena,
+      &other->_impl_.method_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.protocol_, lhs_arena,
       &other->_impl_.protocol_, rhs_arena
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_address_, lhs_arena,
+      &other->_impl_.local_address_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.remote_address_, lhs_arena,
+      &other->_impl_.remote_address_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PacketEvent, _impl_.flag_)
-      + sizeof(PacketEvent::_impl_.flag_)
-      - PROTOBUF_FIELD_OFFSET(PacketEvent, _impl_.remoteport_)>(
-          reinterpret_cast<char*>(&_impl_.remoteport_),
-          reinterpret_cast<char*>(&other->_impl_.remoteport_));
+      PROTOBUF_FIELD_OFFSET(PacketEvent, _impl_.payload_size_)
+      + sizeof(PacketEvent::_impl_.payload_size_)
+      - PROTOBUF_FIELD_OFFSET(PacketEvent, _impl_.id_)>(
+          reinterpret_cast<char*>(&_impl_.id_),
+          reinterpret_cast<char*>(&other->_impl_.id_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PacketEvent::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
-      file_level_metadata_packet_5fanalysis_2eproto[4]);
+      file_level_metadata_packet_5fanalysis_2eproto[3]);
 }
 
 // ===================================================================
@@ -2037,7 +1915,7 @@ void EventBatch::InternalSwap(EventBatch* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata EventBatch::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_packet_5fanalysis_2eproto_getter, &descriptor_table_packet_5fanalysis_2eproto_once,
-      file_level_metadata_packet_5fanalysis_2eproto[5]);
+      file_level_metadata_packet_5fanalysis_2eproto[4]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2046,10 +1924,6 @@ PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::packet::PacketWindow*
 Arena::CreateMaybeMessage< ::packet::PacketWindow >(Arena* arena) {
   return Arena::CreateMessageInternal< ::packet::PacketWindow >(arena);
-}
-template<> PROTOBUF_NOINLINE ::packet::HttpSession*
-Arena::CreateMaybeMessage< ::packet::HttpSession >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::packet::HttpSession >(arena);
 }
 template<> PROTOBUF_NOINLINE ::packet::TcpMeta*
 Arena::CreateMaybeMessage< ::packet::TcpMeta >(Arena* arena) {

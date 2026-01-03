@@ -110,22 +110,10 @@ public class PacketCaptureService{
     }
 
     // Packets display
-    public void schedulePrintTask(int seconds, User user) {
+    public void schedulePacketGathering(int seconds, User user) {
         Runnable printTask = () -> aux.printConnections(connections_repeat, printedHttp);
         Runnable saveDataTask = () -> aux.saveData(connections_repeat, savedHttp, user);
         printScheduler.scheduleAtFixedRate(printTask, 5, seconds, TimeUnit.SECONDS);
         BDScheduler.scheduleAtFixedRate(saveDataTask, 6, seconds, TimeUnit.SECONDS);
-    }
-
-    public void readJson(){
-            try {
-                // Se 'model' for o caminho correto
-                String path = Paths.get("model/response.json").toAbsolutePath().normalize().toString();
-                aux.updateJson(path);
-            } catch (Exception e) {
-                // Imprime a exceção para ver o que está falhando
-                System.err.println("Erro ao rodar getJson: " + e.getMessage());
-                e.printStackTrace();
-            }
     }
 }

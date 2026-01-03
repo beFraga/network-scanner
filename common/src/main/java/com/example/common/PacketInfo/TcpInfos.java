@@ -51,4 +51,27 @@ public class TcpInfos {
         this.flag = false;
     }
 
+    public TcpInfos(long id, boolean flag, String remoteAddress, HttpInfos httpInfos){
+        this.id = id;
+        this.flag = flag;
+        this.remoteAddress = remoteAddress;
+        this.localAddress = null;
+        this.localPort = 0;
+        this.remotePort = 0;
+        this.sequenceNumber = null;
+        this.payload = null;
+        this.httpInfos = httpInfos;
+    }
+
+    public TcpInfos(long id, boolean flag, String remoteAddress){
+        this.id = id;
+        this.flag = flag;
+        this.remoteAddress = remoteAddress;
+        this.localAddress = null;
+        this.localPort = 0;
+        this.remotePort = 0;
+        this.sequenceNumber = null;
+        this.payload = null;
+    }
+
 }

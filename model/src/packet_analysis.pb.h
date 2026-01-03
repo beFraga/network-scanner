@@ -52,9 +52,6 @@ extern AnalysisAckDefaultTypeInternal _AnalysisAck_default_instance_;
 class EventBatch;
 struct EventBatchDefaultTypeInternal;
 extern EventBatchDefaultTypeInternal _EventBatch_default_instance_;
-class HttpSession;
-struct HttpSessionDefaultTypeInternal;
-extern HttpSessionDefaultTypeInternal _HttpSession_default_instance_;
 class PacketEvent;
 struct PacketEventDefaultTypeInternal;
 extern PacketEventDefaultTypeInternal _PacketEvent_default_instance_;
@@ -68,7 +65,6 @@ extern TcpMetaDefaultTypeInternal _TcpMeta_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::packet::AnalysisAck* Arena::CreateMaybeMessage<::packet::AnalysisAck>(Arena*);
 template<> ::packet::EventBatch* Arena::CreateMaybeMessage<::packet::EventBatch>(Arena*);
-template<> ::packet::HttpSession* Arena::CreateMaybeMessage<::packet::HttpSession>(Arena*);
 template<> ::packet::PacketEvent* Arena::CreateMaybeMessage<::packet::PacketEvent>(Arena*);
 template<> ::packet::PacketWindow* Arena::CreateMaybeMessage<::packet::PacketWindow>(Arena*);
 template<> ::packet::TcpMeta* Arena::CreateMaybeMessage<::packet::TcpMeta>(Arena*);
@@ -198,28 +194,28 @@ class PacketWindow final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kHttpSessionsFieldNumber = 4,
+    kTcpPacketsFieldNumber = 4,
     kWindowStartFieldNumber = 1,
     kWindowEndFieldNumber = 2,
     kUserIdFieldNumber = 3,
   };
-  // repeated .packet.HttpSession http_sessions = 4;
-  int http_sessions_size() const;
+  // repeated .packet.TcpMeta tcp_packets = 4;
+  int tcp_packets_size() const;
   private:
-  int _internal_http_sessions_size() const;
+  int _internal_tcp_packets_size() const;
   public:
-  void clear_http_sessions();
-  ::packet::HttpSession* mutable_http_sessions(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::HttpSession >*
-      mutable_http_sessions();
+  void clear_tcp_packets();
+  ::packet::TcpMeta* mutable_tcp_packets(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >*
+      mutable_tcp_packets();
   private:
-  const ::packet::HttpSession& _internal_http_sessions(int index) const;
-  ::packet::HttpSession* _internal_add_http_sessions();
+  const ::packet::TcpMeta& _internal_tcp_packets(int index) const;
+  ::packet::TcpMeta* _internal_add_tcp_packets();
   public:
-  const ::packet::HttpSession& http_sessions(int index) const;
-  ::packet::HttpSession* add_http_sessions();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::HttpSession >&
-      http_sessions() const;
+  const ::packet::TcpMeta& tcp_packets(int index) const;
+  ::packet::TcpMeta* add_tcp_packets();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >&
+      tcp_packets() const;
 
   // int64 window_start = 1;
   void clear_window_start();
@@ -256,215 +252,10 @@ class PacketWindow final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::HttpSession > http_sessions_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta > tcp_packets_;
     int64_t window_start_;
     int64_t window_end_;
     int64_t user_id_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_packet_5fanalysis_2eproto;
-};
-// -------------------------------------------------------------------
-
-class HttpSession final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:packet.HttpSession) */ {
- public:
-  inline HttpSession() : HttpSession(nullptr) {}
-  ~HttpSession() override;
-  explicit PROTOBUF_CONSTEXPR HttpSession(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  HttpSession(const HttpSession& from);
-  HttpSession(HttpSession&& from) noexcept
-    : HttpSession() {
-    *this = ::std::move(from);
-  }
-
-  inline HttpSession& operator=(const HttpSession& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline HttpSession& operator=(HttpSession&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const HttpSession& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const HttpSession* internal_default_instance() {
-    return reinterpret_cast<const HttpSession*>(
-               &_HttpSession_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  friend void swap(HttpSession& a, HttpSession& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(HttpSession* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(HttpSession* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  HttpSession* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<HttpSession>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const HttpSession& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const HttpSession& from) {
-    HttpSession::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(HttpSession* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "packet.HttpSession";
-  }
-  protected:
-  explicit HttpSession(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kTcpPacketsFieldNumber = 4,
-    kMethodFieldNumber = 1,
-    kProtocolFieldNumber = 2,
-    kUriFieldNumber = 3,
-  };
-  // repeated .packet.TcpMeta tcp_packets = 4;
-  int tcp_packets_size() const;
-  private:
-  int _internal_tcp_packets_size() const;
-  public:
-  void clear_tcp_packets();
-  ::packet::TcpMeta* mutable_tcp_packets(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >*
-      mutable_tcp_packets();
-  private:
-  const ::packet::TcpMeta& _internal_tcp_packets(int index) const;
-  ::packet::TcpMeta* _internal_add_tcp_packets();
-  public:
-  const ::packet::TcpMeta& tcp_packets(int index) const;
-  ::packet::TcpMeta* add_tcp_packets();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >&
-      tcp_packets() const;
-
-  // string method = 1;
-  void clear_method();
-  const std::string& method() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_method(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_method();
-  PROTOBUF_NODISCARD std::string* release_method();
-  void set_allocated_method(std::string* method);
-  private:
-  const std::string& _internal_method() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_method(const std::string& value);
-  std::string* _internal_mutable_method();
-  public:
-
-  // string protocol = 2;
-  void clear_protocol();
-  const std::string& protocol() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_protocol(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_protocol();
-  PROTOBUF_NODISCARD std::string* release_protocol();
-  void set_allocated_protocol(std::string* protocol);
-  private:
-  const std::string& _internal_protocol() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_protocol(const std::string& value);
-  std::string* _internal_mutable_protocol();
-  public:
-
-  // string uri = 3;
-  void clear_uri();
-  const std::string& uri() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_uri(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_uri();
-  PROTOBUF_NODISCARD std::string* release_uri();
-  void set_allocated_uri(std::string* uri);
-  private:
-  const std::string& _internal_uri() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_uri(const std::string& value);
-  std::string* _internal_mutable_uri();
-  public:
-
-  // @@protoc_insertion_point(class_scope:packet.HttpSession)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta > tcp_packets_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr protocol_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr uri_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -520,7 +311,7 @@ class TcpMeta final :
                &_TcpMeta_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    1;
 
   friend void swap(TcpMeta& a, TcpMeta& b) {
     a.Swap(&b);
@@ -593,14 +384,44 @@ class TcpMeta final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kLocalAddressFieldNumber = 1,
-    kRemoteAddressFieldNumber = 2,
-    kLocalPortFieldNumber = 3,
-    kRemotePortFieldNumber = 4,
-    kSequenceNumberFieldNumber = 5,
-    kFlagFieldNumber = 6,
+    kMethodFieldNumber = 1,
+    kProtocolFieldNumber = 2,
+    kLocalAddressFieldNumber = 4,
+    kRemoteAddressFieldNumber = 5,
+    kIdFieldNumber = 3,
+    kSequenceNumberFieldNumber = 7,
+    kPayloadSizeFieldNumber = 8,
+    kRemotePortFieldNumber = 6,
   };
-  // string local_address = 1;
+  // string method = 1;
+  void clear_method();
+  const std::string& method() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_method(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_method();
+  PROTOBUF_NODISCARD std::string* release_method();
+  void set_allocated_method(std::string* method);
+  private:
+  const std::string& _internal_method() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_method(const std::string& value);
+  std::string* _internal_mutable_method();
+  public:
+
+  // string protocol = 2;
+  void clear_protocol();
+  const std::string& protocol() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_protocol(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_protocol();
+  PROTOBUF_NODISCARD std::string* release_protocol();
+  void set_allocated_protocol(std::string* protocol);
+  private:
+  const std::string& _internal_protocol() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_protocol(const std::string& value);
+  std::string* _internal_mutable_protocol();
+  public:
+
+  // string local_address = 4;
   void clear_local_address();
   const std::string& local_address() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -614,7 +435,7 @@ class TcpMeta final :
   std::string* _internal_mutable_local_address();
   public:
 
-  // string remote_address = 2;
+  // string remote_address = 5;
   void clear_remote_address();
   const std::string& remote_address() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -628,25 +449,16 @@ class TcpMeta final :
   std::string* _internal_mutable_remote_address();
   public:
 
-  // int32 local_port = 3;
-  void clear_local_port();
-  int32_t local_port() const;
-  void set_local_port(int32_t value);
+  // int64 id = 3;
+  void clear_id();
+  int64_t id() const;
+  void set_id(int64_t value);
   private:
-  int32_t _internal_local_port() const;
-  void _internal_set_local_port(int32_t value);
+  int64_t _internal_id() const;
+  void _internal_set_id(int64_t value);
   public:
 
-  // int32 remote_port = 4;
-  void clear_remote_port();
-  int32_t remote_port() const;
-  void set_remote_port(int32_t value);
-  private:
-  int32_t _internal_remote_port() const;
-  void _internal_set_remote_port(int32_t value);
-  public:
-
-  // uint64 sequence_number = 5;
+  // uint64 sequence_number = 7;
   void clear_sequence_number();
   uint64_t sequence_number() const;
   void set_sequence_number(uint64_t value);
@@ -655,13 +467,22 @@ class TcpMeta final :
   void _internal_set_sequence_number(uint64_t value);
   public:
 
-  // bool flag = 6;
-  void clear_flag();
-  bool flag() const;
-  void set_flag(bool value);
+  // uint64 payload_size = 8;
+  void clear_payload_size();
+  uint64_t payload_size() const;
+  void set_payload_size(uint64_t value);
   private:
-  bool _internal_flag() const;
-  void _internal_set_flag(bool value);
+  uint64_t _internal_payload_size() const;
+  void _internal_set_payload_size(uint64_t value);
+  public:
+
+  // int32 remote_port = 6;
+  void clear_remote_port();
+  int32_t remote_port() const;
+  void set_remote_port(int32_t value);
+  private:
+  int32_t _internal_remote_port() const;
+  void _internal_set_remote_port(int32_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:packet.TcpMeta)
@@ -672,12 +493,14 @@ class TcpMeta final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr protocol_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr local_address_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr remote_address_;
-    int32_t local_port_;
-    int32_t remote_port_;
+    int64_t id_;
     uint64_t sequence_number_;
-    bool flag_;
+    uint64_t payload_size_;
+    int32_t remote_port_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -733,7 +556,7 @@ class AnalysisAck final :
                &_AnalysisAck_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    2;
 
   friend void swap(AnalysisAck& a, AnalysisAck& b) {
     a.Swap(&b);
@@ -807,6 +630,8 @@ class AnalysisAck final :
 
   enum : int {
     kMessageFieldNumber = 2,
+    kWindowStartFieldNumber = 3,
+    kWindowEndFieldNumber = 4,
     kAcceptedFieldNumber = 1,
   };
   // string message = 2;
@@ -821,6 +646,24 @@ class AnalysisAck final :
   const std::string& _internal_message() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(const std::string& value);
   std::string* _internal_mutable_message();
+  public:
+
+  // int64 window_start = 3;
+  void clear_window_start();
+  int64_t window_start() const;
+  void set_window_start(int64_t value);
+  private:
+  int64_t _internal_window_start() const;
+  void _internal_set_window_start(int64_t value);
+  public:
+
+  // int64 window_end = 4;
+  void clear_window_end();
+  int64_t window_end() const;
+  void set_window_end(int64_t value);
+  private:
+  int64_t _internal_window_end() const;
+  void _internal_set_window_end(int64_t value);
   public:
 
   // bool accepted = 1;
@@ -841,6 +684,8 @@ class AnalysisAck final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr message_;
+    int64_t window_start_;
+    int64_t window_end_;
     bool accepted_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -897,7 +742,7 @@ class PacketEvent final :
                &_PacketEvent_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    3;
 
   friend void swap(PacketEvent& a, PacketEvent& b) {
     a.Swap(&b);
@@ -970,43 +815,31 @@ class PacketEvent final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kRemoteAddressFieldNumber = 1,
-    kLocalAddressFieldNumber = 2,
-    kProtocolFieldNumber = 4,
-    kRemotePortFieldNumber = 3,
-    kPayloadSizeFieldNumber = 6,
-    kSequenceNumberFieldNumber = 5,
-    kFlagFieldNumber = 7,
+    kMethodFieldNumber = 1,
+    kProtocolFieldNumber = 2,
+    kLocalAddressFieldNumber = 4,
+    kRemoteAddressFieldNumber = 5,
+    kIdFieldNumber = 3,
+    kSequenceNumberFieldNumber = 7,
+    kRemotePortFieldNumber = 6,
+    kFlagFieldNumber = 9,
+    kPayloadSizeFieldNumber = 8,
   };
-  // string remoteAddress = 1;
-  void clear_remoteaddress();
-  const std::string& remoteaddress() const;
+  // string method = 1;
+  void clear_method();
+  const std::string& method() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_remoteaddress(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_remoteaddress();
-  PROTOBUF_NODISCARD std::string* release_remoteaddress();
-  void set_allocated_remoteaddress(std::string* remoteaddress);
+  void set_method(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_method();
+  PROTOBUF_NODISCARD std::string* release_method();
+  void set_allocated_method(std::string* method);
   private:
-  const std::string& _internal_remoteaddress() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remoteaddress(const std::string& value);
-  std::string* _internal_mutable_remoteaddress();
+  const std::string& _internal_method() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_method(const std::string& value);
+  std::string* _internal_mutable_method();
   public:
 
-  // string localAddress = 2;
-  void clear_localaddress();
-  const std::string& localaddress() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_localaddress(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_localaddress();
-  PROTOBUF_NODISCARD std::string* release_localaddress();
-  void set_allocated_localaddress(std::string* localaddress);
-  private:
-  const std::string& _internal_localaddress() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_localaddress(const std::string& value);
-  std::string* _internal_mutable_localaddress();
-  public:
-
-  // string protocol = 4;
+  // string protocol = 2;
   void clear_protocol();
   const std::string& protocol() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1020,40 +853,77 @@ class PacketEvent final :
   std::string* _internal_mutable_protocol();
   public:
 
-  // uint32 remotePort = 3;
-  void clear_remoteport();
-  uint32_t remoteport() const;
-  void set_remoteport(uint32_t value);
+  // string local_address = 4;
+  void clear_local_address();
+  const std::string& local_address() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_local_address(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_local_address();
+  PROTOBUF_NODISCARD std::string* release_local_address();
+  void set_allocated_local_address(std::string* local_address);
   private:
-  uint32_t _internal_remoteport() const;
-  void _internal_set_remoteport(uint32_t value);
+  const std::string& _internal_local_address() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_address(const std::string& value);
+  std::string* _internal_mutable_local_address();
   public:
 
-  // uint32 payloadSize = 6;
-  void clear_payloadsize();
-  uint32_t payloadsize() const;
-  void set_payloadsize(uint32_t value);
+  // string remote_address = 5;
+  void clear_remote_address();
+  const std::string& remote_address() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_remote_address(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_remote_address();
+  PROTOBUF_NODISCARD std::string* release_remote_address();
+  void set_allocated_remote_address(std::string* remote_address);
   private:
-  uint32_t _internal_payloadsize() const;
-  void _internal_set_payloadsize(uint32_t value);
+  const std::string& _internal_remote_address() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_address(const std::string& value);
+  std::string* _internal_mutable_remote_address();
   public:
 
-  // uint64 sequenceNumber = 5;
-  void clear_sequencenumber();
-  uint64_t sequencenumber() const;
-  void set_sequencenumber(uint64_t value);
+  // int64 id = 3;
+  void clear_id();
+  int64_t id() const;
+  void set_id(int64_t value);
   private:
-  uint64_t _internal_sequencenumber() const;
-  void _internal_set_sequencenumber(uint64_t value);
+  int64_t _internal_id() const;
+  void _internal_set_id(int64_t value);
   public:
 
-  // bool flag = 7;
+  // uint64 sequence_number = 7;
+  void clear_sequence_number();
+  uint64_t sequence_number() const;
+  void set_sequence_number(uint64_t value);
+  private:
+  uint64_t _internal_sequence_number() const;
+  void _internal_set_sequence_number(uint64_t value);
+  public:
+
+  // int32 remote_port = 6;
+  void clear_remote_port();
+  int32_t remote_port() const;
+  void set_remote_port(int32_t value);
+  private:
+  int32_t _internal_remote_port() const;
+  void _internal_set_remote_port(int32_t value);
+  public:
+
+  // bool flag = 9;
   void clear_flag();
   bool flag() const;
   void set_flag(bool value);
   private:
   bool _internal_flag() const;
   void _internal_set_flag(bool value);
+  public:
+
+  // uint64 payload_size = 8;
+  void clear_payload_size();
+  uint64_t payload_size() const;
+  void set_payload_size(uint64_t value);
+  private:
+  uint64_t _internal_payload_size() const;
+  void _internal_set_payload_size(uint64_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:packet.PacketEvent)
@@ -1064,13 +934,15 @@ class PacketEvent final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr remoteaddress_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr localaddress_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr protocol_;
-    uint32_t remoteport_;
-    uint32_t payloadsize_;
-    uint64_t sequencenumber_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr local_address_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr remote_address_;
+    int64_t id_;
+    uint64_t sequence_number_;
+    int32_t remote_port_;
     bool flag_;
+    uint64_t payload_size_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1126,7 +998,7 @@ class EventBatch final :
                &_EventBatch_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    4;
 
   friend void swap(EventBatch& a, EventBatch& b) {
     a.Swap(&b);
@@ -1304,86 +1176,86 @@ inline void PacketWindow::set_user_id(int64_t value) {
   // @@protoc_insertion_point(field_set:packet.PacketWindow.user_id)
 }
 
-// repeated .packet.HttpSession http_sessions = 4;
-inline int PacketWindow::_internal_http_sessions_size() const {
-  return _impl_.http_sessions_.size();
+// repeated .packet.TcpMeta tcp_packets = 4;
+inline int PacketWindow::_internal_tcp_packets_size() const {
+  return _impl_.tcp_packets_.size();
 }
-inline int PacketWindow::http_sessions_size() const {
-  return _internal_http_sessions_size();
+inline int PacketWindow::tcp_packets_size() const {
+  return _internal_tcp_packets_size();
 }
-inline void PacketWindow::clear_http_sessions() {
-  _impl_.http_sessions_.Clear();
+inline void PacketWindow::clear_tcp_packets() {
+  _impl_.tcp_packets_.Clear();
 }
-inline ::packet::HttpSession* PacketWindow::mutable_http_sessions(int index) {
-  // @@protoc_insertion_point(field_mutable:packet.PacketWindow.http_sessions)
-  return _impl_.http_sessions_.Mutable(index);
+inline ::packet::TcpMeta* PacketWindow::mutable_tcp_packets(int index) {
+  // @@protoc_insertion_point(field_mutable:packet.PacketWindow.tcp_packets)
+  return _impl_.tcp_packets_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::HttpSession >*
-PacketWindow::mutable_http_sessions() {
-  // @@protoc_insertion_point(field_mutable_list:packet.PacketWindow.http_sessions)
-  return &_impl_.http_sessions_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >*
+PacketWindow::mutable_tcp_packets() {
+  // @@protoc_insertion_point(field_mutable_list:packet.PacketWindow.tcp_packets)
+  return &_impl_.tcp_packets_;
 }
-inline const ::packet::HttpSession& PacketWindow::_internal_http_sessions(int index) const {
-  return _impl_.http_sessions_.Get(index);
+inline const ::packet::TcpMeta& PacketWindow::_internal_tcp_packets(int index) const {
+  return _impl_.tcp_packets_.Get(index);
 }
-inline const ::packet::HttpSession& PacketWindow::http_sessions(int index) const {
-  // @@protoc_insertion_point(field_get:packet.PacketWindow.http_sessions)
-  return _internal_http_sessions(index);
+inline const ::packet::TcpMeta& PacketWindow::tcp_packets(int index) const {
+  // @@protoc_insertion_point(field_get:packet.PacketWindow.tcp_packets)
+  return _internal_tcp_packets(index);
 }
-inline ::packet::HttpSession* PacketWindow::_internal_add_http_sessions() {
-  return _impl_.http_sessions_.Add();
+inline ::packet::TcpMeta* PacketWindow::_internal_add_tcp_packets() {
+  return _impl_.tcp_packets_.Add();
 }
-inline ::packet::HttpSession* PacketWindow::add_http_sessions() {
-  ::packet::HttpSession* _add = _internal_add_http_sessions();
-  // @@protoc_insertion_point(field_add:packet.PacketWindow.http_sessions)
+inline ::packet::TcpMeta* PacketWindow::add_tcp_packets() {
+  ::packet::TcpMeta* _add = _internal_add_tcp_packets();
+  // @@protoc_insertion_point(field_add:packet.PacketWindow.tcp_packets)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::HttpSession >&
-PacketWindow::http_sessions() const {
-  // @@protoc_insertion_point(field_list:packet.PacketWindow.http_sessions)
-  return _impl_.http_sessions_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >&
+PacketWindow::tcp_packets() const {
+  // @@protoc_insertion_point(field_list:packet.PacketWindow.tcp_packets)
+  return _impl_.tcp_packets_;
 }
 
 // -------------------------------------------------------------------
 
-// HttpSession
+// TcpMeta
 
 // string method = 1;
-inline void HttpSession::clear_method() {
+inline void TcpMeta::clear_method() {
   _impl_.method_.ClearToEmpty();
 }
-inline const std::string& HttpSession::method() const {
-  // @@protoc_insertion_point(field_get:packet.HttpSession.method)
+inline const std::string& TcpMeta::method() const {
+  // @@protoc_insertion_point(field_get:packet.TcpMeta.method)
   return _internal_method();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void HttpSession::set_method(ArgT0&& arg0, ArgT... args) {
+void TcpMeta::set_method(ArgT0&& arg0, ArgT... args) {
  
  _impl_.method_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:packet.HttpSession.method)
+  // @@protoc_insertion_point(field_set:packet.TcpMeta.method)
 }
-inline std::string* HttpSession::mutable_method() {
+inline std::string* TcpMeta::mutable_method() {
   std::string* _s = _internal_mutable_method();
-  // @@protoc_insertion_point(field_mutable:packet.HttpSession.method)
+  // @@protoc_insertion_point(field_mutable:packet.TcpMeta.method)
   return _s;
 }
-inline const std::string& HttpSession::_internal_method() const {
+inline const std::string& TcpMeta::_internal_method() const {
   return _impl_.method_.Get();
 }
-inline void HttpSession::_internal_set_method(const std::string& value) {
+inline void TcpMeta::_internal_set_method(const std::string& value) {
   
   _impl_.method_.Set(value, GetArenaForAllocation());
 }
-inline std::string* HttpSession::_internal_mutable_method() {
+inline std::string* TcpMeta::_internal_mutable_method() {
   
   return _impl_.method_.Mutable(GetArenaForAllocation());
 }
-inline std::string* HttpSession::release_method() {
-  // @@protoc_insertion_point(field_release:packet.HttpSession.method)
+inline std::string* TcpMeta::release_method() {
+  // @@protoc_insertion_point(field_release:packet.TcpMeta.method)
   return _impl_.method_.Release();
 }
-inline void HttpSession::set_allocated_method(std::string* method) {
+inline void TcpMeta::set_allocated_method(std::string* method) {
   if (method != nullptr) {
     
   } else {
@@ -1395,45 +1267,45 @@ inline void HttpSession::set_allocated_method(std::string* method) {
     _impl_.method_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:packet.HttpSession.method)
+  // @@protoc_insertion_point(field_set_allocated:packet.TcpMeta.method)
 }
 
 // string protocol = 2;
-inline void HttpSession::clear_protocol() {
+inline void TcpMeta::clear_protocol() {
   _impl_.protocol_.ClearToEmpty();
 }
-inline const std::string& HttpSession::protocol() const {
-  // @@protoc_insertion_point(field_get:packet.HttpSession.protocol)
+inline const std::string& TcpMeta::protocol() const {
+  // @@protoc_insertion_point(field_get:packet.TcpMeta.protocol)
   return _internal_protocol();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void HttpSession::set_protocol(ArgT0&& arg0, ArgT... args) {
+void TcpMeta::set_protocol(ArgT0&& arg0, ArgT... args) {
  
  _impl_.protocol_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:packet.HttpSession.protocol)
+  // @@protoc_insertion_point(field_set:packet.TcpMeta.protocol)
 }
-inline std::string* HttpSession::mutable_protocol() {
+inline std::string* TcpMeta::mutable_protocol() {
   std::string* _s = _internal_mutable_protocol();
-  // @@protoc_insertion_point(field_mutable:packet.HttpSession.protocol)
+  // @@protoc_insertion_point(field_mutable:packet.TcpMeta.protocol)
   return _s;
 }
-inline const std::string& HttpSession::_internal_protocol() const {
+inline const std::string& TcpMeta::_internal_protocol() const {
   return _impl_.protocol_.Get();
 }
-inline void HttpSession::_internal_set_protocol(const std::string& value) {
+inline void TcpMeta::_internal_set_protocol(const std::string& value) {
   
   _impl_.protocol_.Set(value, GetArenaForAllocation());
 }
-inline std::string* HttpSession::_internal_mutable_protocol() {
+inline std::string* TcpMeta::_internal_mutable_protocol() {
   
   return _impl_.protocol_.Mutable(GetArenaForAllocation());
 }
-inline std::string* HttpSession::release_protocol() {
-  // @@protoc_insertion_point(field_release:packet.HttpSession.protocol)
+inline std::string* TcpMeta::release_protocol() {
+  // @@protoc_insertion_point(field_release:packet.TcpMeta.protocol)
   return _impl_.protocol_.Release();
 }
-inline void HttpSession::set_allocated_protocol(std::string* protocol) {
+inline void TcpMeta::set_allocated_protocol(std::string* protocol) {
   if (protocol != nullptr) {
     
   } else {
@@ -1445,104 +1317,30 @@ inline void HttpSession::set_allocated_protocol(std::string* protocol) {
     _impl_.protocol_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:packet.HttpSession.protocol)
+  // @@protoc_insertion_point(field_set_allocated:packet.TcpMeta.protocol)
 }
 
-// string uri = 3;
-inline void HttpSession::clear_uri() {
-  _impl_.uri_.ClearToEmpty();
+// int64 id = 3;
+inline void TcpMeta::clear_id() {
+  _impl_.id_ = int64_t{0};
 }
-inline const std::string& HttpSession::uri() const {
-  // @@protoc_insertion_point(field_get:packet.HttpSession.uri)
-  return _internal_uri();
+inline int64_t TcpMeta::_internal_id() const {
+  return _impl_.id_;
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void HttpSession::set_uri(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.uri_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:packet.HttpSession.uri)
+inline int64_t TcpMeta::id() const {
+  // @@protoc_insertion_point(field_get:packet.TcpMeta.id)
+  return _internal_id();
 }
-inline std::string* HttpSession::mutable_uri() {
-  std::string* _s = _internal_mutable_uri();
-  // @@protoc_insertion_point(field_mutable:packet.HttpSession.uri)
-  return _s;
-}
-inline const std::string& HttpSession::_internal_uri() const {
-  return _impl_.uri_.Get();
-}
-inline void HttpSession::_internal_set_uri(const std::string& value) {
+inline void TcpMeta::_internal_set_id(int64_t value) {
   
-  _impl_.uri_.Set(value, GetArenaForAllocation());
+  _impl_.id_ = value;
 }
-inline std::string* HttpSession::_internal_mutable_uri() {
-  
-  return _impl_.uri_.Mutable(GetArenaForAllocation());
-}
-inline std::string* HttpSession::release_uri() {
-  // @@protoc_insertion_point(field_release:packet.HttpSession.uri)
-  return _impl_.uri_.Release();
-}
-inline void HttpSession::set_allocated_uri(std::string* uri) {
-  if (uri != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.uri_.SetAllocated(uri, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.uri_.IsDefault()) {
-    _impl_.uri_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:packet.HttpSession.uri)
+inline void TcpMeta::set_id(int64_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:packet.TcpMeta.id)
 }
 
-// repeated .packet.TcpMeta tcp_packets = 4;
-inline int HttpSession::_internal_tcp_packets_size() const {
-  return _impl_.tcp_packets_.size();
-}
-inline int HttpSession::tcp_packets_size() const {
-  return _internal_tcp_packets_size();
-}
-inline void HttpSession::clear_tcp_packets() {
-  _impl_.tcp_packets_.Clear();
-}
-inline ::packet::TcpMeta* HttpSession::mutable_tcp_packets(int index) {
-  // @@protoc_insertion_point(field_mutable:packet.HttpSession.tcp_packets)
-  return _impl_.tcp_packets_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >*
-HttpSession::mutable_tcp_packets() {
-  // @@protoc_insertion_point(field_mutable_list:packet.HttpSession.tcp_packets)
-  return &_impl_.tcp_packets_;
-}
-inline const ::packet::TcpMeta& HttpSession::_internal_tcp_packets(int index) const {
-  return _impl_.tcp_packets_.Get(index);
-}
-inline const ::packet::TcpMeta& HttpSession::tcp_packets(int index) const {
-  // @@protoc_insertion_point(field_get:packet.HttpSession.tcp_packets)
-  return _internal_tcp_packets(index);
-}
-inline ::packet::TcpMeta* HttpSession::_internal_add_tcp_packets() {
-  return _impl_.tcp_packets_.Add();
-}
-inline ::packet::TcpMeta* HttpSession::add_tcp_packets() {
-  ::packet::TcpMeta* _add = _internal_add_tcp_packets();
-  // @@protoc_insertion_point(field_add:packet.HttpSession.tcp_packets)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::packet::TcpMeta >&
-HttpSession::tcp_packets() const {
-  // @@protoc_insertion_point(field_list:packet.HttpSession.tcp_packets)
-  return _impl_.tcp_packets_;
-}
-
-// -------------------------------------------------------------------
-
-// TcpMeta
-
-// string local_address = 1;
+// string local_address = 4;
 inline void TcpMeta::clear_local_address() {
   _impl_.local_address_.ClearToEmpty();
 }
@@ -1592,7 +1390,7 @@ inline void TcpMeta::set_allocated_local_address(std::string* local_address) {
   // @@protoc_insertion_point(field_set_allocated:packet.TcpMeta.local_address)
 }
 
-// string remote_address = 2;
+// string remote_address = 5;
 inline void TcpMeta::clear_remote_address() {
   _impl_.remote_address_.ClearToEmpty();
 }
@@ -1642,27 +1440,7 @@ inline void TcpMeta::set_allocated_remote_address(std::string* remote_address) {
   // @@protoc_insertion_point(field_set_allocated:packet.TcpMeta.remote_address)
 }
 
-// int32 local_port = 3;
-inline void TcpMeta::clear_local_port() {
-  _impl_.local_port_ = 0;
-}
-inline int32_t TcpMeta::_internal_local_port() const {
-  return _impl_.local_port_;
-}
-inline int32_t TcpMeta::local_port() const {
-  // @@protoc_insertion_point(field_get:packet.TcpMeta.local_port)
-  return _internal_local_port();
-}
-inline void TcpMeta::_internal_set_local_port(int32_t value) {
-  
-  _impl_.local_port_ = value;
-}
-inline void TcpMeta::set_local_port(int32_t value) {
-  _internal_set_local_port(value);
-  // @@protoc_insertion_point(field_set:packet.TcpMeta.local_port)
-}
-
-// int32 remote_port = 4;
+// int32 remote_port = 6;
 inline void TcpMeta::clear_remote_port() {
   _impl_.remote_port_ = 0;
 }
@@ -1682,7 +1460,7 @@ inline void TcpMeta::set_remote_port(int32_t value) {
   // @@protoc_insertion_point(field_set:packet.TcpMeta.remote_port)
 }
 
-// uint64 sequence_number = 5;
+// uint64 sequence_number = 7;
 inline void TcpMeta::clear_sequence_number() {
   _impl_.sequence_number_ = uint64_t{0u};
 }
@@ -1702,24 +1480,24 @@ inline void TcpMeta::set_sequence_number(uint64_t value) {
   // @@protoc_insertion_point(field_set:packet.TcpMeta.sequence_number)
 }
 
-// bool flag = 6;
-inline void TcpMeta::clear_flag() {
-  _impl_.flag_ = false;
+// uint64 payload_size = 8;
+inline void TcpMeta::clear_payload_size() {
+  _impl_.payload_size_ = uint64_t{0u};
 }
-inline bool TcpMeta::_internal_flag() const {
-  return _impl_.flag_;
+inline uint64_t TcpMeta::_internal_payload_size() const {
+  return _impl_.payload_size_;
 }
-inline bool TcpMeta::flag() const {
-  // @@protoc_insertion_point(field_get:packet.TcpMeta.flag)
-  return _internal_flag();
+inline uint64_t TcpMeta::payload_size() const {
+  // @@protoc_insertion_point(field_get:packet.TcpMeta.payload_size)
+  return _internal_payload_size();
 }
-inline void TcpMeta::_internal_set_flag(bool value) {
+inline void TcpMeta::_internal_set_payload_size(uint64_t value) {
   
-  _impl_.flag_ = value;
+  _impl_.payload_size_ = value;
 }
-inline void TcpMeta::set_flag(bool value) {
-  _internal_set_flag(value);
-  // @@protoc_insertion_point(field_set:packet.TcpMeta.flag)
+inline void TcpMeta::set_payload_size(uint64_t value) {
+  _internal_set_payload_size(value);
+  // @@protoc_insertion_point(field_set:packet.TcpMeta.payload_size)
 }
 
 // -------------------------------------------------------------------
@@ -1796,131 +1574,101 @@ inline void AnalysisAck::set_allocated_message(std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:packet.AnalysisAck.message)
 }
 
+// int64 window_start = 3;
+inline void AnalysisAck::clear_window_start() {
+  _impl_.window_start_ = int64_t{0};
+}
+inline int64_t AnalysisAck::_internal_window_start() const {
+  return _impl_.window_start_;
+}
+inline int64_t AnalysisAck::window_start() const {
+  // @@protoc_insertion_point(field_get:packet.AnalysisAck.window_start)
+  return _internal_window_start();
+}
+inline void AnalysisAck::_internal_set_window_start(int64_t value) {
+  
+  _impl_.window_start_ = value;
+}
+inline void AnalysisAck::set_window_start(int64_t value) {
+  _internal_set_window_start(value);
+  // @@protoc_insertion_point(field_set:packet.AnalysisAck.window_start)
+}
+
+// int64 window_end = 4;
+inline void AnalysisAck::clear_window_end() {
+  _impl_.window_end_ = int64_t{0};
+}
+inline int64_t AnalysisAck::_internal_window_end() const {
+  return _impl_.window_end_;
+}
+inline int64_t AnalysisAck::window_end() const {
+  // @@protoc_insertion_point(field_get:packet.AnalysisAck.window_end)
+  return _internal_window_end();
+}
+inline void AnalysisAck::_internal_set_window_end(int64_t value) {
+  
+  _impl_.window_end_ = value;
+}
+inline void AnalysisAck::set_window_end(int64_t value) {
+  _internal_set_window_end(value);
+  // @@protoc_insertion_point(field_set:packet.AnalysisAck.window_end)
+}
+
 // -------------------------------------------------------------------
 
 // PacketEvent
 
-// string remoteAddress = 1;
-inline void PacketEvent::clear_remoteaddress() {
-  _impl_.remoteaddress_.ClearToEmpty();
+// string method = 1;
+inline void PacketEvent::clear_method() {
+  _impl_.method_.ClearToEmpty();
 }
-inline const std::string& PacketEvent::remoteaddress() const {
-  // @@protoc_insertion_point(field_get:packet.PacketEvent.remoteAddress)
-  return _internal_remoteaddress();
+inline const std::string& PacketEvent::method() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.method)
+  return _internal_method();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void PacketEvent::set_remoteaddress(ArgT0&& arg0, ArgT... args) {
+void PacketEvent::set_method(ArgT0&& arg0, ArgT... args) {
  
- _impl_.remoteaddress_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:packet.PacketEvent.remoteAddress)
+ _impl_.method_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.method)
 }
-inline std::string* PacketEvent::mutable_remoteaddress() {
-  std::string* _s = _internal_mutable_remoteaddress();
-  // @@protoc_insertion_point(field_mutable:packet.PacketEvent.remoteAddress)
+inline std::string* PacketEvent::mutable_method() {
+  std::string* _s = _internal_mutable_method();
+  // @@protoc_insertion_point(field_mutable:packet.PacketEvent.method)
   return _s;
 }
-inline const std::string& PacketEvent::_internal_remoteaddress() const {
-  return _impl_.remoteaddress_.Get();
+inline const std::string& PacketEvent::_internal_method() const {
+  return _impl_.method_.Get();
 }
-inline void PacketEvent::_internal_set_remoteaddress(const std::string& value) {
+inline void PacketEvent::_internal_set_method(const std::string& value) {
   
-  _impl_.remoteaddress_.Set(value, GetArenaForAllocation());
+  _impl_.method_.Set(value, GetArenaForAllocation());
 }
-inline std::string* PacketEvent::_internal_mutable_remoteaddress() {
+inline std::string* PacketEvent::_internal_mutable_method() {
   
-  return _impl_.remoteaddress_.Mutable(GetArenaForAllocation());
+  return _impl_.method_.Mutable(GetArenaForAllocation());
 }
-inline std::string* PacketEvent::release_remoteaddress() {
-  // @@protoc_insertion_point(field_release:packet.PacketEvent.remoteAddress)
-  return _impl_.remoteaddress_.Release();
+inline std::string* PacketEvent::release_method() {
+  // @@protoc_insertion_point(field_release:packet.PacketEvent.method)
+  return _impl_.method_.Release();
 }
-inline void PacketEvent::set_allocated_remoteaddress(std::string* remoteaddress) {
-  if (remoteaddress != nullptr) {
+inline void PacketEvent::set_allocated_method(std::string* method) {
+  if (method != nullptr) {
     
   } else {
     
   }
-  _impl_.remoteaddress_.SetAllocated(remoteaddress, GetArenaForAllocation());
+  _impl_.method_.SetAllocated(method, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.remoteaddress_.IsDefault()) {
-    _impl_.remoteaddress_.Set("", GetArenaForAllocation());
+  if (_impl_.method_.IsDefault()) {
+    _impl_.method_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:packet.PacketEvent.remoteAddress)
+  // @@protoc_insertion_point(field_set_allocated:packet.PacketEvent.method)
 }
 
-// string localAddress = 2;
-inline void PacketEvent::clear_localaddress() {
-  _impl_.localaddress_.ClearToEmpty();
-}
-inline const std::string& PacketEvent::localaddress() const {
-  // @@protoc_insertion_point(field_get:packet.PacketEvent.localAddress)
-  return _internal_localaddress();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void PacketEvent::set_localaddress(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.localaddress_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:packet.PacketEvent.localAddress)
-}
-inline std::string* PacketEvent::mutable_localaddress() {
-  std::string* _s = _internal_mutable_localaddress();
-  // @@protoc_insertion_point(field_mutable:packet.PacketEvent.localAddress)
-  return _s;
-}
-inline const std::string& PacketEvent::_internal_localaddress() const {
-  return _impl_.localaddress_.Get();
-}
-inline void PacketEvent::_internal_set_localaddress(const std::string& value) {
-  
-  _impl_.localaddress_.Set(value, GetArenaForAllocation());
-}
-inline std::string* PacketEvent::_internal_mutable_localaddress() {
-  
-  return _impl_.localaddress_.Mutable(GetArenaForAllocation());
-}
-inline std::string* PacketEvent::release_localaddress() {
-  // @@protoc_insertion_point(field_release:packet.PacketEvent.localAddress)
-  return _impl_.localaddress_.Release();
-}
-inline void PacketEvent::set_allocated_localaddress(std::string* localaddress) {
-  if (localaddress != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.localaddress_.SetAllocated(localaddress, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.localaddress_.IsDefault()) {
-    _impl_.localaddress_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:packet.PacketEvent.localAddress)
-}
-
-// uint32 remotePort = 3;
-inline void PacketEvent::clear_remoteport() {
-  _impl_.remoteport_ = 0u;
-}
-inline uint32_t PacketEvent::_internal_remoteport() const {
-  return _impl_.remoteport_;
-}
-inline uint32_t PacketEvent::remoteport() const {
-  // @@protoc_insertion_point(field_get:packet.PacketEvent.remotePort)
-  return _internal_remoteport();
-}
-inline void PacketEvent::_internal_set_remoteport(uint32_t value) {
-  
-  _impl_.remoteport_ = value;
-}
-inline void PacketEvent::set_remoteport(uint32_t value) {
-  _internal_set_remoteport(value);
-  // @@protoc_insertion_point(field_set:packet.PacketEvent.remotePort)
-}
-
-// string protocol = 4;
+// string protocol = 2;
 inline void PacketEvent::clear_protocol() {
   _impl_.protocol_.ClearToEmpty();
 }
@@ -1970,47 +1718,187 @@ inline void PacketEvent::set_allocated_protocol(std::string* protocol) {
   // @@protoc_insertion_point(field_set_allocated:packet.PacketEvent.protocol)
 }
 
-// uint64 sequenceNumber = 5;
-inline void PacketEvent::clear_sequencenumber() {
-  _impl_.sequencenumber_ = uint64_t{0u};
+// int64 id = 3;
+inline void PacketEvent::clear_id() {
+  _impl_.id_ = int64_t{0};
 }
-inline uint64_t PacketEvent::_internal_sequencenumber() const {
-  return _impl_.sequencenumber_;
+inline int64_t PacketEvent::_internal_id() const {
+  return _impl_.id_;
 }
-inline uint64_t PacketEvent::sequencenumber() const {
-  // @@protoc_insertion_point(field_get:packet.PacketEvent.sequenceNumber)
-  return _internal_sequencenumber();
+inline int64_t PacketEvent::id() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.id)
+  return _internal_id();
 }
-inline void PacketEvent::_internal_set_sequencenumber(uint64_t value) {
+inline void PacketEvent::_internal_set_id(int64_t value) {
   
-  _impl_.sequencenumber_ = value;
+  _impl_.id_ = value;
 }
-inline void PacketEvent::set_sequencenumber(uint64_t value) {
-  _internal_set_sequencenumber(value);
-  // @@protoc_insertion_point(field_set:packet.PacketEvent.sequenceNumber)
+inline void PacketEvent::set_id(int64_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.id)
 }
 
-// uint32 payloadSize = 6;
-inline void PacketEvent::clear_payloadsize() {
-  _impl_.payloadsize_ = 0u;
+// string local_address = 4;
+inline void PacketEvent::clear_local_address() {
+  _impl_.local_address_.ClearToEmpty();
 }
-inline uint32_t PacketEvent::_internal_payloadsize() const {
-  return _impl_.payloadsize_;
+inline const std::string& PacketEvent::local_address() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.local_address)
+  return _internal_local_address();
 }
-inline uint32_t PacketEvent::payloadsize() const {
-  // @@protoc_insertion_point(field_get:packet.PacketEvent.payloadSize)
-  return _internal_payloadsize();
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void PacketEvent::set_local_address(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.local_address_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.local_address)
 }
-inline void PacketEvent::_internal_set_payloadsize(uint32_t value) {
+inline std::string* PacketEvent::mutable_local_address() {
+  std::string* _s = _internal_mutable_local_address();
+  // @@protoc_insertion_point(field_mutable:packet.PacketEvent.local_address)
+  return _s;
+}
+inline const std::string& PacketEvent::_internal_local_address() const {
+  return _impl_.local_address_.Get();
+}
+inline void PacketEvent::_internal_set_local_address(const std::string& value) {
   
-  _impl_.payloadsize_ = value;
+  _impl_.local_address_.Set(value, GetArenaForAllocation());
 }
-inline void PacketEvent::set_payloadsize(uint32_t value) {
-  _internal_set_payloadsize(value);
-  // @@protoc_insertion_point(field_set:packet.PacketEvent.payloadSize)
+inline std::string* PacketEvent::_internal_mutable_local_address() {
+  
+  return _impl_.local_address_.Mutable(GetArenaForAllocation());
+}
+inline std::string* PacketEvent::release_local_address() {
+  // @@protoc_insertion_point(field_release:packet.PacketEvent.local_address)
+  return _impl_.local_address_.Release();
+}
+inline void PacketEvent::set_allocated_local_address(std::string* local_address) {
+  if (local_address != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.local_address_.SetAllocated(local_address, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.local_address_.IsDefault()) {
+    _impl_.local_address_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:packet.PacketEvent.local_address)
 }
 
-// bool flag = 7;
+// string remote_address = 5;
+inline void PacketEvent::clear_remote_address() {
+  _impl_.remote_address_.ClearToEmpty();
+}
+inline const std::string& PacketEvent::remote_address() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.remote_address)
+  return _internal_remote_address();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void PacketEvent::set_remote_address(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.remote_address_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.remote_address)
+}
+inline std::string* PacketEvent::mutable_remote_address() {
+  std::string* _s = _internal_mutable_remote_address();
+  // @@protoc_insertion_point(field_mutable:packet.PacketEvent.remote_address)
+  return _s;
+}
+inline const std::string& PacketEvent::_internal_remote_address() const {
+  return _impl_.remote_address_.Get();
+}
+inline void PacketEvent::_internal_set_remote_address(const std::string& value) {
+  
+  _impl_.remote_address_.Set(value, GetArenaForAllocation());
+}
+inline std::string* PacketEvent::_internal_mutable_remote_address() {
+  
+  return _impl_.remote_address_.Mutable(GetArenaForAllocation());
+}
+inline std::string* PacketEvent::release_remote_address() {
+  // @@protoc_insertion_point(field_release:packet.PacketEvent.remote_address)
+  return _impl_.remote_address_.Release();
+}
+inline void PacketEvent::set_allocated_remote_address(std::string* remote_address) {
+  if (remote_address != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.remote_address_.SetAllocated(remote_address, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.remote_address_.IsDefault()) {
+    _impl_.remote_address_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:packet.PacketEvent.remote_address)
+}
+
+// int32 remote_port = 6;
+inline void PacketEvent::clear_remote_port() {
+  _impl_.remote_port_ = 0;
+}
+inline int32_t PacketEvent::_internal_remote_port() const {
+  return _impl_.remote_port_;
+}
+inline int32_t PacketEvent::remote_port() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.remote_port)
+  return _internal_remote_port();
+}
+inline void PacketEvent::_internal_set_remote_port(int32_t value) {
+  
+  _impl_.remote_port_ = value;
+}
+inline void PacketEvent::set_remote_port(int32_t value) {
+  _internal_set_remote_port(value);
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.remote_port)
+}
+
+// uint64 sequence_number = 7;
+inline void PacketEvent::clear_sequence_number() {
+  _impl_.sequence_number_ = uint64_t{0u};
+}
+inline uint64_t PacketEvent::_internal_sequence_number() const {
+  return _impl_.sequence_number_;
+}
+inline uint64_t PacketEvent::sequence_number() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.sequence_number)
+  return _internal_sequence_number();
+}
+inline void PacketEvent::_internal_set_sequence_number(uint64_t value) {
+  
+  _impl_.sequence_number_ = value;
+}
+inline void PacketEvent::set_sequence_number(uint64_t value) {
+  _internal_set_sequence_number(value);
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.sequence_number)
+}
+
+// uint64 payload_size = 8;
+inline void PacketEvent::clear_payload_size() {
+  _impl_.payload_size_ = uint64_t{0u};
+}
+inline uint64_t PacketEvent::_internal_payload_size() const {
+  return _impl_.payload_size_;
+}
+inline uint64_t PacketEvent::payload_size() const {
+  // @@protoc_insertion_point(field_get:packet.PacketEvent.payload_size)
+  return _internal_payload_size();
+}
+inline void PacketEvent::_internal_set_payload_size(uint64_t value) {
+  
+  _impl_.payload_size_ = value;
+}
+inline void PacketEvent::set_payload_size(uint64_t value) {
+  _internal_set_payload_size(value);
+  // @@protoc_insertion_point(field_set:packet.PacketEvent.payload_size)
+}
+
+// bool flag = 9;
 inline void PacketEvent::clear_flag() {
   _impl_.flag_ = false;
 }
@@ -2077,8 +1965,6 @@ EventBatch::events() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

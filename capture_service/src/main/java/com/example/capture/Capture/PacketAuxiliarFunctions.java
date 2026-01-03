@@ -1,33 +1,20 @@
 package com.example.capture.Capture;
 
+import com.example.capture.External.gRPCClient;
 import com.example.common.UserInfo.User;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.example.common.PacketInfo.*;
 import com.example.capture.Repository.HttpRepository;
 import com.example.capture.Repository.TcpRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class PacketAuxiliarFunctions {
 
     private final HttpRepository httpRepository;
     private final TcpRepository tcpRepository;
-
-    // para leitura do JSON
-    private final Set<String> processedFiles = new HashSet<>();
-    private final ObjectMapper mapper = new ObjectMapper();
 
     public PacketAuxiliarFunctions(HttpRepository httpRepository, TcpRepository tcpRepository) {
         this.httpRepository = httpRepository;
@@ -78,10 +65,29 @@ public class PacketAuxiliarFunctions {
         }));
     }
 
+    public boolean isNewHttpRequest(TcpInfos tcp) {
+        if (tcp.getPayload() == null) {
+            return false;
+        }
+        byte[] payloadData = tcp.getPayload().getRawData();
+        if (payloadData.length < 4) {
+            return false;
+        }
+        String payloadHeader = new String(payloadData, 0, Math.min(payloadData.length, 10));
+        return payloadHeader.startsWith("GET ") ||
+                payloadHeader.startsWith("POST ") ||
+                payloadHeader.startsWith("PUT ") ||
+                payloadHeader.startsWith("DELETE ") ||
+                payloadHeader.startsWith("HEAD ") ||
+                payloadHeader.startsWith("OPTIONS ") ||
+                payloadHeader.startsWith("TRACE ") ||
+                payloadHeader.startsWith("CONNECT ");
+    }
+
     @Transactional
     public void saveData(Map<String, TreeMap<Long, HttpInfos>> connections, Set<HttpInfos> savedData, User user) {
         System.out.println("💾 Salvando dados:");
-        Set<HttpInfos> novos = new HashSet<>();
+        List<HttpInfos> novos = new ArrayList<>();
         connections.forEach((key, tree) -> tree.forEach((seqNumber, httpInfo) -> {
             if (!savedData.contains(httpInfo)) {
                 if (httpInfo.getMethod() != null) {
@@ -98,154 +104,28 @@ public class PacketAuxiliarFunctions {
                 }
             }
         }));
-
-        if (!novos.isEmpty()) {
-            Path path = Paths.get("captures").toAbsolutePath().normalize();
-            File modelInput = Paths.get("model/data.json").toAbsolutePath().normalize().toFile();
-            createJson(novos, path, modelInput);
-        }
-    }
-
-    public boolean isNewHttpRequest(TcpInfos tcp) {
-        if (tcp.getPayload() == null) {
-            return false;
-        }
-
-        byte[] payloadData = tcp.getPayload().getRawData();
-
-        if (payloadData.length < 4) {
-            return false;
-        }
-
-        String payloadHeader = new String(payloadData, 0, Math.min(payloadData.length, 10));
-
-        return payloadHeader.startsWith("GET ") ||
-                payloadHeader.startsWith("POST ") ||
-                payloadHeader.startsWith("PUT ") ||
-                payloadHeader.startsWith("DELETE ") ||
-                payloadHeader.startsWith("HEAD ") ||
-                payloadHeader.startsWith("OPTIONS ") ||
-                payloadHeader.startsWith("TRACE ") ||
-                payloadHeader.startsWith("CONNECT ");
-    }
-
-    @Transactional
-    public void createJson(Set<HttpInfos> httpInfos, Path outputPath, File modelInput) {
         try {
-            // cada TCP vira um item da lista
-
-            List<Map<String, Object>> flatPackets = httpInfos.stream()
-                    .flatMap(http -> http.getTcpPackets().stream()
-                            .map(tcp -> {
-                                Map<String, Object> merged = new LinkedHashMap<>();
-                                merged.put("method", http.getMethod());
-                                merged.put("protocol", http.getProtocol());
-                                merged.put("id", tcp.getId());
-                                merged.put("sequenceNumber", tcp.getSequenceNumber());
-                                merged.put("localAddress", tcp.getLocalAddress());
-                                merged.put("remoteAddress", tcp.getRemoteAddress());
-                                merged.put("remotePort", tcp.getRemotePort());
-                                merged.put("payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0);
-
-                                return merged;
-                            })
-                    ).collect(Collectors.toList());
-
-            // Configura o ObjectMapper
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-            // Cria diretório e arquivo
-            Files.createDirectories(outputPath);
-            String filename = "../captures/capture_" + System.currentTimeMillis() + ".json";
-
-            // Escreve o JSON diretamente como lista
-            mapper.writeValue(Paths.get(filename).toFile(), flatPackets);
-
-            // Escrever em data.json do ML os novos dados capturados no intervalo
-            mapper.writeValue(modelInput, flatPackets);
-
-            System.out.println("📄 JSON achatado salvo em: " + filename);
-
-        } catch (Exception e) {
-            System.err.println("❌ Erro ao criar JSON: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void updateJson(String basePath) {
-        System.out.println("💾 VENDO JSON");
-        Path path = Paths.get(basePath);
-        if (!Files.exists(path)) {
-            System.err.println("❌ Diretório não encontrado: " + basePath);
-            return;
-        }
-
-        try {
-            // Faz a leitura do JSON
-            JsonNode root = mapper.readTree(path.toFile());
-
-            List<Long> ids = new ArrayList<>();
-            List<Boolean> flags = new ArrayList<>();
-
-            for (JsonNode node : root) {
-                Long id = node.get("id").asLong();
-                Boolean flag = node.get("flag").asBoolean();
-                ids.add(id);
-                flags.add(flag);
-            }
-
-            System.out.println("📄 Arquivo lido: " + path.getFileName());
-
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-            // Lista que irá armazenar TODOS os JSONs atualizados
-            List<Map<String, Object>> mergedList = List.of();
-            // Atualiza no banco de dados
-            for (int i = 0; i < ids.size(); i++) {
-                System.out.println("🆔 ID: " + ids.get(i) + " | 🚩 FLAG: " + flags.get(i));
-                mergedList = IntStream.range(0, ids.size())
-                        .mapToObj(j -> {
-                            return tcpRepository.findById(ids.get(j)).map(tcp -> {
-                                // Atualiza o banco
-                                tcp.setFlag(flags.get(j));
-                                tcpRepository.save(tcp);
-                                // Cria o objeto para o JSON
-                                Map<String, Object> merged = new LinkedHashMap<>();
-                                merged.put("id", tcp.getId());
-                                merged.put("method", tcp.getHttpInfos().getMethod());
-                                merged.put("protocol", tcp.getHttpInfos().getProtocol());
-                                merged.put("localAddress", tcp.getLocalAddress());
-                                merged.put("remoteAddress", tcp.getRemoteAddress());
-                                merged.put("remotePort", tcp.getRemotePort());
-                                merged.put("payloadSize", (tcp.getPayload() != null) ? tcp.getPayload().length() : 0);
-                                merged.put("flag", tcp.getFlag());
-                                merged.put("sequenceNumber", tcp.getSequenceNumber());
-                                return merged;
-                            });
-                        })
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .toList();
-            }
-
-            // Marca como processado
-            processedFiles.add(path.toString());
-
-            // 4. Salva TODOS no mesmo data.json
-            Path updatedJsonPath = Paths.get("plotter/data.json").toAbsolutePath().normalize();
-
-            try {
-                mapper.writeValue(updatedJsonPath.toFile(), mergedList);
-                System.out.println("📄 JSON completo salvo com " + mergedList.size() + " registros.");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (Exception e) {
-            System.err.println("❌ Erro ao ler JSON " + path + ": " + e.getMessage());
+            sendToModel(novos);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }
+
+    public void sendToModel(List<HttpInfos> httpInfos) throws InterruptedException {
+        System.out.println("Iniciando gRPC...");
+
+        gRPCClient client = new gRPCClient(tcpRepository, "localhost", 50051);
+
+        client.sendWindow(httpInfos);
+
+        // Busca resultados (se o server implementar)
+        var qtd = client.getResults();
+
+        System.out.println("📦 Resultados recebidos: " + qtd);
+        client.shutdown();
+    }
+
+    // Atualização das flags ocorre automaticamente na classe gRPCClient (em getResults)
 }
+

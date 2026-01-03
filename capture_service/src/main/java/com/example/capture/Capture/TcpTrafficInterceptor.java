@@ -48,27 +48,24 @@ public class TcpTrafficInterceptor {
                 .build();
 
         handle.setFilter("tcp", BpfProgram.BpfCompileMode.OPTIMIZE);
-        PacketListener listener = new PacketListener() {
-            @Override
-            public void gotPacket(Packet packet){
-                IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
-                IpV6Packet ipV6Packet = packet.get(IpV6Packet.class);
-                IpPacket ipPacket = null;
-                if (ipV4Packet != null) {
-                    ipPacket = ipV4Packet;
-                } else if (ipV6Packet != null) {
-                    ipPacket = ipV6Packet;
-                }
+        PacketListener listener = packet -> {
+            IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
+            IpV6Packet ipV6Packet = packet.get(IpV6Packet.class);
+            IpPacket ipPacket = null;
+            if (ipV4Packet != null) {
+                ipPacket = ipV4Packet;
+            } else if (ipV6Packet != null) {
+                ipPacket = ipV6Packet;
+            }
 
-                if (ipPacket != null) {
-                    TcpPacket tcpPacket = packet.get(TcpPacket.class);
-                    if (tcpPacket != null) {
-                        TcpInfos tcpinfos = new TcpInfos(ipPacket, tcpPacket);
-                        try {
-                            tcpQueue.put(tcpinfos);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+            if (ipPacket != null) {
+                TcpPacket tcpPacket = packet.get(TcpPacket.class);
+                if (tcpPacket != null) {
+                    TcpInfos tcpinfos = new TcpInfos(ipPacket, tcpPacket);
+                    try {
+                        tcpQueue.put(tcpinfos);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
