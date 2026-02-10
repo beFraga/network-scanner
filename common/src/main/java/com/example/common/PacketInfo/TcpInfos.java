@@ -32,7 +32,11 @@ public class TcpInfos {
     private Long sequenceNumber;
 
     @Lob
-    private Packet payload;
+    @Transient
+    private byte[] payloadRaw;
+
+    @Column(name = "payload")
+    private Long payloadSize;
 
     @ManyToOne
     @JoinColumn(name = "http_infos_id")
@@ -46,32 +50,11 @@ public class TcpInfos {
         this.remoteAddress = ipPacket.getHeader().getDstAddr().getHostAddress();
         this.localPort = tcpPacket.getHeader().getSrcPort().valueAsInt();
         this.remotePort = tcpPacket.getHeader().getDstPort().valueAsInt();
-        this.sequenceNumber = Long.valueOf(tcpPacket.getHeader().getSequenceNumber());
-        this.payload = tcpPacket.getPayload();
+        this.sequenceNumber = (long) tcpPacket.getHeader().getSequenceNumber();
+        this.payloadRaw = (tcpPacket.getPayload() != null)
+                ? tcpPacket.getPayload().getRawData()
+                : new byte[0];
+        this.payloadSize = (long) payloadRaw.length;
         this.flag = false;
     }
-
-    public TcpInfos(long id, boolean flag, String remoteAddress, HttpInfos httpInfos){
-        this.id = id;
-        this.flag = flag;
-        this.remoteAddress = remoteAddress;
-        this.localAddress = null;
-        this.localPort = 0;
-        this.remotePort = 0;
-        this.sequenceNumber = null;
-        this.payload = null;
-        this.httpInfos = httpInfos;
-    }
-
-    public TcpInfos(long id, boolean flag, String remoteAddress){
-        this.id = id;
-        this.flag = flag;
-        this.remoteAddress = remoteAddress;
-        this.localAddress = null;
-        this.localPort = 0;
-        this.remotePort = 0;
-        this.sequenceNumber = null;
-        this.payload = null;
-    }
-
 }

@@ -3,12 +3,9 @@
 #include "autoencoder.h"
 #include "Preprocessing.h"
 #include "utils.h"
-
-// --- NOVOS INCLUDES NECESSÁRIOS ---
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
 #include <grpcpp/security/server_credentials.h>
-// ----------------------------------
 
 #include <mutex>
 #include <vector>
@@ -134,10 +131,6 @@ public:
                 std::lock_guard<std::mutex> lock(mu_);
                 int outliers_count = 0;
                 for (size_t i = 0; i < scores.size(); i++) {
-                    // Opcional: só guardar se for outlier para economizar banda,
-                    // mas seu proto EventBatch sugere enviar tudo ou flaggeados.
-                    // Aqui enviamos todos com a flag setada corretamente.
-
                     PacketEvent event;
                     event.set_method(raw_packets[i].method());
                     event.set_protocol(raw_packets[i].protocol());
@@ -162,7 +155,6 @@ public:
             std::cerr << "Erro na IA: " << e.what() << std::endl;
             response->set_accepted(false);
             response->set_message(e.what());
-            // Não retornamos CANCELLED para não quebrar o cliente Java, apenas avisamos no ack
             return Status::OK;
         }
 

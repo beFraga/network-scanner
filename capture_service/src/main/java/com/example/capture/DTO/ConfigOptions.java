@@ -11,10 +11,10 @@ import jakarta.validation.constraints.NotNull;
 @Getter
 public class ConfigOptions {
     @NotNull
-    @Min(value = 1, message = "O intervalo de captura deve ser maior que zero")
+    @Min(value = 1, message = "The interval capture must be greater than 0")
     private Integer interval;
 
     @NotNull
-    @Min(value = 1, message = "O tempo de contexto deve ser maior que zero.")
+    @Min(value = 1, message = "Context time must be greater than 0")
     private Integer tempCont;
 }

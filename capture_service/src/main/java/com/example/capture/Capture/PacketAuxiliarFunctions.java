@@ -47,16 +47,16 @@ public class PacketAuxiliarFunctions {
                     System.out.println("-------------------------------------------");
                     System.out.println(key + ": ");
                     System.out.println("URI: " + httpInfo.getUri());
-                    System.out.println("Método: " + httpInfo.getMethod());
-                    System.out.println("Protocolo: " + httpInfo.getProtocol());
-                    System.out.println("Porta local HTTP: " + httpInfo.getLocalPort());
-                    System.out.println("Porta remota HTTP: " + httpInfo.getRemotePort());
-                    System.out.println("Endereço local HTTP: " + httpInfo.getLocalAddress());
-                    System.out.println("Endereço remoto HTTP " +  httpInfo.getRemoteAddress());
+                    System.out.println("Method: " + httpInfo.getMethod());
+                    System.out.println("Protocol: " + httpInfo.getProtocol());
+                    System.out.println("Local port (HTTP): " + httpInfo.getLocalPort());
+                    System.out.println("Remote port (HTTP): " + httpInfo.getRemotePort());
+                    System.out.println("Local address: " + httpInfo.getLocalAddress());
+                    System.out.println("Remote address: " +  httpInfo.getRemoteAddress());
                     if (httpInfo.getTcpPackets() != null) {
                         httpInfo.getTcpPackets().forEach(t -> {
-                            System.out.println("Porta local: " + t.getLocalPort());
-                            System.out.println("Porta remota: " + t.getRemotePort());
+                            System.out.println("Local port: " + t.getLocalPort());
+                            System.out.println("Remote port: " + t.getRemotePort());
                         });
                     }
                     printedHttp.add(httpInfo);
@@ -66,10 +66,10 @@ public class PacketAuxiliarFunctions {
     }
 
     public boolean isNewHttpRequest(TcpInfos tcp) {
-        if (tcp.getPayload() == null) {
+        if (tcp.getPayloadRaw() == null) {
             return false;
         }
-        byte[] payloadData = tcp.getPayload().getRawData();
+        byte[] payloadData = tcp.getPayloadRaw();
         if (payloadData.length < 4) {
             return false;
         }
@@ -91,7 +91,7 @@ public class PacketAuxiliarFunctions {
         connections.forEach((key, tree) -> tree.forEach((seqNumber, httpInfo) -> {
             if (!savedData.contains(httpInfo)) {
                 if (httpInfo.getMethod() != null) {
-                    // associa o usuário e salva HTTP + TCPs
+                    // associates user and saves HTTP + TCPs
                     httpInfo.setUser(user);
                     httpInfo.getTcpPackets().forEach(t -> {
                         t.setFlag(false);
@@ -100,7 +100,7 @@ public class PacketAuxiliarFunctions {
                     httpRepository.save(httpInfo);
                     savedData.add(httpInfo);
                     novos.add(httpInfo);
-                    System.out.println("✅ HTTP salvo: " + httpInfo.getUri());
+                    System.out.println("✅ HTTP saved: " + httpInfo.getUri());
                 }
             }
         }));
@@ -113,19 +113,23 @@ public class PacketAuxiliarFunctions {
     }
 
     public void sendToModel(List<HttpInfos> httpInfos) throws InterruptedException {
-        System.out.println("Iniciando gRPC...");
+        System.out.println("Starting gRPC...");
 
-        gRPCClient client = new gRPCClient(tcpRepository, "localhost", 50051);
+        String grpcHost = System.getenv().getOrDefault("GRPC_HOST", "aicpp");
+        int grpcPort = Integer.parseInt(
+                System.getenv().getOrDefault("GRPC_PORT", "50051")
+        );
+        gRPCClient client = new gRPCClient(tcpRepository, grpcHost, grpcPort);
 
         client.sendWindow(httpInfos);
 
-        // Busca resultados (se o server implementar)
+        // Search for results
         var qtd = client.getResults();
 
-        System.out.println("📦 Resultados recebidos: " + qtd);
+        System.out.println("📦 Results received: " + qtd);
         client.shutdown();
     }
 
-    // Atualização das flags ocorre automaticamente na classe gRPCClient (em getResults)
+    // Flags updates occurs in grpcClient class
 }
 

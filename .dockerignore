@@ -1,0 +1,16 @@
+**/target/
+**/build/
+**/bin/
+**/out/
+
+.idea/
+*.swp
+*.log
+.git
+.gitignore
+
+captures/
+
+*.env
+!docker/variables/docker_compose_variables_auth.env
+!docker/variables/docker_compose_variables_capture.env

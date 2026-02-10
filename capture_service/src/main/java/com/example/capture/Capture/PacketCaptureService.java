@@ -54,8 +54,8 @@ public class PacketCaptureService{
                         boolean isNewHttpRequest = aux.isNewHttpRequest(tcp);
                         if (isNewHttpRequest) {
                             HttpInfos newHttpInfo = new HttpInfos();
-                            if (tcp.getPayload() != null) {
-                                newHttpInfo.setHeaderPayload(tcp.getPayload().getRawData());
+                            if (tcp.getPayloadRaw() != null) {
+                                newHttpInfo.setHeaderPayload(tcp.getPayloadRaw());
                             }
                             connections_repeat.computeIfAbsent(key, k -> new TreeMap<>()).put(tcp.getSequenceNumber(), new HttpInfos());
                         }

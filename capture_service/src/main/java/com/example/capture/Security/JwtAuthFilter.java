@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String jwt = null;
         String email = null;
 
-        // Extrai o token do cabeçalho
+        // Extracts token from header
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             try {
@@ -45,13 +45,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     email = email.trim();
                 }
             } catch (ExpiredJwtException e) {
-                System.out.println("⚠️ JWT expirado!! : " + e.getMessage());
+                System.out.println("⚠️ JWT expired!! : " + e.getMessage());
             } catch (JwtException e) {
-                System.out.println("❌ JWT inválido: " + e.getMessage());
+                System.out.println("❌ JWT invalid: " + e.getMessage());
             }
         }
 
-        // Se o token for válido e o contexto ainda não estiver autenticado
+        // If token is valid but the context is not, then authenticate it
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User userDetails = userRepository.findByEmail(email).orElse(null);
             if (userDetails != null && jwtUtil.isTokenValid(jwt, userDetails)) {
@@ -62,13 +62,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
-                // Autentica no contexto
+                // Context authenticated
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("🔐 Usuário autenticado via JWT: " + email);
+                System.out.println("🔐 User authenticated via JWT: " + email);
             }
         }
 
-        // Continua o fluxo da requisição
+        // Continues the requisition flow
         filterChain.doFilter(request, response);
     }
 }

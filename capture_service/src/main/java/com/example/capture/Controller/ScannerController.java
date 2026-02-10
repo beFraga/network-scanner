@@ -24,8 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-// Só pode ser chamado se o JWT for válido
-
+// Can only be called with a valid JWT
 @RestController
 @RequestMapping("/api/scanner")
 @RequiredArgsConstructor
@@ -39,9 +38,9 @@ public class ScannerController {
         try {
             packetCaptureService.startConnectPackets();
             packetCaptureService.schedulePacketGathering(user.getInteravlo(), user);
-            return ResponseEntity.ok("Captura de pacotes iniciada com sucesso.");
+            return ResponseEntity.ok("Packet capture started with success.");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao iniciar captura: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Error while trying to start capture: " + e.getMessage());
         }
     }
 
@@ -69,10 +68,10 @@ public class ScannerController {
             String path = Paths.get("plotter").toAbsolutePath().normalize().toString();
             PythonPlotter.generatePlot(headers, path);
 
-            return ResponseEntity.ok("Plot(s) gerado(s) com sucesso!");
+            return ResponseEntity.ok("Plot(s) generated with success!");
         }
         catch (Exception e) {
-            return ResponseEntity.status(500).body("Erro ao gerar plot: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error while trying to generate plot: " + e.getMessage());
         }
     }
 
@@ -84,15 +83,15 @@ public class ScannerController {
                 return ResponseEntity.badRequest().body(result.getAllErrors());
             }
             if (configOptions.getInterval() < 0 || configOptions.getTempCont() < 0){
-                return ResponseEntity.badRequest().body("Valor não deve ser negativo");
+                return ResponseEntity.badRequest().body("Valor must not be negative");
             }
             user.setInteravlo(configOptions.getInterval());
             user.setTempoContexto(configOptions.getTempCont());
 
             userRepository.save(user);
-            return ResponseEntity.ok("Configurações atualizadas com sucesso.");
+            return ResponseEntity.ok("Settings altered with success.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao ataulizar configurações: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while trying to configure: " + e.getMessage());
         }
     }
 

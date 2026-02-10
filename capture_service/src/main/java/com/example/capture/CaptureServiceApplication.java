@@ -13,11 +13,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.util.List;
 
 @SpringBootApplication
-// 1. Faz o Spring encontrar a classe User que está no módulo Common
+// 1. Make spring find the common package
 @EntityScan(basePackages = {
         "com.example.common"
 })
-// 2. Faz o Spring encontrar o UserRepository que está no módulo Auth
+// 2. Make spring find repositories on capture_service
 @EnableJpaRepositories(basePackages = {
         "com.example.capture.Repository"
 })

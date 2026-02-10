@@ -1,34 +1,37 @@
 # 1. Build
-FROM maven:3.9.9-eclipse-temurin-17-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 LABEL authors="clasen"
 
 WORKDIR /build
 
-# Pom do pai e módulo pai
+# father POM
 COPY pom.xml .
+
+# install father's POM on conteiner local repository
 RUN mvn install -N -DskipTests
 
-# Pom do common e módulo common
+# Common code (dependent) and its POM
 COPY common/pom.xml ./common/
 COPY common/src ./common/src
 
-# Compilar pom sem precisar compilar o do auth_service
+# Install 'common' on conteiner local repository
 RUN mvn -f common/pom.xml install -DskipTests
 
+# capture_service code and its POM
 COPY capture_service/pom.xml ./capture_service/
-COPY capture_service/src ./capture_service/src
+COPY capture_service/src/ ./capture_service/src
 
 RUN mvn -f capture_service/pom.xml package -DskipTests
 
 # 2. Runtime
 FROM eclipse-temurin:17-jre
 
-# ambiente de produção com porta 8080
+# production environment with port 8080
 ENV APP_ENV=production \
-    SERVER_PORT=8080 \
+    SERVER_PORT=8081 \
     JAVA_OPTS="-XX:+UseContainerSupport"
 
-# dependências mínimas
+# minimum dependencies
 RUN apt-get update && apt-get install -y \
     libcap2-bin \
     libcap-dev \
@@ -36,23 +39,29 @@ RUN apt-get update && apt-get install -y \
     tcpdump \
     && rm -rf /var/lib/apt/lists/*
 
-# usuário não root que executa programa
+
+RUN find "$JAVA_HOME" -name "libjli.so" -exec dirname {} \; > /etc/ld.so.conf.d/java.conf && \
+    ldconfig
+
+# non-root user that executes program
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
 COPY --from=build /build/capture_service/target/*.jar app.jar
+COPY capture_service/entrypoint.sh /entrypoint.sh
 
-# permissões para usuário e root (usuário não escreve no arquivo)
-RUN chown root:root /app/app.jar && \
-    chmod 0555 /app/app.jar
+# user and root permissions (user doesn't write files)
+RUN chown root:root /app/app.jar /entrypoint.sh && \
+    chmod 0555 /app/app.jar && \
+    chmod 0755 /entrypoint.sh
 
-# capabilities aplicadas ao Java (captura de pacotes)
+# capabilities applied to Java (packet capture)
 RUN setcap cap_net_raw,cap_net_admin=eip $(readlink -f $(which java))
 
-# modo user
+# user mode
 USER appuser
 
-EXPOSE ${SERVER_PORT}
+EXPOSE 8081
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
+ENTRYPOINT ["/entrypoint.sh"]

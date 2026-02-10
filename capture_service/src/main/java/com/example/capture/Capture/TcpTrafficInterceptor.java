@@ -2,10 +2,10 @@ package com.example.capture.Capture;
 
 import com.example.common.PacketInfo.TcpInfos;
 import org.pcap4j.packet.*;
-import org.pcap4j.util.NifSelector;
 import org.pcap4j.core.*;
 
-import java.io.IOException;
+import java.net.Inet4Address;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 public class TcpTrafficInterceptor {
@@ -16,29 +16,32 @@ public class TcpTrafficInterceptor {
         this.tcpQueue = tcpQueue;
     }
 
-    public static PcapNetworkInterface CaptureDevice() {
-        PcapNetworkInterface device = null;
-
-        try {
-            device = new NifSelector().selectNetworkInterface();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static PcapNetworkInterface CaptureDevice() throws PcapNativeException {
+        for (PcapNetworkInterface dev : Pcaps.findAllDevs()) {
+            for (PcapAddress addr : dev.getAddresses()) {
+                if (addr.getAddress() instanceof Inet4Address) {
+                    String ip = addr.getAddress().getHostAddress();
+                    if (ip.startsWith("172.18.0")) {        // put here the ip address that you want to watch
+                        return dev;
+                    }
+                }
+            }
         }
-        return device;
-
+        return null;
     }
 
     public void Scan() throws PcapNativeException, NotOpenException {
         PcapNetworkInterface device = CaptureDevice();
-        System.out.println("Escolha : " + device);
+        System.out.println("Device chosen : " + device);
 
         if (device == null) {
-            System.out.println("Não existe dispositivo");
-            System.exit(1);
+            System.out.println("There is no device");
+            throw new IllegalStateException("No device found");
         }
 
         int snapshotlenght = 65536;
         int readTimeout = 1;
+        // handler configuration - tried to do similar to Wireshark
         PcapHandle handle = new PcapHandle.Builder(device.getName())
                 .snaplen(snapshotlenght)
                 .promiscuousMode(PcapNetworkInterface.PromiscuousMode.PROMISCUOUS)
@@ -52,7 +55,7 @@ public class TcpTrafficInterceptor {
             IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
             IpV6Packet ipV6Packet = packet.get(IpV6Packet.class);
             IpPacket ipPacket = null;
-            if (ipV4Packet != null) {
+            if (ipV4Packet != null) {       // risk if the packet found is an ipV6 packet
                 ipPacket = ipV4Packet;
             } else if (ipV6Packet != null) {
                 ipPacket = ipV6Packet;
@@ -61,9 +64,9 @@ public class TcpTrafficInterceptor {
             if (ipPacket != null) {
                 TcpPacket tcpPacket = packet.get(TcpPacket.class);
                 if (tcpPacket != null) {
-                    TcpInfos tcpinfos = new TcpInfos(ipPacket, tcpPacket);
+                    TcpInfos tcpinfos = new TcpInfos(ipPacket, tcpPacket); // create a class if an ip can be associated to this packet
                     try {
-                        tcpQueue.put(tcpinfos);
+                        tcpQueue.put(tcpinfos); // puts int the queue
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -72,7 +75,7 @@ public class TcpTrafficInterceptor {
         };
 
         try {
-            handle.loop(-1, listener);
+            handle.loop(-1, listener); // listen until quit the program
         } catch (InterruptedException e) {
             e.getMessage();
         } finally {

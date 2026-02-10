@@ -2,6 +2,7 @@ package com.example.authentication.Security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -13,7 +14,8 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "jUuGRu0T7S6w4FQ9rMehJbD9qQajDPo4FvG16z6V1JgLw1eTku2vUQ=="; // troque por uma segura
+    @Value("${app.security.secret-key}")
+    private String SECRET_KEY;
 
     private Key getSignKey() {
         byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);

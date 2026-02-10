@@ -1,9 +1,0 @@
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/DTO/AuthResponse.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/AuthServiceApplication.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/Repository/UserRepository.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/Repository/TwoFactorCodeRepository.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/Security/JwtUtil.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/Controller/AuthController.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/DTO/LoginRequest.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/Security/SecurityConfig.java
-/home/clasen/Documentos/java/Scanner/network_scanner/auth_service/src/main/java/com/example/authentication/TwoFactor/TwoFactorService.java

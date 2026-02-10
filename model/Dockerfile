@@ -15,8 +15,9 @@ WORKDIR /app
 COPY model/Makefile ./
 COPY model/include/ ./include/
 COPY model/src/ ./src/
-COPY proto/ ./proto/
+COPY model/proto/ ./proto/
 COPY model/*.json ./
+COPY model/config/ ./config/
 
 RUN which protoc
 RUN which grpc_cpp_plugin
@@ -34,7 +35,6 @@ ENV APP_PORT=50051 \
 RUN apt update && apt install -y \
     libgrpc++1.51 \
     libprotobuf32 \
-    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # seta usuário não root
@@ -51,10 +51,13 @@ RUN chown -R root:root /app && \
     chmod 0555 /app && \
     chmod 0555 /app/isolation_forest && \
     chmod -R 0444 /app/config && \
-    chmod -R 0555 /app/state-dict
+    chmod -R 0555 /app/state-dict && \
+    chmod -R 644 /app/config/preprocessing.json
 
+RUN chown -R appuser:appuser /app/config
+RUN chmod -R u+rwX,g+rX,o+rX /app/config
 # modo usuário
 USER appuser
 
-EXPOSE ${APP_PORT}
+EXPOSE 50051
 ENTRYPOINT ["./isolation_forest", "1"]

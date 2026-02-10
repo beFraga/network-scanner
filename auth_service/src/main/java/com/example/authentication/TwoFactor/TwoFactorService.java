@@ -53,7 +53,7 @@ public class TwoFactorService {
     private String generateNumericCode(int digits) {
         SecureRandom rnd = new SecureRandom();
         int max = (int)Math.pow(10, digits);
-        int n = rnd.nextInt(max - (max/10)) + (max/10); // garante dígitos
+        int n = rnd.nextInt(max - (max/10)) + (max/10); // make sure you typed digits
         return String.format("%0" + digits + "d", n);
     }
 

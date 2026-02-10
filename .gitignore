@@ -1,0 +1,31 @@
+# ignore files that can make others able to read the program executing/compiling
+*.jar
+*.war
+*.exe
+*.dll
+*.so
+*.class
+
+# remove the targets and other 'useless' files
+capture_service/target
+auth_service/target
+common/target
+data/
+out/
+HELP.md
+.idea/
+.docker/
+
+# remove all the out and bin
+**/out/
+**/bin/
+
+.env
+.env.local
+.env.dev
+
+*.log
+
+
+
+

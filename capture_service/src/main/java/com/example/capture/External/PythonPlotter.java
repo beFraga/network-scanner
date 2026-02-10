@@ -27,7 +27,6 @@ public class PythonPlotter {
 
         pb.directory(new File(path));
 
-        // adiciona cada header como argumento do Python
         pb.command().addAll(headers);
 
         pb.redirectErrorStream(true);

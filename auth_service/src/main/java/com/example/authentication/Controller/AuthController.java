@@ -33,7 +33,7 @@ public class AuthController {
         User user = new User();
         String hashPassword = passwordEncoder.encode(req.getPassword());
         if (opt.isPresent() && opt.get().isExists()) {
-            return ResponseEntity.badRequest().body("email já registrado");
+            return ResponseEntity.badRequest().body("email already registred");
         } else if (opt.isPresent() && !opt.get().isExists()) {
             opt.get().setSenha(hashPassword);
             opt.get().setCreatedAt(Timestamp.from(Instant.now()));
@@ -50,27 +50,26 @@ public class AuthController {
             twoFactorService.generateAndSendCode(user);
         }
 
-
-        return ResponseEntity.ok("Código de verificação será enviado!");
+        return ResponseEntity.ok("Verification code will be sent!");
     }
 
-    // Login inicial
+    // Login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
         if (opt.isEmpty() || !opt.get().isExists()) {
-            return ResponseEntity.badRequest().body("Usuário não encontrado ou com falha de registro.");
+            return ResponseEntity.badRequest().body("User not found or register fail.");
         }
         User user = opt.get();
         if (!passwordEncoder.matches(req.getPassword(), user.getSenha())) {
-            return ResponseEntity.status(401).body("Senha incorreta.");
+            return ResponseEntity.status(401).body("Incorrect password.");
         }
-        // Gera e envia código 2FA
+        // Generates and sends 2FA code
         twoFactorService.generateAndSendCode(user);
-        return ResponseEntity.ok("Código de autenticação enviado para seu e-mail.");
+        return ResponseEntity.ok("Auth code will be sent to your email.");
     }
 
-    // validação dos 2FA
+    // 2FA
     @PostMapping("/verify-code")
     public ResponseEntity<?> verifyCode(@RequestBody LoginRequest req) {
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
@@ -78,21 +77,21 @@ public class AuthController {
             return ResponseEntity.notFound().build();
         }
         User user = opt.get();
-        if (!user.isExists()) { // novo usuario
+        if (!user.isExists()) { // new user
             boolean valid = twoFactorService.validateCode(user, req.getCode());
             if (!valid) {
-                return ResponseEntity.status(401).body("Senha incorreta.");
+                return ResponseEntity.status(401).body("Incorrect password.");
             }
             user.setExists(true);
             userRepository.save(user);
-        } else { // usuário já existente
+        } else { // already existing user
             boolean valid = twoFactorService.validateCode(user, req.getCode());
             if (!valid) {
-                return ResponseEntity.status(401).body("Código inválido ou expirado.");
+                return ResponseEntity.status(401).body("Invalid or expired code.");
             }
         }
 
-        // Código válido → gera JWT
+        // Valid code → generates JWT
         String token = jwtUtil.generateToken(user.getEmail());
         return ResponseEntity.ok(new AuthResponse(token));
     }

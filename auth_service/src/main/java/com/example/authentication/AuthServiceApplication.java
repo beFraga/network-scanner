@@ -7,11 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-// 1. Faz o Spring encontrar a classe User que está no módulo Common
+// 1. Makes spring find the class User in Common
 @EntityScan(basePackages = {
         "com.example.common"
 })
-// 2. Faz o Spring encontrar o UserRepository que está no módulo Auth
+// 2. Makes spring find the repositories in Auth
 @EnableJpaRepositories(basePackages = {
         "com.example.authentication.Repository"
 })
