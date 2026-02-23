@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.pcap4j.packet.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 @Entity
 @Table(name = "tcp_infos")
 @Getter
@@ -38,6 +41,9 @@ public class TcpInfos {
     @Column(name = "payload")
     private Long payloadSize;
 
+    @Column(name = "received_at")
+    private Timestamp received_at;
+
     @ManyToOne
     @JoinColumn(name = "http_infos_id")
     private HttpInfos httpInfos;
@@ -55,6 +61,7 @@ public class TcpInfos {
                 ? tcpPacket.getPayload().getRawData()
                 : new byte[0];
         this.payloadSize = (long) payloadRaw.length;
+        this.received_at = Timestamp.from(Instant.now());
         this.flag = false;
     }
 }

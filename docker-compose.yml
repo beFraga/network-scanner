@@ -23,7 +23,6 @@ services:
           cpus: "0.30"
           memory: 128M
 
-
   capture_service:
     image: capture_service:latest
     container_name: capture_service
@@ -38,6 +37,7 @@ services:
     depends_on:
       - auth_service
       - aicpp
+      - plotter
     env_file:
       - docker/variables/docker_compose_variables_capture.env
     restart: unless-stopped
@@ -73,22 +73,47 @@ services:
       timeout: 3s
       retries: 5
 
+  plotter:
+    image: plotter:latest
+    container_name: plotter_python
+    user: "1000:1000"
+    build:
+      context: .
+      dockerfile: plotter/Dockerfile
+    init: true
+    ports:
+      - "6767:6767"
+    networks:
+      - backend
+    restart: unless-stopped
+    env_file:
+      - docker/variables/docker_compose_variables_plotter.env
+    volumes:
+      - ./out_plot:/app/out_plot
+    command: gunicorn --bind 0.0.0.0:6767 server:app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
+
   db:
     image: mysql:8.4
     container_name: mysql-db
     volumes:
       - mysqldata:/var/lib/mysql
       - .docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=security_db
-      - MYSQL_USER=appuser
-      - MYSQL_PASSWORD=apppass
+    env_file:
+      - docker/variables/docker_compose_variables_db.env
     networks:
       - backend
     ports:
       - "3306:3306"
     restart: unless-stopped
+    command: --mysql-native-password=ON
     deploy:
       resources:
         limits:

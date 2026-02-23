@@ -3,14 +3,12 @@ package com.example.capture.Controller;
 import com.example.capture.Capture.PacketCaptureService;
 import com.example.capture.DTO.ConfigOptions;
 import com.example.capture.DTO.PlotRequest;
-import com.example.capture.External.PythonPlotter;
 import com.example.capture.Repository.UserRepository;
 import com.example.common.UserInfo.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -31,9 +29,10 @@ import java.util.List;
 public class ScannerController {
     private final PacketCaptureService packetCaptureService;
     private final UserRepository userRepository;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/start")
+    @GetMapping("/start")
     public ResponseEntity<?> startCapture(@AuthenticationPrincipal User user) {
         try {
             packetCaptureService.startConnectPackets();
@@ -57,18 +56,39 @@ public class ScannerController {
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
+    @Value("${PLOTTER_SERVICE_URL}")
+    private String plotterUrl;
+
+    @Value("${APP_INTERNAL_SECRET}")
+    private String internalSecret;
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/plot")
-    public ResponseEntity<?> generatePythonPlots(@RequestBody PlotRequest dto) {
-
+    public ResponseEntity<?> generatePythonPlots(@Valid @RequestBody PlotRequest dto) {
         try {
-            List<String> headers = dto.getHeaders();
+            // preparing headers to send to python
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-Internal-Secret", internalSecret); // the secret key
 
-            // chama o plotter Python
-            String path = Paths.get("plotter").toAbsolutePath().normalize().toString();
-            PythonPlotter.generatePlot(headers, path);
+            // creates the request
+            HttpEntity<PlotRequest> requestEntity = new HttpEntity<>(dto, headers);
 
-            return ResponseEntity.ok("Plot(s) generated with success!");
+            // Print para debug
+            System.out.println("Enviando para o Python: " + requestEntity.getBody().toString());
+            System.out.println("Headers enviados: " + requestEntity.getHeaders());
+
+            // send the POST to python
+            ResponseEntity<String> response = restTemplateBuilder.build().postForEntity(
+                    plotterUrl,
+                    requestEntity,
+                    String.class
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return ResponseEntity.ok("Plot generated with success");
+            }
+            return ResponseEntity.status(response.getStatusCode()).body("Pyton Error: " + response.getBody());
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body("Error while trying to generate plot: " + e.getMessage());

@@ -6,28 +6,32 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     MPLCONFIGDIR=/tmp/matplotlib
 
-# instalar dependências do matplotlib
 RUN apt-get update && apt-get install -y \
      libfreetype6 \
      libpng16-16 \
      fonts-dejavu-core \
      && rm -rf /var/lib/apt/lists/*
 
-# gerar usuário
+# generate user
 RUN groupadd -r plotuser && useradd -r -g plotuser plotuser
 
 WORKDIR /app
 
-# dependências python
+# python dependencies
 COPY plotter/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# código
-COPY plotter/main.py .
+# code
+COPY plotter/server.py .
+COPY plotter/plotter.py .
 
-# permissão de usuário
-RUN chown -R plotuser:plotuser /app
+# directory to the plots
+COPY out_plot/ ./out_plot/
+
+# user permission
+RUN chown -R plotuser:plotuser /app/
+RUN chown -R plotuser:plotuser /app/out_plot && chmod -R 777 /app/out_plot
 
 USER plotuser
 
-ENTRYPOINT ["python", "plotter.py", "protocol", "remoteAddress"]
+CMD ["gunicorn", "--bind", "0.0.0.0:6767", "server:app"]

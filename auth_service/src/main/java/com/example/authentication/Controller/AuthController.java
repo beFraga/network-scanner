@@ -2,11 +2,13 @@ package com.example.authentication.Controller;
 
 
 import com.example.authentication.DTO.AuthResponse;
+import com.example.authentication.DTO.CodeVerify;
 import com.example.authentication.DTO.LoginRequest;
 import com.example.authentication.Repository.UserRepository;
 import com.example.authentication.Security.JwtUtil;
 import com.example.authentication.TwoFactor.TwoFactorService;
 import com.example.common.UserInfo.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +30,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createAccount(@RequestBody LoginRequest req) {
+    public ResponseEntity<?> createAccount(@Valid @RequestBody LoginRequest req) {
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
         User user = new User();
         String hashPassword = passwordEncoder.encode(req.getPassword());
@@ -55,7 +57,7 @@ public class AuthController {
 
     // Login
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req) {
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
         if (opt.isEmpty() || !opt.get().isExists()) {
             return ResponseEntity.badRequest().body("User not found or register fail.");
@@ -71,7 +73,7 @@ public class AuthController {
 
     // 2FA
     @PostMapping("/verify-code")
-    public ResponseEntity<?> verifyCode(@RequestBody LoginRequest req) {
+    public ResponseEntity<?> verifyCode(@Valid @RequestBody CodeVerify req) {
         Optional<User> opt = userRepository.findByEmail(req.getEmail());
         if(opt.isEmpty()){
             return ResponseEntity.notFound().build();

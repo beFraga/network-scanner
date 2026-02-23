@@ -1,12 +1,8 @@
 package com.example.authentication.DTO;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class AuthResponse {
     private String token;
     private String typetoken = "Bearer";

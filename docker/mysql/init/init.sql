@@ -61,6 +61,7 @@ INSERT INTO `http_infos` VALUES (1,1,'GET','HTTP/1.1','/test/ping'),(2,1,'GET','
   `sequence_number` bigint DEFAULT NULL,
   `FLAG` tinyint(1) NOT NULL,
   `payload` longblob,
+  `received_at` longblob,
   PRIMARY KEY (`id`),
   KEY `fk_http_tcp` (`http_infos_id`),
   CONSTRAINT `fk_http_tcp` FOREIGN KEY (`http_infos_id`) REFERENCES `http_infos` (`id`) ON DELETE CASCADE
