@@ -74,7 +74,7 @@ Prerequisites
 
     Any JSON sent must follow the DTO rules defined on the authentication and capture modules, check the code to know more
 
-1. Start the Environment
+7.1. Start the Environment
 
 Run the following command in the root directory:
 Bash
@@ -83,7 +83,7 @@ Bash
 docker compose up --build
 ```
 
-2. Authenticate
+7.2. Authenticate
 
 ```
 Create/Login: Send a POST request to /api/auth/create or /api/auth/login.
@@ -91,7 +91,7 @@ Create/Login: Send a POST request to /api/auth/create or /api/auth/login.
 Verify: Check your email for the 2FA code and POST it to /api/auth/verify-code.
 ```
 
-3. Operate the Scanner
+7.3. Operate the Scanner
 
 Once authenticated (using the provided JWT), use these endpoints:
 
