@@ -6,7 +6,7 @@ A distributed microservices architecture designed to capture network traffic, as
 
 The Network Scanner is a specialized packet manager that bridges the gap between raw network data and machine learning analysis. By relating TCP packets to their respective HTTP payloads, the system extracts features sent to a C++ Isolation Forest (Random Forest) model via high-performance gRPC calls. The AI determines if a packet is an "outlier" (potentially malicious) and triggers database flags for security monitoring.
 
-🔐 2. Authentication Service (auth_service)
+2. Authentication Service (auth_service)
 
 Security is at the core of this project. The system implements a robust authentication layer to ensure that only verified users can initiate scans or access AI results.
 
@@ -20,7 +20,7 @@ Security is at the core of this project. The system implements a robust authenti
     
 <img width="944" height="294" alt="Captura de tela de 2026-02-10 15-55-17" src="https://github.com/user-attachments/assets/33ff4736-fec9-4868-a656-e3366ee58d8e" />
 
-📡 3. Capture & AI Service (capture_service)
+3. Capture & AI Service (capture_service)
 
 This service acts as the "eyes" of the system, utilizing the Pcap4j library for deep packet inspection.
 
@@ -36,7 +36,11 @@ This service acts as the "eyes" of the system, utilizing the Pcap4j library for 
 
 <img width="1141" height="534" alt="Captura de tela de 2026-02-10 16-04-29" src="https://github.com/user-attachments/assets/65206267-95fd-471a-9ca8-c50f87091060" />
 
-🏗️ 4. System Architecture & Docker
+4. Plotter
+
+The plotter is built on python. The user can choose the period of the time when packages where sent to the database, being able to analyze when an attack could have been occurred.
+
+5. System Architecture & Docker
 
 The project is fully containerized, ensuring environment parity and easy deployment. Every component (Auth, Capture, AI, Database, and Plotter) runs in an isolated container.
 
@@ -52,13 +56,14 @@ The project is fully containerized, ensuring environment parity and easy deploym
 
 <img width="1152" height="769" alt="Captura de tela de 2026-02-12 18-39-10" src="https://github.com/user-attachments/assets/3b20ea5a-e4c4-41ad-b380-b57fcd34f231" />
 
-📊 5. Modules
+5. Modules
 
     Common: A shared library containing cross-cutting concerns, DTOs, and utility classes used by both Java services.
 
     Plotter (In Development): A visualization tool to analyze the frequency of outliers over a customizable timeline.
 
-🛠️ 6. How to Use
+6. How to Use
+
 Prerequisites
 
     Docker & Docker Compose
