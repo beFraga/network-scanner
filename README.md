@@ -39,6 +39,7 @@ This service acts as the "eyes" of the system, utilizing the Pcap4j library for 
 4. Plotter
 
 The plotter is built on python. The user can choose the period of the time when packages where sent to the database, being able to analyze when an attack could have been occurred.
+The communication between plotter container and capture container is made by a http request followed by an internal secret key (that you also must define).
 
 5. System Architecture & Docker
 
@@ -54,7 +55,8 @@ The project is fully containerized, ensuring environment parity and easy deploym
 
     Deployment: Includes custom scripts for pushing images to DockerHub and GitHub Container Registry.
 
-<img width="1152" height="769" alt="Captura de tela de 2026-02-12 18-39-10" src="https://github.com/user-attachments/assets/3b20ea5a-e4c4-41ad-b380-b57fcd34f231" />
+<img width="1808" height="822" alt="image" src="https://github.com/user-attachments/assets/ab3b0ee5-41ca-4cdb-8036-187119bc7e95" />
+
 
 6. Modules
 
