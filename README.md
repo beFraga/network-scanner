@@ -51,6 +51,8 @@ The project is fully containerized, ensuring environment parity and easy deploym
 
         Capture ↔ Auth: JWT-based stateless authorization.
 
+        Capture ↔ Plotter: Http with an internal secret key.
+
     Database Initialization: Automated via mysql/init to replicate the required schema on startup.
 
     Deployment: Includes custom scripts for pushing images to DockerHub and GitHub Container Registry.
@@ -60,9 +62,7 @@ The project is fully containerized, ensuring environment parity and easy deploym
 
 6. Modules
 
-    Common: A shared library containing cross-cutting concerns, DTOs, and utility classes used by both Java services.
-
-    Plotter (In Development): A visualization tool to analyze the frequency of outliers over a customizable timeline.
+Common: A shared library containing cross-cutting concerns, DTOs, and utility classes used by both Java services.
 
 7. How to Use
 
@@ -85,9 +85,11 @@ docker compose up --build
 
 2. Authenticate
 
-    Create/Login: Send a POST request to /api/auth/create or /api/auth/login.
+```
+Create/Login: Send a POST request to /api/auth/create or /api/auth/login.
 
-    Verify: Check your email for the 2FA code and POST it to /api/auth/verify-code.
+Verify: Check your email for the 2FA code and POST it to /api/auth/verify-code.
+```
 
 3. Operate the Scanner
 
