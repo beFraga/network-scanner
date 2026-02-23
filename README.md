@@ -56,19 +56,21 @@ The project is fully containerized, ensuring environment parity and easy deploym
 
 <img width="1152" height="769" alt="Captura de tela de 2026-02-12 18-39-10" src="https://github.com/user-attachments/assets/3b20ea5a-e4c4-41ad-b380-b57fcd34f231" />
 
-5. Modules
+6. Modules
 
     Common: A shared library containing cross-cutting concerns, DTOs, and utility classes used by both Java services.
 
     Plotter (In Development): A visualization tool to analyze the frequency of outliers over a customizable timeline.
 
-6. How to Use
+7. How to Use
 
 Prerequisites
 
     Docker & Docker Compose
 
     Configured Environment Variables (See .env.example)
+
+    Any JSON sent must follow the DTO rules defined on the authentication and capture modules, check the code to know more
 
 1. Start the Environment
 
@@ -95,7 +97,7 @@ Once authenticated (using the provided JWT), use these endpoints:
 
     POST /api/scanner/plotter: Access the visualization module (Beta).
 
-🛠️ 7. Requirements for Development
+8. Requirements for Development
 
 If you wish to modify the source code, ensure you have:
 
