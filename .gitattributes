@@ -2,8 +2,9 @@
 *.cmd text eol=crlf
 
 proto/** linguist-detectable=false
+model/*.out linguist-vendored
 
-plotter/** linguist-vendored
+
 **/Dockerfile linguist-documentation
 
 *.pdf linguist-documentation
