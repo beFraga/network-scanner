@@ -1,9 +1,21 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
 
+# 1. Ignorar definições de Protocol Buffers (podem ser lidas como C++)
+proto/** linguist-detectable=false
+
+# 2. Marcar a pasta de C++ como 'vendored'
+# Isso faz com que o código ainda apareça no repo, mas seja ignorado nas estatísticas
+model/** linguist-vendored
+
+# 3. Se houver arquivos de build/binários gerados pelo Makefile dentro de model
 model/*.o linguist-vendored
 model/*.out linguist-vendored
 model/*.a linguist-vendored
 
+# 4. Marcar o script Python e Dockerfiles como auxiliares
 plotter/** linguist-vendored
+**/Dockerfile linguist-documentation
 
+# 5. Ignorar documentação pesada (PDFs)
+*.pdf linguist-documentation

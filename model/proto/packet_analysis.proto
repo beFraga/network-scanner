@@ -1,0 +1,61 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package packet;
+
+option java_package = "com.example.capture.grpc";
+option java_outer_classname = "PacketAnalysisProto";
+
+// Service
+service PacketAnalysisService {
+  rpc StreamWindow (stream PacketWindow) returns (AnalysisAck);
+}
+
+// Messages
+message PacketWindow {
+  int64 window_start = 1;
+  int64 window_end = 2;
+
+  int64 user_id = 3;
+
+  repeated TcpMeta tcp_packets = 4;
+}
+
+message TcpMeta{
+  string method = 1;
+  string protocol = 2;
+  int64 id = 3;
+  string local_address = 4;
+  string remote_address = 5;
+  int32 remote_port = 6;
+  uint64 sequence_number = 7;
+  uint64 payload_size = 8;
+}
+
+// Responses
+message AnalysisAck{
+  bool accepted = 1;
+  string message = 2;
+  int64 window_start = 3;
+  int64 window_end = 4;
+}
+
+message PacketEvent {
+  string method = 1;
+  string protocol = 2;
+  int64 id = 3;
+  string local_address = 4;
+  string remote_address = 5;
+  int32 remote_port = 6;
+  uint64 sequence_number = 7;
+  uint64 payload_size = 8;
+  bool flag = 9;
+}
+
+message EventBatch {
+  repeated PacketEvent events = 1;
+}
+
+service PacketAnalyzer {
+  rpc GetEvents(google.protobuf.Empty) returns (EventBatch);
+}

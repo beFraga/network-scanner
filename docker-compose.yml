@@ -1,0 +1,126 @@
+version: "3.9"
+
+services:
+  auth_service:
+    image: auth_service:latest
+    container_name: authentication_service
+    build:
+      context: .
+      dockerfile: auth_service/Dockerfile
+    init: true
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    depends_on:
+      - db
+    restart: unless-stopped
+    env_file:
+      - docker/variables/docker_compose_variables_auth.env
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: 128M
+
+  capture_service:
+    image: capture_service:latest
+    container_name: capture_service
+    build:
+      context: .
+      dockerfile: capture_service/Dockerfile
+    init: true
+    ports:
+      - "8081:8081"
+    networks:
+      - backend
+    depends_on:
+      - auth_service
+      - aicpp
+      - plotter
+    env_file:
+      - docker/variables/docker_compose_variables_capture.env
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: 128M
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+  aicpp:
+    image: aicpp:latest
+    container_name: model_ai_cpp
+    build:
+      context: .
+      dockerfile: model/Dockerfile
+    init: true
+    ports:
+      - "50051:50051"
+    networks:
+      - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: 128M
+    healthcheck:
+      test: [ "CMD", "grpcurl", "-plaintext", "localhost:50051", "list" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  plotter:
+    image: plotter:latest
+    container_name: plotter_python
+    user: "1000:1000"
+    build:
+      context: .
+      dockerfile: plotter/Dockerfile
+    init: true
+    ports:
+      - "6767:6767"
+    networks:
+      - backend
+    restart: unless-stopped
+    env_file:
+      - docker/variables/docker_compose_variables_plotter.env
+    volumes:
+      - ./out_plot:/app/out_plot
+    command: gunicorn --bind 0.0.0.0:6767 server:app
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
+
+  db:
+    image: mysql:8.4
+    container_name: mysql-db
+    volumes:
+      - mysqldata:/var/lib/mysql
+      - .docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - docker/variables/docker_compose_variables_db.env
+    networks:
+      - backend
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    command: --mysql-native-password=ON
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+volumes:
+  mysqldata:
+networks:
+  backend:

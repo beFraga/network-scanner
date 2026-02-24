@@ -116,76 +116,97 @@ Matrix Preprocessing::preprocess_train(
 	return out;
 }
 
-Matrix Preprocessing::preprocess(
-		const std::vector<std::vector<std::string>>& data,
-		const std::string& config_path,
-		std::vector<bool> type_features
-		) {
-	json config;
-	std::ifstream f(config_path);
-	if (!f.is_open()) throw std::runtime_error("Cannot open preprocessing config");
-	f >> config;
-	f.close();
-
-	size_t n_samples = data.size();
-	size_t n_features = data[0].size();
-
-	std::vector<size_t> numeric_cols, cat_cols;
-	for (size_t j = 0; j < n_features; j++) {
-		if (type_features[j]) numeric_cols.push_back(j);
-		else cat_cols.push_back(j);
-	}
-
-	// --- Numeric: normalizar usando os parâmetros salvos ---
-	Matrix numeric_matrix(n_samples, numeric_cols.size());
-	for (size_t j = 0; j < numeric_cols.size(); j++) {
-		double minv = config["numeric_params"][j]["minv"];
-		double maxv = config["numeric_params"][j]["maxv"];
-		double range = maxv - minv;
-		for (size_t i = 0; i < n_samples; i++) {
-			double val = std::stod(data[i][numeric_cols[j]]);
-			if (range == 0) numeric_matrix(i,j) = 0.0;
-			else numeric_matrix(i,j) = (val - minv) / range;
-		}
-	}
-
-	// --- Categórico ---
-	OneHotParams params;
-	params.cat_to_index.resize(cat_cols.size());
-	std::vector<Matrix> encoded_cat;
-	size_t total_cat_cols = 0;
-	for (size_t j = 0; j < cat_cols.size(); j++) {
-		size_t idx = 0;
-		for (auto& cat : config["categories"][j])
-			params.cat_to_index[j][cat.get<std::string>()] = idx++;
-
-		std::vector<std::string> cur_col(n_samples);
-		for (size_t i = 0; i < n_samples; i++)
-			cur_col[i] = data[i][cat_cols[j]];
-
-		Matrix enc_col = transform_one_hot_with_flag(cur_col, params.cat_to_index[j]);
-		total_cat_cols += enc_col.cols;
-		encoded_cat.push_back(enc_col);
-	}
-
-	Matrix out(n_samples, numeric_cols.size() + total_cat_cols);
-
-	// numeric
-	for (size_t i = 0; i < n_samples; i++)
-		for (size_t j = 0; j < numeric_cols.size(); j++)
-			out(i,j) = numeric_matrix(i,j);
-
-	// categorical
-	size_t offset = numeric_cols.size();
-	for (const auto& m : encoded_cat) {
-		for (size_t i = 0; i < n_samples; i++)
-			for (size_t j = 0; j < m.cols; j++)
-				out(i, offset + j) = m(i,j);
-		offset += m.cols;
-	}
-
-	return out;
+static inline double safe_stod(const std::string& s) {
+    try {
+        if (s.empty() || s == "null") return 0.0;
+        return std::stod(s);
+    } catch (...) {
+        return 0.0;
+    }
 }
+
+static inline std::string safe_str(const std::string& s) {
+    return (s.empty() || s == "null") ? "UNKNOWN" : s;
+}
+
+Matrix Preprocessing::preprocess(
+    const std::vector<std::vector<std::string>>& data,
+    const std::string& config_path,
+    std::vector<bool> type_features
+) {
+    json config;
+    std::ifstream f(config_path);
+    if (!f.is_open())
+        throw std::runtime_error("Cannot open preprocessing config");
+    f >> config;
+    f.close();
+
+    size_t n_samples = data.size();
+    size_t n_features = data[0].size();
+
+    std::vector<size_t> numeric_cols, cat_cols;
+    for (size_t j = 0; j < n_features; j++) {
+        if (type_features[j]) numeric_cols.push_back(j);
+        else cat_cols.push_back(j);
+    }
+
+    // ---------- NUMERIC ----------
+    Matrix numeric_matrix(n_samples, numeric_cols.size());
+
+    for (size_t j = 0; j < numeric_cols.size(); j++) {
+        double minv = config["numeric_params"][j]["minv"];
+        double maxv = config["numeric_params"][j]["maxv"];
+        double range = maxv - minv;
+
+        for (size_t i = 0; i < n_samples; i++) {
+            double val = safe_stod(data[i][numeric_cols[j]]);
+            if (range == 0)
+                numeric_matrix(i, j) = 0.0;
+            else
+                numeric_matrix(i, j) = (val - minv) / range;
+        }
+    }
+
+    // ---------- CATEGORICAL ----------
+    OneHotParams params;
+    params.cat_to_index.resize(cat_cols.size());
+    std::vector<Matrix> encoded_cat;
+    size_t total_cat_cols = 0;
+
+    for (size_t j = 0; j < cat_cols.size(); j++) {
+        size_t idx = 0;
+        for (auto& cat : config["categories"][j])
+            params.cat_to_index[j][cat.get<std::string>()] = idx++;
+
+        std::vector<std::string> cur_col(n_samples);
+        for (size_t i = 0; i < n_samples; i++)
+            cur_col[i] = safe_str(data[i][cat_cols[j]]);
+
+        Matrix enc_col = transform_one_hot_with_flag(cur_col, params.cat_to_index[j]);
+        total_cat_cols += enc_col.cols;
+        encoded_cat.push_back(enc_col);
+    }
+
+    // ---------- MERGE ----------
+    Matrix out(n_samples, numeric_cols.size() + total_cat_cols);
+
+    // numeric
+    for (size_t i = 0; i < n_samples; i++)
+        for (size_t j = 0; j < numeric_cols.size(); j++)
+            out(i, j) = numeric_matrix(i, j);
+
+    // categorical
+    size_t offset = numeric_cols.size();
+    for (const auto& m : encoded_cat) {
+        for (size_t i = 0; i < n_samples; i++)
+            for (size_t j = 0; j < m.cols; j++)
+                out(i, offset + j) = m(i, j);
+        offset += m.cols;
+    }
+
+    return out;
+}
+
 
 void Preprocessing::save_config(const json& config, const std::string& path) {
 	std::ofstream f(path);
