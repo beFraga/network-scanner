@@ -3,7 +3,7 @@
 
 proto/** linguist-detectable=false
 
-model/config/** linguist-vendored
+model/build/** linguist-vendored
 
 **/Dockerfile linguist-documentation
 
