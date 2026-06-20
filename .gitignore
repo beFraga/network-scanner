@@ -28,6 +28,7 @@ HELP.md
 
 venv/
 .venv/
+plotter/.venv
 
 
 

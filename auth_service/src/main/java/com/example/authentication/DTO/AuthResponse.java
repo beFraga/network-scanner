@@ -9,7 +9,9 @@ public class AuthResponse {
     private String email;
     private Boolean verifiedEmail;
 
-    public AuthResponse(String token) {
+    public AuthResponse(String token, String email, Boolean verifiedEmail) {
         this.token = token;
+        this.email = email;
+        this.verifiedEmail = verifiedEmail;
     }
 }

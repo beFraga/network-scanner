@@ -84,7 +84,7 @@ public class UserService {
 
         // Valid code and generates JWT
         String token = jwtUtil.generateToken(user.getEmail());
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(new AuthResponse(token, user.getEmail(), true));
     }
 
 }

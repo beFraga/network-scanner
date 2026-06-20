@@ -13,6 +13,7 @@ RUN mvn install -N -DskipTests
 # Common code (dependent) and its POM
 COPY common/pom.xml ./common/
 COPY common/src ./common/src
+COPY user_manual.pdf .
 
 # Install 'common' on conteiner local repository
 RUN mvn -f common/pom.xml install -DskipTests
