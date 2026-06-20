@@ -26,6 +26,9 @@ HELP.md
 
 *.log
 
+venv/
+.venv/
+
 
 
 
