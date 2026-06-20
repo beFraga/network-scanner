@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Data
 @Getter
-public class ConfigOptions {
+public class ConfigOptionsRequest {
     @NotNull
     @Min(value = 1, message = "The interval capture must be greater than 0")
     private Integer interval;

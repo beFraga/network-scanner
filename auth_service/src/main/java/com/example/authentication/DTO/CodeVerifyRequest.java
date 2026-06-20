@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @Getter
-public class CodeVerify {
+public class CodeVerifyRequest {
     @NotBlank(message = "Email must be filled.")
     private String email;
 

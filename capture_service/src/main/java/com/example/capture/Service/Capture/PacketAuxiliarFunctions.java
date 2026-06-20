@@ -1,6 +1,6 @@
-package com.example.capture.Capture;
+package com.example.capture.Service.Capture;
 
-import com.example.capture.External.gRPCClient;
+import com.example.capture.Service.gRPCService;
 import com.example.common.UserInfo.User;
 import com.example.common.PacketInfo.*;
 import com.example.capture.Repository.HttpRepository;
@@ -119,7 +119,7 @@ public class PacketAuxiliarFunctions {
         int grpcPort = Integer.parseInt(
                 System.getenv().getOrDefault("GRPC_PORT", "50051")
         );
-        gRPCClient client = new gRPCClient(tcpRepository, grpcHost, grpcPort);
+        gRPCService client = new gRPCService(tcpRepository, grpcHost, grpcPort);
 
         client.sendWindow(httpInfos);
 
@@ -130,6 +130,6 @@ public class PacketAuxiliarFunctions {
         client.shutdown();
     }
 
-    // Flags updates occurs in grpcClient class
+    // Flags updates occurs in grpcService class
 }
 

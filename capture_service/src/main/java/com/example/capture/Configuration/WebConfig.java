@@ -1,6 +1,6 @@
-package com.example.capture.Configurations;
+package com.example.capture.Configuration;
 
-import com.example.capture.Capture.HttpTrafficInterceptor;
+import com.example.capture.Service.Capture.HttpTrafficInterceptorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,16 +10,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final HttpTrafficInterceptor trafficInterceptor;
+    private final HttpTrafficInterceptorService trafficInterceptor;
     private final QueueConfig queue;
 
     @Bean
-    public HttpTrafficInterceptor trafficInterceptor() {
-        return new HttpTrafficInterceptor(queue.httpQueue());
+    public HttpTrafficInterceptorService trafficInterceptor() {
+        return new HttpTrafficInterceptorService(queue.httpQueue());
     }
 
     @Autowired
-    public WebConfig(HttpTrafficInterceptor trafficInterceptor, QueueConfig queue) {
+    public WebConfig(HttpTrafficInterceptorService trafficInterceptor, QueueConfig queue) {
         this.trafficInterceptor = trafficInterceptor;
         this.queue = queue;
     }

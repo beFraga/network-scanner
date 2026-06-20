@@ -1,4 +1,4 @@
-package com.example.authentication.TwoFactor;
+package com.example.authentication.Service;
 
 import com.example.common.UserInfo.*;
 import com.example.authentication.Repository.TwoFactorCodeRepository;

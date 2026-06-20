@@ -1,18 +1,17 @@
-package com.example.capture.Capture;
+package com.example.capture.Service.Capture;
 
 import com.example.common.PacketInfo.TcpInfos;
 import org.pcap4j.packet.*;
 import org.pcap4j.core.*;
 
 import java.net.Inet4Address;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-public class TcpTrafficInterceptor {
+public class TcpTrafficInterceptorService {
 
     private final BlockingQueue<TcpInfos> tcpQueue;
 
-    public TcpTrafficInterceptor(BlockingQueue<TcpInfos> tcpQueue) {
+    public TcpTrafficInterceptorService(BlockingQueue<TcpInfos> tcpQueue) {
         this.tcpQueue = tcpQueue;
     }
 

@@ -1,11 +1,10 @@
-package com.example.capture.Capture;
+package com.example.capture.Service.Capture;
 
 import com.example.common.PacketInfo.*;
 import com.example.common.UserInfo.User;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -37,7 +36,7 @@ public class PacketCaptureService{
     public void startConnectPackets() {
         TCPCapture.submit(() -> {
             try {
-                new TcpTrafficInterceptor(tcpQueue).Scan();
+                new TcpTrafficInterceptorService(tcpQueue).Scan();
             } catch (Exception e) {
                 e.printStackTrace();
             }

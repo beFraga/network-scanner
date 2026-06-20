@@ -1,4 +1,4 @@
-package com.example.capture.External;
+package com.example.capture.Service;
 
 import com.example.capture.Repository.TcpRepository;
 import com.example.common.PacketInfo.HttpInfos;
@@ -19,14 +19,14 @@ import com.example.capture.grpc.PacketAnalyzerGrpc;
 import com.example.capture.grpc.PacketAnalysisServiceGrpc.PacketAnalysisServiceStub;
 import com.example.capture.grpc.PacketAnalyzerGrpc.PacketAnalyzerBlockingStub;
 
-public class gRPCClient {
+public class gRPCService {
 
     private final TcpRepository tcpRepository;
     private final ManagedChannel channel;
     private final PacketAnalysisServiceStub asyncStub; // Send stream
     private final PacketAnalyzerBlockingStub blockingStub; // Search responses
 
-    public gRPCClient(TcpRepository tcpRepository, String host, int port) {
+    public gRPCService(TcpRepository tcpRepository, String host, int port) {
         this.tcpRepository = tcpRepository;
         // Create the communication channel with C++
         this.channel = ManagedChannelBuilder.forAddress(host, port)
@@ -49,7 +49,7 @@ public class gRPCClient {
         final CountDownLatch finishLatch = new CountDownLatch(1);
 
         // Observer to receive the server response (Ack)
-        StreamObserver<AnalysisAck> responseObserver = new StreamObserver<AnalysisAck>() {
+        StreamObserver<AnalysisAck> responseObserver = new StreamObserver<>() {
             @Override
             public void onNext(AnalysisAck ack) {
                 System.out.println("[gRPC] Ack recebido do C++: " + ack.getMessage());
@@ -78,8 +78,8 @@ public class gRPCClient {
                     .setWindowEnd(System.currentTimeMillis())
                     .setUserId(1); // Example
 
-            for (int i = 0; i < packets.size(); i++) {
-                for (TcpInfos tcpInfos : packets.get(i).getTcpPackets()){
+            for (HttpInfos packet : packets) {
+                for (TcpInfos tcpInfos : packet.getTcpPackets()) {
                     // Converte cada pacote Java para TcpMeta do Protobuf
                     TcpMeta meta = TcpMeta.newBuilder()
                             .setMethod(safe(tcpInfos.getHttpInfos().getMethod()))
